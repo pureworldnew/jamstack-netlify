@@ -1,3 +1,10 @@
+## Manual Deployment from local
+1. Delete .netlify foloder and build folder
+2. npm run build
+3. netlify deploy 
+4. netlify deploy --prod
+
+
 # Netlify + FaunaDB &nbsp;&nbsp;&nbsp;<a href="https://app.netlify.com/start/deploy?repository=https://github.com/netlify/netlify-faunadb-example&stack=fauna"><img src="https://www.netlify.com/img/deploy/button.svg"></a>
 
 Example of using [FaunaDB](https://fauna.com/) with [Netlify functions](https://www.netlify.com/docs/functions/)
