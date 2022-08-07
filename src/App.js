@@ -4,13 +4,9 @@ import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import loadable from "@loadable/component";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
 import Container from "@mui/material/Container";
 import Fallback from "./components/fallback/Fallback";
-import { AppBar } from "components/app-bar";
-import { Drawer } from "components/drawer";
-import { Copyright } from "components/copyright";
+import { AppBar, Drawer, Copyright } from "components/nav";
 
 const OrdersComponent = loadable(() => import("./feature/dashboard/Orders"), {
   fallback: <Fallback />,

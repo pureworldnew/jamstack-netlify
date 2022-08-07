@@ -5,7 +5,7 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Toolbar from "@mui/material/Toolbar";
-import { mainListItems, secondaryListItems } from "components/list-item";
+import { mainListItems, secondaryListItems } from "components/nav";
 import * as myConsts from "consts";
 
 const CustomDrawer = styled(MuiDrawer, {
