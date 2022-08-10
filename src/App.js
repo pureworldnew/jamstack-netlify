@@ -5,10 +5,10 @@ import CssBaseline from "@mui/material/CssBaseline";
 import loadable from "@loadable/component";
 import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
-import Fallback from "./components/fallback/Fallback";
+import { Fallback } from "./components/fallback";
 import { AppBar, Drawer, Copyright } from "components/nav";
 
-const OrdersComponent = loadable(() => import("./feature/dashboard/Orders"), {
+const PlanComponent = loadable(() => import("./feature/plan/Plan"), {
   fallback: <Fallback />,
 });
 
@@ -50,8 +50,8 @@ export default function App() {
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Routes>
-              <Route path="/deposits" element={<DepositsComponent />} />
-              <Route path="/orders" element={<OrdersComponent />} />
+              <Route path="/assets" element={<DepositsComponent />} />
+              <Route path="/plan" element={<PlanComponent />} />
               <Route path="/" element={<DashboardComponent />} />
             </Routes>
             <Copyright sx={{ pt: 4 }} />
