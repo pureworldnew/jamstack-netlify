@@ -28,6 +28,10 @@ const StressComponent = loadable(() => import("./feature/stress/Stress"), {
   fallback: <Fallback />,
 });
 
+const TrackComponent = loadable(() => import("./feature/track/Track"), {
+  fallback: <Fallback />,
+});
+
 export default function App() {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
@@ -56,6 +60,7 @@ export default function App() {
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Routes>
               <Route path="/plan" element={<PlanComponent />} />
+              <Route path="/track" element={<TrackComponent />} />
               <Route path="/stress" element={<StressComponent />} />
               <Route path="/cash" element={<CashComponent />} />
               <Route path="/work" element={<WorkComponent />} />

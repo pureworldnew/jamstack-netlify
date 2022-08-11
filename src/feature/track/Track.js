@@ -10,10 +10,10 @@ const rows = [
   { id: 1, title: "Demo" },
 ];
 
-export default function Work() {
+export default function Track() {
   return (
     <>
-      <h2>Google Calendar API integration</h2>
+      <h2>Clockify api integration</h2>
       <DataGrid columns={columns} rows={rows} />
     </>
   );
