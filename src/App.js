@@ -12,14 +12,19 @@ const PlanComponent = loadable(() => import("./feature/plan/Plan"), {
   fallback: <Fallback />,
 });
 
-const DepositsComponent = loadable(
-  () => import("./feature/dashboard/Deposits"),
-  {
-    fallback: <Fallback />,
-  }
-);
+const CashComponent = loadable(() => import("./feature/cash/Cash"), {
+  fallback: <Fallback />,
+});
+
+const WorkComponent = loadable(() => import("./feature/work/Work"), {
+  fallback: <Fallback />,
+});
 
 const DashboardComponent = loadable(() => import("./feature/dashboard"), {
+  fallback: <Fallback />,
+});
+
+const StressComponent = loadable(() => import("./feature/stress/Stress"), {
   fallback: <Fallback />,
 });
 
@@ -50,8 +55,10 @@ export default function App() {
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Routes>
-              <Route path="/assets" element={<DepositsComponent />} />
               <Route path="/plan" element={<PlanComponent />} />
+              <Route path="/stress" element={<StressComponent />} />
+              <Route path="/cash" element={<CashComponent />} />
+              <Route path="/work" element={<WorkComponent />} />
               <Route path="/" element={<DashboardComponent />} />
             </Routes>
             <Copyright sx={{ pt: 4 }} />
