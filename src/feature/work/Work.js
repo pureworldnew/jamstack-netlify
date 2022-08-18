@@ -1,20 +1,23 @@
-import DataGrid from "react-data-grid";
+import React from "react";
 
-const columns = [
-  { key: "id", name: "ID" },
-  { key: "title", name: "Title" },
-];
+import CssBaseline from "@mui/material/CssBaseline";
 
-const rows = [
-  { id: 0, title: "Example" },
-  { id: 1, title: "Demo" },
-];
+import { ReactTable } from "components/table";
 
-export default function Work() {
+import { makeData, COLUMNS } from "./makeData";
+import AddNewWork from "./AddNewWork";
+
+function Work() {
+  const columns = React.useMemo(() => COLUMNS, []);
+  const data = React.useMemo(() => makeData(20), []);
+
   return (
-    <>
-      <h2>Google Calendar API integration</h2>
-      <DataGrid columns={columns} rows={rows} />
-    </>
+    <div>
+      <CssBaseline />
+      <AddNewWork />
+      <ReactTable columns={columns} data={data} />
+    </div>
   );
 }
+
+export default Work;
