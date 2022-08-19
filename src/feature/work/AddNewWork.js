@@ -11,10 +11,11 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+import Divider from "@mui/material/Divider";
+
+import { AutoWidthSelect } from "components/select";
+import { DateTimePickers } from "components/date-time-picker";
+import * as myConsts from "consts";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -22,11 +23,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function AddNewWork() {
   const [open, setOpen] = React.useState(false);
-  const [age, setAge] = React.useState("");
-
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -74,8 +70,9 @@ export default function AddNewWork() {
           noValidate
           autoComplete="off"
         >
-          <Grid container spacing={2}>
-            <Grid item xs={4}>
+          <Divider>Company Information</Divider>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item md={3} xs={6}>
               <TextField
                 fullWidth
                 required
@@ -84,31 +81,49 @@ export default function AddNewWork() {
                 variant="outlined"
               />
             </Grid>
-            <Grid item xs={4}>
+            <Grid item md={3} xs={6}>
               <TextField fullWidth id="agency-company" label="Agency Company" />
             </Grid>
+            <Grid item md={6} xs={6}>
+              <TextField fullWidth id="company_url" label="Company Url" />
+            </Grid>
+          </Grid>
+          <Divider>Application Information</Divider>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item xs={6} md={3}>
+              <AutoWidthSelect
+                id="status"
+                labelId="status-label"
+                labelText="status"
+                options={myConsts.STATUS_OPTIONS}
+              />
+            </Grid>
 
-            <Grid item xs={4}>
-              <FormControl sx={{ m: 1, minWidth: 80 }}>
-                <InputLabel id="demo-simple-select-autowidth-label">
-                  Age
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-autowidth-label"
-                  id="demo-simple-select-autowidth"
-                  value={age}
-                  onChange={handleChange}
-                  autoWidth
-                  label="Age"
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value={10}>Twenty</MenuItem>
-                  <MenuItem value={21}>Twenty one</MenuItem>
-                  <MenuItem value={22}>Twenty one and a half</MenuItem>
-                </Select>
-              </FormControl>
+            <Grid item xs={6} md={3}>
+              <AutoWidthSelect
+                id="account"
+                labelId="account-label"
+                labelText="account"
+                options={myConsts.ACCOUNT_OPTIONS}
+              />
+            </Grid>
+
+            <Grid item xs={6} md={3}>
+              <AutoWidthSelect
+                id="job-board"
+                labelId="job-board-label"
+                labelText="job-board"
+                options={myConsts.JOB_BOARD_OPTIONS}
+              />
+            </Grid>
+            <Grid item xs={6} md={3}>
+              <DateTimePickers />
+            </Grid>
+          </Grid>
+          <Divider>Job Details</Divider>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item md={4} xs={6}>
+              <TextField fullWidth id="position" label="Position" />
             </Grid>
             <Grid item xs={12}>
               <TextareaAutosize
