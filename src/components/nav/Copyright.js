@@ -10,7 +10,7 @@ export function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" href="https://jamstack.netlify.app/">
         Your Website
       </Link>{" "}
       {new Date().getFullYear()}

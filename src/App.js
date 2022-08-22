@@ -33,9 +33,6 @@ const TrackComponent = loadable(() => import("./feature/track/Track"), {
 });
 
 export default function App() {
-  React.useEffect(() => {
-    console.log("here is test ");
-  }, []);
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);

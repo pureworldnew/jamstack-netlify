@@ -23,3 +23,57 @@ export const JOB_BOARD_OPTIONS = [
   { value: "dice", label: "Dice" },
   { value: "company_website", label: "Company website" },
 ];
+
+export const WORK_COLUMNS = [
+  {
+    Header: "Company Information",
+    columns: [
+      {
+        Header: "Direct Company",
+        accessor: "directCompany",
+      },
+      {
+        Header: "Agency Company",
+        accessor: "agencyCompany",
+      },
+      {
+        Header: "Company Website",
+        accessor: "companyUrl",
+      },
+    ],
+  },
+  {
+    Header: "Application Information",
+    columns: [
+      {
+        Header: "Status",
+        accessor: "status",
+      },
+      {
+        Header: "Account",
+        accessor: "account",
+      },
+      {
+        Header: "Job Board",
+        accessor: "jobBoard",
+      },
+      {
+        Header: "Date",
+        accessor: "createDate",
+      },
+    ],
+  },
+  {
+    Header: "Job Details",
+    columns: [
+      {
+        Header: "Position",
+        accessor: "position",
+      },
+      {
+        Header: "Job Description",
+        accessor: "jobDescription",
+      },
+    ],
+  },
+];

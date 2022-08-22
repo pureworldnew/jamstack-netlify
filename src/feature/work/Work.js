@@ -1,21 +1,57 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import CssBaseline from "@mui/material/CssBaseline";
 
 import { ReactTable } from "components/table";
 
-import { makeData, COLUMNS } from "./makeData";
 import AddNewWork from "./AddNewWork";
+import api from "services/api";
+import * as myConsts from "consts";
+import { BackDrop } from "components/backdrop";
 
 function Work() {
-  const columns = React.useMemo(() => COLUMNS, []);
-  const data = React.useMemo(() => makeData(20), []);
+  const [entry, setEntry] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    window.location.reload();
+  };
+  useEffect(() => {
+    setLoading(true);
+    api.readAll().then((res) => {
+      console.log(res);
+      let entryArray = [];
+      res.forEach((each) => {
+        const { data, ref } = each;
+        data["id"] = ref["@ref"]["id"];
+        entryArray.push(data);
+      });
+      setEntry(entryArray);
+      setLoading(false);
+    });
+  }, []);
+  const columns = React.useMemo(() => myConsts.WORK_COLUMNS, []);
 
   return (
     <div>
       <CssBaseline />
-      <AddNewWork />
-      <ReactTable columns={columns} data={data} />
+      <AddNewWork
+        open={open}
+        setOpen={setOpen}
+        handleClickOpen={handleClickOpen}
+        handleClose={handleClose}
+      />
+      {loading ? (
+        <BackDrop open={loading} />
+      ) : (
+        <ReactTable columns={columns} data={entry} />
+      )}
     </div>
   );
 }

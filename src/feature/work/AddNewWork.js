@@ -21,6 +21,7 @@ import {
   FormInputDatePicker,
   FormInputTextarea,
 } from "components/form";
+import api from "services/api";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -31,16 +32,13 @@ const validationSchema = Yup.object().shape({
   position: Yup.string().required("Position is required"),
 });
 
-export default function AddNewWork() {
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+export default function AddNewWork({
+  open,
+  setOpen,
+  handleClickOpen,
+  handleClose,
+}) {
+  
 
   const {
     control,
@@ -50,7 +48,11 @@ export default function AddNewWork() {
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    console.log(data);
+    api.create(data);
+    handleClose();
+  };
 
   return (
     <div>
