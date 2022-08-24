@@ -12,6 +12,9 @@ exports.handler = async (event, context) => {
   });
   /* parse the string body into a useable JS object */
   const data = JSON.parse(event.body);
+  if (!data.hasOwnProperty("createDate")) {
+    data["createDate"] = new Date().toLocaleDateString();
+  }
   console.log("Function `todo-create` invoked", data);
   const todoItem = {
     data: data,

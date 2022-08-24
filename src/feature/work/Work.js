@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 
 import CssBaseline from "@mui/material/CssBaseline";
-import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 
 import { ReactTable } from "components/table";
@@ -15,7 +14,6 @@ function Work() {
   const [entry, setEntry] = useState([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = React.useState(false);
-  const [selectedRows, setSelectedRows] = useState([]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -27,7 +25,6 @@ function Work() {
   };
 
   const handleClickDelete = (rowData) => {
-    console.log("selectedRows", rowData);
     api.delete(rowData.id).then((res) => {
       window.location.reload();
     });
@@ -40,6 +37,11 @@ function Work() {
       res.forEach((each) => {
         const { data, ref } = each;
         data["id"] = ref["@ref"]["id"];
+        if (data["createDate"] !== undefined) {
+          data["createDate"] = new Date(
+            data["createDate"]
+          ).toLocaleDateString();
+        }
         entryArray.push(data);
       });
       setEntry(entryArray);
@@ -51,16 +53,13 @@ function Work() {
   return (
     <div>
       <CssBaseline />
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
         <AddNewWork
           open={open}
           setOpen={setOpen}
           handleClickOpen={handleClickOpen}
           handleClose={handleClose}
         />
-        <Button variant="outlined" onClick={handleClickDelete}>
-          Delete Rows
-        </Button>
       </Box>
 
       {loading ? (
@@ -91,7 +90,6 @@ function Work() {
             },
           ]}
           data={entry}
-          setSelectedRows={setSelectedRows}
           loading={loading}
         />
       )}

@@ -1,10 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import MaUTable from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import Button from "@mui/material/Button";
+
 import { useTable, useRowSelect } from "react-table";
+import api from "services/api";
 
 const IndeterminateCheckbox = React.forwardRef(
   ({ indeterminate, ...rest }, ref) => {
@@ -23,10 +26,7 @@ const IndeterminateCheckbox = React.forwardRef(
   }
 );
 
-export function ReactTable({ columns, data, setSelectedRows }) {
-  useEffect(() => {
-    setSelectedRows(selectedFlatRows);
-  }, [JSON.stringify(selectedFlatRows)]);
+export function ReactTable({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
@@ -66,36 +66,56 @@ export function ReactTable({ columns, data, setSelectedRows }) {
     }
   );
 
+  const handleClickRows = () => {
+    console.log(selectedFlatRows);
+    if (selectedFlatRows.length) {
+      const ids = selectedFlatRows.map((each) => {
+        return each.original.id;
+      });
+      api.batchDelete(ids).then((res) => console.log(res));
+      window.location.reload();
+    }
+  };
+
   // Render the UI for your table
   return (
-    <MaUTable {...getTableProps()}>
-      <TableHead>
-        {headerGroups.map((headerGroup) => (
-          <TableRow {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column) => (
-              <TableCell {...column.getHeaderProps()}>
-                {column.render("Header")}
-              </TableCell>
-            ))}
-          </TableRow>
-        ))}
-      </TableHead>
-      <TableBody>
-        {rows.map((row, i) => {
-          prepareRow(row);
-          return (
-            <TableRow {...row.getRowProps()}>
-              {row.cells.map((cell) => {
-                return (
-                  <TableCell {...cell.getCellProps()}>
-                    {cell.render("Cell")}
-                  </TableCell>
-                );
-              })}
+    <>
+      <Button
+        variant="outlined"
+        onClick={handleClickRows}
+        disabled={!selectedFlatRows.length}
+      >
+        Delete Rows
+      </Button>
+      <MaUTable {...getTableProps()}>
+        <TableHead>
+          {headerGroups.map((headerGroup) => (
+            <TableRow {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <TableCell {...column.getHeaderProps()}>
+                  {column.render("Header")}
+                </TableCell>
+              ))}
             </TableRow>
-          );
-        })}
-      </TableBody>
-    </MaUTable>
+          ))}
+        </TableHead>
+        <TableBody>
+          {rows.map((row, i) => {
+            prepareRow(row);
+            return (
+              <TableRow {...row.getRowProps()}>
+                {row.cells.map((cell) => {
+                  return (
+                    <TableCell {...cell.getCellProps()}>
+                      {cell.render("Cell")}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </MaUTable>
+    </>
   );
 }
