@@ -1,18 +1,18 @@
 /* Import faunaDB sdk */
 const faunadb = require("faunadb");
 const q = faunadb.query;
-require("dotenv").config();
+const getDBSecret = require("./utils/getDBSecret");
 
 exports.handler = (event, context) => {
   console.log("Function `todo-read-all` invoked");
   /* configure faunaDB Client with our secret */
   const client = new faunadb.Client({
-    secret: process.env.FAUNADB_SERVER_SECRET,
+    secret: getDBSecret(),
     domain: "db.us.fauna.com",
     scheme: "https",
   });
   return client
-    .query(q.Paginate(q.Match(q.Ref("indexes/all_todos"))))
+    .query(q.Paginate(q.Match(q.Ref("indexes/all_work_entries"))))
     .then((response) => {
       const todoRefs = response.data;
       console.log("Todo refs", todoRefs);

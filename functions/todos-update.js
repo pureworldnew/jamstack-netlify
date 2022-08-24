@@ -1,11 +1,12 @@
 const faunadb = require("faunadb");
 const getId = require("./utils/getId");
+const getDBSecret = require("./utils/getDBSecret");
 const q = faunadb.query;
 
 exports.handler = (event, context) => {
   /* configure faunaDB Client with our secret */
   const client = new faunadb.Client({
-    secret: process.env.FAUNADB_SERVER_SECRET,
+    secret: getDBSecret(),
     domain: "db.us.fauna.com",
     scheme: "https",
   });
@@ -13,7 +14,7 @@ exports.handler = (event, context) => {
   const id = getId(event.path);
   console.log(`Function 'todo-update' invoked. update id: ${id}`);
   return client
-    .query(q.Update(q.Ref(`classes/todos/${id}`), { data }))
+    .query(q.Update(q.Ref(`classes/work_entries/${id}`), { data }))
     .then((response) => {
       console.log("success", response);
       return {

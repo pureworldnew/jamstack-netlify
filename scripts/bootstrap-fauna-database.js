@@ -3,12 +3,12 @@ const faunadb = require("faunadb");
 const chalk = require("chalk");
 const insideNetlify = insideNetlifyBuildContext();
 const q = faunadb.query;
-require("dotenv").config();
+const getDBSecret = require("../functions/utils/getDBSecret");
 
 console.log(chalk.cyan("Creating your FaunaDB Database...\n"));
-console.log(process.env.FAUNADB_SERVER_SECRET);
+console.log("env db secret", getDBSecret());
 // 1. Check for required enviroment variables
-if (!process.env.FAUNADB_SERVER_SECRET) {
+if (!getDBSecret()) {
   console.log(
     chalk.yellow(
       "Required FAUNADB_SERVER_SECRET enviroment variable not found."
@@ -24,8 +24,8 @@ if (!process.env.FAUNADB_SERVER_SECRET) {
 }
 
 // Has var. Do the thing
-if (process.env.FAUNADB_SERVER_SECRET) {
-  createFaunaDB(process.env.FAUNADB_SERVER_SECRET).then(() => {
+if (getDBSecret()) {
+  createFaunaDB(getDBSecret()).then(() => {
     console.log("Fauna Database schema has been created");
     console.log('Claim your fauna database with "netlify addons:auth fauna"');
   });
@@ -42,12 +42,12 @@ function createFaunaDB(key) {
 
   /* Based on your requirements, change the schema here */
   return client
-    .query(q.Create(q.Ref("classes"), { name: "todos111" }))
+    .query(q.Create(q.Ref("classes"), { name: "work_entries" }))
     .then(() => {
       return client.query(
-        q.Create(q.Ref("indexes111"), {
-          name: "all_todos",
-          source: q.Ref("classes/todos111"),
+        q.Create(q.Ref("indexes"), {
+          name: "all_work_entries",
+          source: q.Ref("classes/work_entries"),
         })
       );
     })

@@ -1,13 +1,12 @@
 /* Import faunaDB sdk */
 const faunadb = require("faunadb");
 const q = faunadb.query;
-require("dotenv").config();
-
+const getDBSecret = require("./utils/getDBSecret");
 /* export our lambda function as named "handler" export */
 exports.handler = async (event, context) => {
   /* configure faunaDB Client with our secret */
   const client = new faunadb.Client({
-    secret: process.env.FAUNADB_SERVER_SECRET,
+    secret: getDBSecret(),
     domain: "db.us.fauna.com",
     scheme: "https",
   });
@@ -19,7 +18,7 @@ exports.handler = async (event, context) => {
   };
   /* construct the fauna query */
   return client
-    .query(q.Create(q.Ref("classes/todos"), todoItem))
+    .query(q.Create(q.Ref("classes/work_entries"), todoItem))
     .then((response) => {
       console.log("success", response);
       /* Success! return the response with statusCode 200 */

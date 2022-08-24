@@ -38,8 +38,6 @@ export default function AddNewWork({
   handleClickOpen,
   handleClose,
 }) {
-  
-
   const {
     control,
     handleSubmit,
@@ -51,7 +49,7 @@ export default function AddNewWork({
   const onSubmit = (data) => {
     console.log(data);
     api.create(data);
-    handleClose();
+    // handleClose();
   };
 
   return (
