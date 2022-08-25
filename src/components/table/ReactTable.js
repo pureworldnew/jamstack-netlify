@@ -7,7 +7,14 @@ import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import TablePagination from "@mui/material/TablePagination";
 
-import { useTable, useRowSelect, usePagination } from "react-table";
+import {
+  useTable,
+  useRowSelect,
+  usePagination,
+  useFilters,
+  useGlobalFilter,
+  useAsyncDebounce,
+} from "react-table";
 import api from "services/api";
 
 const IndeterminateCheckbox = React.forwardRef(
@@ -27,7 +34,89 @@ const IndeterminateCheckbox = React.forwardRef(
   }
 );
 
+// Define a default UI for filtering
+function GlobalFilter({
+  preGlobalFilteredRows,
+  globalFilter,
+  setGlobalFilter,
+}) {
+  const count = preGlobalFilteredRows.length;
+  const [value, setValue] = React.useState(globalFilter);
+  const onChange = useAsyncDebounce((value) => {
+    setGlobalFilter(value || undefined);
+  }, 200);
+
+  return (
+    <span>
+      Search:{" "}
+      <input
+        value={value || ""}
+        onChange={(e) => {
+          setValue(e.target.value);
+          onChange(e.target.value);
+        }}
+        placeholder={`${count} records...`}
+        style={{
+          fontSize: "1.1rem",
+          border: "0",
+        }}
+      />
+    </span>
+  );
+}
+
+// Define a default UI for filtering
+function DefaultColumnFilter({
+  column: { filterValue, preFilteredRows, setFilter },
+}) {
+  const count = preFilteredRows.length;
+
+  return (
+    <input
+      value={filterValue || ""}
+      onChange={(e) => {
+        setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
+      }}
+      placeholder={`Search ${count} records...`}
+    />
+  );
+}
+
+function fuzzyTextFilterFn(rows, id, filterValue) {
+  return matchSorter(rows, filterValue, { keys: [(row) => row.values[id]] });
+}
+
+// Let the table remove the filter if the string is empty
+fuzzyTextFilterFn.autoRemove = (val) => !val;
+
 export function ReactTable({ columns, data }) {
+  const filterTypes = React.useMemo(
+    () => ({
+      // Add a new fuzzyTextFilterFn filter type.
+      fuzzyText: fuzzyTextFilterFn,
+      // Or, override the default text filter to use
+      // "startWith"
+      text: (rows, id, filterValue) => {
+        return rows.filter((row) => {
+          const rowValue = row.values[id];
+          return rowValue !== undefined
+            ? String(rowValue)
+                .toLowerCase()
+                .startsWith(String(filterValue).toLowerCase())
+            : true;
+        });
+      },
+    }),
+    []
+  );
+
+  const defaultColumn = React.useMemo(
+    () => ({
+      // Let's set up our default Filter UI
+      Filter: DefaultColumnFilter,
+    }),
+    []
+  );
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
@@ -37,13 +126,20 @@ export function ReactTable({ columns, data }) {
     page,
     gotoPage,
     setPageSize,
-    state: { pageIndex, pageSize },
+    visibleColumns,
+    preGlobalFilteredRows,
+    setGlobalFilter,
+    state: { pageIndex, pageSize, globalFilter },
   } = useTable(
     {
       columns,
       data,
+      defaultColumn, // Be sure to pass the defaultColumn option
+      filterTypes,
       initialState: { pageIndex: 0 },
     },
+    useFilters, // useFilters!
+    useGlobalFilter, // useGlobalFilter!
     usePagination,
     useRowSelect,
     (hooks) => {
@@ -108,10 +204,26 @@ export function ReactTable({ columns, data }) {
               {headerGroup.headers.map((column) => (
                 <TableCell {...column.getHeaderProps()}>
                   {column.render("Header")}
+                  {/* Render the columns filter UI */}
+                  <div>{column.canFilter ? column.render("Filter") : null}</div>
                 </TableCell>
               ))}
             </TableRow>
           ))}
+          <tr>
+            <th
+              colSpan={visibleColumns.length}
+              style={{
+                textAlign: "left",
+              }}
+            >
+              <GlobalFilter
+                preGlobalFilteredRows={preGlobalFilteredRows}
+                globalFilter={globalFilter}
+                setGlobalFilter={setGlobalFilter}
+              />
+            </th>
+          </tr>
         </TableHead>
         <TableBody>
           {page.map((row, i) => {
