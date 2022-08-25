@@ -14,6 +14,7 @@ import {
   useFilters,
   useGlobalFilter,
   useAsyncDebounce,
+  useSortBy,
 } from "react-table";
 import api from "services/api";
 
@@ -140,6 +141,7 @@ export function ReactTable({ columns, data }) {
     },
     useFilters, // useFilters!
     useGlobalFilter, // useGlobalFilter!
+    useSortBy,
     usePagination,
     useRowSelect,
     (hooks) => {
@@ -202,10 +204,20 @@ export function ReactTable({ columns, data }) {
           {headerGroups.map((headerGroup) => (
             <TableRow {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <TableCell {...column.getHeaderProps()}>
+                <TableCell
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                >
                   {column.render("Header")}
                   {/* Render the columns filter UI */}
                   <div>{column.canFilter ? column.render("Filter") : null}</div>
+                  {/* Add a sort direction indicator */}
+                  <span>
+                    {column.isSorted
+                      ? column.isSortedDesc
+                        ? " 🔽"
+                        : " 🔼"
+                      : ""}
+                  </span>
                 </TableCell>
               ))}
             </TableRow>
