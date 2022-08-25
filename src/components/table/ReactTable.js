@@ -5,8 +5,9 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
+import TablePagination from "@mui/material/TablePagination";
 
-import { useTable, useRowSelect } from "react-table";
+import { useTable, useRowSelect, usePagination } from "react-table";
 import api from "services/api";
 
 const IndeterminateCheckbox = React.forwardRef(
@@ -27,19 +28,31 @@ const IndeterminateCheckbox = React.forwardRef(
 );
 
 export function ReactTable({ columns, data }) {
+  // const [page, setPage] = React.useState(2);
+  // const [rowsPerPage, setRowsPerPage] = React.useState(10);
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
     headerGroups,
-    rows,
     prepareRow,
     selectedFlatRows,
-    state: { selectedRowIds },
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state: { selectedRowIds, pageIndex, pageSize },
   } = useTable(
     {
       columns,
       data,
+      initialState: { pageIndex: 0 },
     },
+    usePagination,
     useRowSelect,
     (hooks) => {
       hooks.visibleColumns.push((columns) => [
@@ -77,6 +90,15 @@ export function ReactTable({ columns, data }) {
     }
   };
 
+  const handleChangePage = (event, newPage) => {
+    gotoPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setPageSize(parseInt(event.target.value, 10));
+    gotoPage(0);
+  };
+
   // Render the UI for your table
   return (
     <>
@@ -100,7 +122,7 @@ export function ReactTable({ columns, data }) {
           ))}
         </TableHead>
         <TableBody>
-          {rows.map((row, i) => {
+          {page.map((row, i) => {
             prepareRow(row);
             return (
               <TableRow {...row.getRowProps()}>
@@ -116,6 +138,14 @@ export function ReactTable({ columns, data }) {
           })}
         </TableBody>
       </MaUTable>
+      <TablePagination
+        component="div"
+        count={data.length}
+        page={pageIndex}
+        onPageChange={handleChangePage}
+        rowsPerPage={pageSize}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </>
   );
 }
