@@ -34,21 +34,56 @@ const validationSchema = Yup.object().shape({
 
 export default function AddNewWork({
   open,
-  setOpen,
   handleClickOpen,
+  handleSubmitNew,
+  handleSubmitEdit,
   handleClose,
+  editData,
 }) {
   const {
     control,
     handleSubmit,
+    setValue,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
 
+  React.useEffect(() => {
+    if (Object.keys(editData).length !== 0) {
+      console.log(editData);
+      setValue("directCompany", editData.directCompany);
+      setValue("agencyCompany", editData.agencyCompany);
+      setValue("companyUrl", editData.companyUrl);
+      setValue("status", editData.status);
+      setValue("account", editData.account);
+      setValue("jobBoard", editData.jobBoard);
+      setValue("createDate", new Date(editData.createDate));
+      setValue("jobDescription", editData.jobDescription);
+      setValue("position", editData.position);
+    }
+  }, [editData]);
+
   const onSubmit = (data) => {
-    console.log(data);
-    api.create(data);
+    if (Object.keys(editData).length !== 0) {
+      handleSubmitEdit(editData.id, data);
+    } else {
+      handleSubmitNew(data);
+    }
+  };
+
+  const handleCloseDialog = () => {
+    reset({
+      directCompany: "",
+      agencyCompany: "",
+      companyUrl: "",
+      status: "",
+      account: "",
+      jobBoard: "",
+      jobDescription: "",
+      position: "",
+    });
     handleClose();
   };
 
@@ -60,7 +95,7 @@ export default function AddNewWork({
       <Dialog
         fullScreen
         open={open}
-        onClose={handleClose}
+        onClose={handleCloseDialog}
         TransitionComponent={Transition}
       >
         <form>
@@ -69,7 +104,7 @@ export default function AddNewWork({
               <IconButton
                 edge="start"
                 color="inherit"
-                onClick={handleClose}
+                onClick={handleCloseDialog}
                 aria-label="close"
               >
                 <CloseIcon />

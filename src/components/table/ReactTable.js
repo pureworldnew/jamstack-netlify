@@ -28,8 +28,6 @@ const IndeterminateCheckbox = React.forwardRef(
 );
 
 export function ReactTable({ columns, data }) {
-  // const [page, setPage] = React.useState(2);
-  // const [rowsPerPage, setRowsPerPage] = React.useState(10);
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
@@ -37,15 +35,9 @@ export function ReactTable({ columns, data }) {
     prepareRow,
     selectedFlatRows,
     page,
-    canPreviousPage,
-    canNextPage,
-    pageOptions,
-    pageCount,
     gotoPage,
-    nextPage,
-    previousPage,
     setPageSize,
-    state: { selectedRowIds, pageIndex, pageSize },
+    state: { pageIndex, pageSize },
   } = useTable(
     {
       columns,

@@ -14,6 +14,7 @@ function Work() {
   const [entry, setEntry] = useState([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = React.useState(false);
+  const [editData, setEditData] = useState({});
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -21,13 +22,29 @@ function Work() {
 
   const handleClose = () => {
     setOpen(false);
-    window.location.reload();
   };
 
   const handleClickDelete = (rowData) => {
     api.delete(rowData.id).then((res) => {
       window.location.reload();
     });
+  };
+
+  const handleSubmitNew = (data) => {
+    api.create(data);
+    window.location.reload();
+    handleClose();
+  };
+
+  const handleSubmitEdit = (id, data) => {
+    api.update(id, data);
+    window.location.reload();
+    handleClose();
+  };
+
+  const handleClickEdit = (rowData) => {
+    setEditData(rowData);
+    setOpen(true);
   };
 
   useEffect(() => {
@@ -59,6 +76,9 @@ function Work() {
           setOpen={setOpen}
           handleClickOpen={handleClickOpen}
           handleClose={handleClose}
+          handleSubmitNew={handleSubmitNew}
+          handleSubmitEdit={handleSubmitEdit}
+          editData={editData}
         />
       </Box>
 
@@ -72,7 +92,6 @@ function Work() {
               Header: "Delete",
               id: "delete",
               accessor: (str) => "delete",
-
               Cell: (row) => (
                 <span
                   style={{
@@ -85,6 +104,25 @@ function Work() {
                   }}
                 >
                   Delete
+                </span>
+              ),
+            },
+            {
+              Header: "Edit",
+              id: "edit",
+              accessor: (str) => "Edit",
+              Cell: (row) => (
+                <span
+                  style={{
+                    cursor: "pointer",
+                    color: "blue",
+                    textDecoration: "underline",
+                  }}
+                  onClick={() => {
+                    handleClickEdit(row.row.original);
+                  }}
+                >
+                  Edit
                 </span>
               ),
             },

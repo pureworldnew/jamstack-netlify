@@ -10,14 +10,11 @@ export const FormInputDatePicker = ({ name, control }) => {
     <Controller
       name={name}
       control={control}
-      render={({ field: { onChange, value, defaultValue } }) => (
+      render={({ field: { onChange, value } }) => (
         <DatePicker
-          defaultValue={new Date()}
-          showTimeSelect
           value={value || new Date()}
           selected={value || new Date()}
           onChange={onChange}
-          dateFormat="Pp"
           className="custom-datepicker"
         />
       )}
