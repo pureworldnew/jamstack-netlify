@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from "react";
-import DataGrid from "react-data-grid";
-
-const columns = [
-  { key: "id", name: "ID" },
-  { key: "title", name: "Title" },
-];
-
-const rows = [
-  { id: 0, title: "Example" },
-  { id: 1, title: "Demo" },
-];
+import CssBaseline from "@mui/material/CssBaseline";
+import { ReactTable } from "components/table";
+import { BackDrop } from "components/backdrop";
+import * as myConsts from "consts";
 
 export default function Track() {
-  console.log("start 1");
+  const [entry, setEntry] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const columns = React.useMemo(() => myConsts.TRACK_COLUMNS, []);
   useEffect(() => {
-    fetch("https://api.clockify.me/api/v1/user", {
+    setLoading(true);
+    fetch("https://api.clockify.me/api/v1/workspaces", {
       method: "GET",
       headers: {
         "X-API-KEY": "ZTJkN2JlM2UtNWQ3NS00ZTYyLWJiZWQtYjAyOGVjZDYxNGVl",
@@ -25,11 +22,16 @@ export default function Track() {
       .then((response) => response.json())
       .then((response) => console.log(response))
       .catch((error) => console.error(error));
+    setLoading(false);
   }, []);
   return (
     <>
-      <h2>Clockify api integration</h2>
-      <DataGrid columns={columns} rows={rows} />
+      <CssBaseline />
+      {loading ? (
+        <BackDrop open={loading} />
+      ) : (
+        <ReactTable columns={[...columns]} data={entry} />
+      )}
     </>
   );
 }

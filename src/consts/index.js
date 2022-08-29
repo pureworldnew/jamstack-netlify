@@ -77,3 +77,44 @@ export const WORK_COLUMNS = [
     ],
   },
 ];
+
+export const TRACK_COLUMNS = [
+  {
+    Header: "Company Information",
+    columns: [
+      {
+        Header: "Direct Company",
+        accessor: "directCompany",
+      },
+      {
+        Header: "Agency Company",
+        accessor: "agencyCompany",
+      },
+      {
+        Header: "Company Website",
+        accessor: "companyUrl",
+      },
+    ],
+  },
+  {
+    Header: "Application Information",
+    columns: [
+      {
+        Header: "Status",
+        accessor: "status",
+      },
+      {
+        Header: "Account",
+        accessor: "account",
+      },
+      {
+        Header: "Job Board",
+        accessor: "jobBoard",
+      },
+      {
+        Header: "Date",
+        accessor: "createDate",
+      },
+    ],
+  },
+];

@@ -1,20 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 
 import { ReactTable } from "components/table";
-
+import { BackDrop } from "components/backdrop";
 import AddNewWork from "./AddNewWork";
 import api from "services/api";
 import * as myConsts from "consts";
-import { BackDrop } from "components/backdrop";
 
 function Work() {
   const [entry, setEntry] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [editData, setEditData] = useState({});
+
+  const columns = useMemo(() => myConsts.WORK_COLUMNS, []);
+  console.log("work component rendering");
+  useEffect(() => {
+    setLoading(true);
+    api.readAll().then((res) => {
+      let entryArray = [];
+      res.forEach((each) => {
+        const { data, ref } = each;
+        data["id"] = ref["@ref"]["id"];
+        if (data["createDate"] !== undefined) {
+          data["createDate"] = new Date(
+            data["createDate"]
+          ).toLocaleDateString();
+        }
+        entryArray.push(data);
+      });
+      setEntry(entryArray);
+      setLoading(false);
+    });
+  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -47,28 +67,8 @@ function Work() {
     setOpen(true);
   };
 
-  useEffect(() => {
-    setLoading(true);
-    api.readAll().then((res) => {
-      let entryArray = [];
-      res.forEach((each) => {
-        const { data, ref } = each;
-        data["id"] = ref["@ref"]["id"];
-        if (data["createDate"] !== undefined) {
-          data["createDate"] = new Date(
-            data["createDate"]
-          ).toLocaleDateString();
-        }
-        entryArray.push(data);
-      });
-      setEntry(entryArray);
-      setLoading(false);
-    });
-  }, []);
-  const columns = React.useMemo(() => myConsts.WORK_COLUMNS, []);
-
   return (
-    <div>
+    <>
       <CssBaseline />
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
         <AddNewWork
@@ -128,10 +128,9 @@ function Work() {
             },
           ]}
           data={entry}
-          loading={loading}
         />
       )}
-    </div>
+    </>
   );
 }
 
