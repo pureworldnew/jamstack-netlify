@@ -41,16 +41,68 @@ function createFaunaDB(key) {
   });
 
   /* Based on your requirements, change the schema here */
-  return client
-    .query(q.Create(q.Ref("classes"), { name: "work_entries" }))
+
+  const clockifyPromise = client
+    .query(q.CreateCollection({ name: "clockify" }))
     .then(() => {
       return client.query(
-        q.Create(q.Ref("indexes"), {
-          name: "all_work_entries",
-          source: q.Ref("classes/work_entries"),
+        q.CreateIndex({
+          name: "all_clockify",
+          source: q.Collection("clockify"),
+          terms: [{ field: ["data", "element"] }],
+          values: [{ field: ["data", "name"] }],
         })
       );
-    })
+    });
+
+  const workEntryPromise = client
+    .query(q.CreateCollection({ name: "work_entries" }))
+    .then(() => {
+      return client.query(
+        q.CreateIndex({
+          name: "all_work_entries",
+          source: q.Collection("work_entries"),
+          terms: [{ field: ["data", "element"] }],
+          values: [{ field: ["data", "name"] }],
+        })
+      );
+    });
+
+  const planEntryPromise = client
+    .query(q.CreateCollection({ name: "plan_entries" }))
+    .then(() => {
+      return client.query(
+        q.CreateIndex({
+          name: "all_plan_entries",
+          source: q.Collection("plan_entries"),
+          terms: [{ field: ["data", "element"] }],
+          values: [{ field: ["data", "name"] }],
+        })
+      );
+    });
+
+  const timeEntryPromise = client
+    .query(q.CreateCollection({ name: "time_entries" }))
+    .then(() => {
+      return client.query(
+        q.CreateIndex({
+          name: "all_time_entries",
+          source: q.Collection("time_entries"),
+          terms: [{ field: ["data", "element"] }],
+          values: [{ field: ["data", "name"] }],
+        })
+      );
+    });
+
+  const allPromises = [
+    clockifyPromise,
+    workEntryPromise,
+    planEntryPromise,
+    timeEntryPromise,
+  ];
+
+  return Promise.allSettled(allPromises)
+    .then((values) => console.log(values))
     .catch((e) => {
       console.log(e);
       // Database already exists

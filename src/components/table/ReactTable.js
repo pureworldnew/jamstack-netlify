@@ -16,7 +16,7 @@ import {
   useAsyncDebounce,
   useSortBy,
 } from "react-table";
-import api from "services/api";
+import workApi from "services/work";
 
 const IndeterminateCheckbox = React.forwardRef(
   ({ indeterminate, ...rest }, ref) => {
@@ -175,7 +175,7 @@ export function ReactTable({ columns, data }) {
       const ids = selectedFlatRows.map((each) => {
         return each.original.id;
       });
-      api.batchDelete(ids).then((res) => console.log(res));
+      workApi.batchDelete(ids).then((res) => console.log(res));
       window.location.reload();
     }
   };

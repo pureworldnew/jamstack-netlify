@@ -80,40 +80,36 @@ export const WORK_COLUMNS = [
 
 export const TRACK_COLUMNS = [
   {
-    Header: "Company Information",
+    Header: "What to do ?",
     columns: [
       {
-        Header: "Direct Company",
-        accessor: "directCompany",
+        Header: "Project",
+        accessor: "projectId",
       },
       {
-        Header: "Agency Company",
-        accessor: "agencyCompany",
+        Header: "Task",
+        accessor: "taskId",
       },
       {
-        Header: "Company Website",
-        accessor: "companyUrl",
+        Header: "Tags",
+        accessor: "tagIds",
       },
     ],
   },
   {
-    Header: "Application Information",
+    Header: "When to do ?",
     columns: [
       {
-        Header: "Status",
-        accessor: "status",
+        Header: "Start",
+        accessor: "start",
       },
       {
-        Header: "Account",
-        accessor: "account",
+        Header: "End",
+        accessor: "end",
       },
       {
-        Header: "Job Board",
-        accessor: "jobBoard",
-      },
-      {
-        Header: "Date",
-        accessor: "createDate",
+        Header: "Duration",
+        accessor: "duration",
       },
     ],
   },

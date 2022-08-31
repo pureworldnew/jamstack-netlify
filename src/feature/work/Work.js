@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import { ReactTable } from "components/table";
 import { BackDrop } from "components/backdrop";
 import AddNewWork from "./AddNewWork";
-import api from "services/api";
+import workApi from "services/work";
 import * as myConsts from "consts";
 
 function Work() {
@@ -18,7 +18,7 @@ function Work() {
   const columns = useMemo(() => myConsts.WORK_COLUMNS, []);
   useEffect(() => {
     setLoading(true);
-    api.readAll().then((res) => {
+    workApi.readAll().then((res) => {
       let entryArray = [];
       res.forEach((each) => {
         const { data, ref } = each;
@@ -44,19 +44,19 @@ function Work() {
   };
 
   const handleClickDelete = (rowData) => {
-    api.delete(rowData.id).then((res) => {
+    workApi.delete(rowData.id).then((res) => {
       window.location.reload();
     });
   };
 
   const handleSubmitNew = (data) => {
-    api.create(data);
+    workApi.create(data);
     window.location.reload();
     handleClose();
   };
 
   const handleSubmitEdit = (id, data) => {
-    api.update(id, data);
+    workApi.update(id, data);
     window.location.reload();
     handleClose();
   };
