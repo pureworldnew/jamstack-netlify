@@ -16,7 +16,6 @@ function Work() {
   const [editData, setEditData] = useState({});
 
   const columns = useMemo(() => myConsts.WORK_COLUMNS, []);
-  console.log("work component rendering");
   useEffect(() => {
     setLoading(true);
     api.readAll().then((res) => {
