@@ -2,6 +2,8 @@
 const faunadb = require("faunadb");
 const q = faunadb.query;
 const getDBSecret = require("./utils/getDBSecret");
+const multiUpsert = require("./utils/multiUpsert");
+
 /* export our lambda function as named "handler" export */
 exports.handler = async (event, context) => {
   /* configure faunaDB Client with our secret */
@@ -14,12 +16,10 @@ exports.handler = async (event, context) => {
   const data = JSON.parse(event.body);
 
   console.log("Function `clockify-create` invoked", data);
-  const todoItem = {
-    data: data,
-  };
+
   /* construct the fauna query */
   return client
-    .query(q.Create(q.Collection("time_entries"), todoItem))
+    .query(multiUpsert(data))
     .then((response) => {
       console.log("success", response);
       /* Success! return the response with statusCode 200 */
@@ -36,4 +36,5 @@ exports.handler = async (event, context) => {
         body: JSON.stringify(error),
       };
     });
+  // res = await client.query(multiUpsert("time_entries", todoItem));
 };

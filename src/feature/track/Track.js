@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import { ReactTable } from "components/table";
 import { BackDrop } from "components/backdrop";
 import * as myConsts from "consts";
+import trackApi from "services/track";
 
 export default function Track() {
   const [entry, setEntry] = useState([]);
@@ -52,6 +53,14 @@ export default function Track() {
           .then((res) => res.json())
           .then((response) => {
             console.log(response);
+            let paramArray = response.map((each) => {
+              return { data: { id: each.id, description: each.description } };
+            });
+            console.log("paramArray", paramArray);
+            trackApi
+              .create(paramArray)
+              .then((res) => console.log(res))
+              .catch((err) => console.log(err));
           })
           .catch((err) => console.log(err));
       })
@@ -59,10 +68,26 @@ export default function Track() {
   };
 
   const columns = React.useMemo(() => myConsts.TRACK_COLUMNS, []);
-  // useEffect(() => {
-  //   setLoading(true);
-  //   setLoading(false);
-  // }, []);
+  useEffect(() => {
+    setLoading(true);
+    trackApi.readAll().then((res) => {
+      console.log("res", res);
+      let entryArray = [];
+      // res.forEach((each) => {
+      //   const { data, ref } = each;
+      //   data["id"] = ref["@ref"]["id"];
+      //   if (data["createDate"] !== undefined) {
+      //     data["createDate"] = new Date(
+      //       data["createDate"]
+      //     ).toLocaleDateString();
+      //   }
+      //   entryArray.push(data);
+      // });
+      setEntry(entryArray);
+      setLoading(false);
+    });
+    setLoading(false);
+  }, []);
   return (
     <>
       <CssBaseline />
