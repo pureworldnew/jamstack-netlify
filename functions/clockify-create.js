@@ -1,7 +1,7 @@
 /* Import faunaDB sdk */
 const faunadb = require("faunadb");
 const q = faunadb.query;
-const getDBSecret = require("../utils/getDBSecret");
+const getDBSecret = require("./utils/getDBSecret");
 /* export our lambda function as named "handler" export */
 exports.handler = async (event, context) => {
   /* configure faunaDB Client with our secret */
