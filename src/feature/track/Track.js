@@ -52,9 +52,20 @@ export default function Track() {
         )
           .then((res) => res.json())
           .then((response) => {
-            console.log(response);
+            console.log("response from api", response);
             let paramArray = response.map((each) => {
-              return { data: { id: each.id, description: each.description } };
+              return {
+                data: {
+                  id: each.id,
+                  description: each.description,
+                  projectId: each.projectId,
+                  start: each.timeInterval.start,
+                  end: each.timeInterval.end,
+                  duration: each.timeInterval.duration,
+                  tagIds: each.tagIds?.join(""),
+                  taskId: each.taskId,
+                },
+              };
             });
             console.log("paramArray", paramArray);
             trackApi
@@ -71,22 +82,20 @@ export default function Track() {
   useEffect(() => {
     setLoading(true);
     trackApi.readAll().then((res) => {
-      console.log("res", res);
       let entryArray = [];
-      // res.forEach((each) => {
-      //   const { data, ref } = each;
-      //   data["id"] = ref["@ref"]["id"];
-      //   if (data["createDate"] !== undefined) {
-      //     data["createDate"] = new Date(
-      //       data["createDate"]
-      //     ).toLocaleDateString();
-      //   }
-      //   entryArray.push(data);
-      // });
+      res.forEach((each) => {
+        const { data, ref } = each;
+        data["id"] = ref["@ref"]["id"];
+        if (data["createDate"] !== undefined) {
+          data["createDate"] = new Date(
+            data["createDate"]
+          ).toLocaleDateString();
+        }
+        entryArray.push(data);
+      });
       setEntry(entryArray);
       setLoading(false);
     });
-    setLoading(false);
   }, []);
   return (
     <>

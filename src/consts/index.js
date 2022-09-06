@@ -94,6 +94,10 @@ export const TRACK_COLUMNS = [
         Header: "Tags",
         accessor: "tagIds",
       },
+      {
+        Header: "Description",
+        accessor: "description",
+      },
     ],
   },
   {
