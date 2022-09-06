@@ -21,9 +21,9 @@ exports.handler = async (event, context) => {
   };
   /* construct the fauna query */
   return client
-    .query(q.Create(q.Ref("classes/work_entries"), todoItem))
+    .query(q.Create(q.Collection("work_entries"), todoItem))
     .then((response) => {
-      console.log("success", response);
+      console.log("work_entries insertsuccess", response);
       /* Success! return the response with statusCode 200 */
       return {
         statusCode: 200,

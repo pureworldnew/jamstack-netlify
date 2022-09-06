@@ -62,8 +62,7 @@ function createFaunaDB(key) {
         q.CreateIndex({
           name: "all_work_entries",
           source: q.Collection("work_entries"),
-          terms: [{ field: ["data", "element"] }],
-          values: [{ field: ["data", "name"] }],
+          terms: [{ field: ["data", "position"] }],
         })
       );
     });
@@ -88,8 +87,8 @@ function createFaunaDB(key) {
         q.CreateIndex({
           name: "all_time_entries",
           source: q.Collection("time_entries"),
-          terms: [{ field: ["data", "element"] }],
-          values: [{ field: ["data", "name"] }],
+          terms: [{ field: ["data", "id"] }],
+          unique: true,
         })
       );
     });

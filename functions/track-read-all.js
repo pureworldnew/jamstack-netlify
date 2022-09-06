@@ -12,21 +12,19 @@ exports.handler = (event, context) => {
     scheme: "https",
   });
   return client
-    .query(q.Paginate(q.Match(q.Ref("indexes/all_time_entries"))))
+    .query(
+      q.Map(
+        q.Paginate(q.Documents(q.Collection("time_entries"))),
+        q.Lambda((x) => q.Get(x))
+      )
+    )
     .then((response) => {
       const todoRefs = response.data;
-      console.log("Todo refs", todoRefs);
-      console.log(`${todoRefs.length} todos found`);
-      const getAllTodoDataQuery = todoRefs.map((ref) => {
-        return q.Get(ref);
-      });
-      // then query the refs
-      return client.query(getAllTodoDataQuery).then((ret) => {
-        return {
-          statusCode: 200,
-          body: JSON.stringify(ret),
-        };
-      });
+      console.log("Todo refs", response);
+      return {
+        statusCode: 200,
+        body: JSON.stringify(todoRefs),
+      };
     })
     .catch((error) => {
       console.log("error", error);
