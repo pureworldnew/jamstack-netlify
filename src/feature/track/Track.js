@@ -7,6 +7,7 @@ import { BackDrop } from "components/backdrop";
 import * as myConsts from "consts";
 import trackApi from "services/track";
 import useClockify from "hooks/useClockify";
+import { formatDate } from "util/formatDate";
 
 export default function Track() {
   const [entry, setEntry] = useState([]);
@@ -22,11 +23,18 @@ export default function Track() {
       let entryArray = [];
       res.forEach((each) => {
         const { data, ref } = each;
+        console.log("track data is ", data);
         data["id"] = ref["@ref"]["id"];
         if (data["createDate"] !== undefined) {
           data["createDate"] = new Date(
             data["createDate"]
           ).toLocaleDateString();
+        }
+        if (data["start"] !== undefined) {
+          data["start"] = formatDate(new Date(data["start"]));
+        }
+        if (data["end"] !== undefined) {
+          data["end"] = formatDate(new Date(data["end"]));
         }
         entryArray.push(data);
       });
