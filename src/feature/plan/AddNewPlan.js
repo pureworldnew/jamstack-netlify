@@ -19,7 +19,6 @@ import {
   FormInputText,
   FormInputDropdown,
   FormInputDatePicker,
-  FormInputTextarea,
 } from "components/form";
 
 const Transition = React.forwardRef(function Transition(props, ref) {

@@ -1,7 +1,8 @@
 /* Import faunaDB sdk */
 const faunadb = require("faunadb");
-const q = faunadb.query;
+const getId = require("./utils/getId");
 const getDBSecret = require("./utils/getDBSecret");
+const q = faunadb.query;
 
 exports.handler = async (event, context) => {
   /* configure faunaDB Client with our secret */
@@ -10,16 +11,10 @@ exports.handler = async (event, context) => {
     domain: "db.us.fauna.com",
     scheme: "https",
   });
-  const data = JSON.parse(event.body);
-  console.log("data", data);
-  console.log("Function `plan-delete-batch` invoked", data.ids);
-  // construct batch query from IDs
-  const deleteAllCompletedPlanQuery = data.ids.map((id) => {
-    return q.Delete(q.Ref(`classes/plan_entries/${id}`));
-  });
-  // Hit fauna with the query to delete the completed items
+  const id = getId(event.path);
+  console.log(`Function 'cash-delete' invoked. delete id: ${id}`);
   return client
-    .query(deleteAllCompletedPlanQuery)
+    .query(q.Delete(q.Ref(`classes/cash_entries/${id}`)))
     .then((response) => {
       console.log("success", response);
       return {

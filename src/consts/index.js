@@ -161,32 +161,33 @@ export const PLAN_COLUMNS = [
 
 export const CASH_COLUMNS = [
   {
-    Header: "What must be done tomorrow?",
+    Header: "What to buy?",
     columns: [
       {
         Header: "Title",
-        accessor: "planTitle",
+        accessor: "cashTitle",
       },
       {
-        Header: "Description",
-        accessor: "planDescription",
-      },
-      {
-        Header: "Tags",
-        accessor: "planTags",
-      },
-      {
-        Header: "Result",
-        accessor: "planResult",
+        Header: "Value",
+        accessor: "cashValue",
       },
     ],
   },
   {
-    Header: "Status of todos",
+    Header: "For whom?",
     columns: [
       {
-        Header: "Status",
-        accessor: "planStatus",
+        Header: "For whom",
+        accessor: "cashForWhom",
+      },
+    ],
+  },
+  {
+    Header: "Why?",
+    columns: [
+      {
+        Header: "Reason",
+        accessor: "cashWhy",
       },
     ],
   },

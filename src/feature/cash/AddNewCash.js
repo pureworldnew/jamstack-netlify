@@ -14,19 +14,14 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 
-import * as myConsts from "consts";
-import {
-  FormInputText,
-  FormInputDropdown,
-  FormInputDatePicker,
-} from "components/form";
+import { FormInputText } from "components/form";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const validationSchema = Yup.object().shape({
-  planTitle: Yup.string().required("Title is required"),
+  cashTitle: Yup.string().required("Title is required"),
 });
 
 export default function AddNewCash({
@@ -50,10 +45,10 @@ export default function AddNewCash({
   React.useEffect(() => {
     if (Object.keys(editData).length !== 0) {
       console.log(editData);
-      setValue("planTitle", editData.planTitle);
-      setValue("planDescription", editData.planDescription);
-      setValue("planTags", editData.planTags);
-      setValue("planResult", editData.planResult);
+      setValue("cashTitle", editData.cashTitle);
+      setValue("cashValue", editData.cashValue);
+      setValue("cashForWhom", editData.cashForWhom);
+      setValue("cashWhy", editData.cashWhy);
       setValue("planStatus", editData.planStatus);
       setValue("createDate", new Date(editData.createDate));
     }
@@ -69,10 +64,10 @@ export default function AddNewCash({
 
   const handleCloseDialog = () => {
     reset({
-      planTitle: "",
-      planDescription: "",
-      planTags: "",
-      planResult: "",
+      cashTitle: "",
+      cashValue: "",
+      cashForWhom: "",
+      cashWhy: "",
       planStatus: "",
     });
     handleClose();
@@ -120,57 +115,43 @@ export default function AddNewCash({
             noValidate
             autoComplete="off"
           >
-            <Divider>What must be done tomorrow?</Divider>
+            <Divider>About what I spent</Divider>
             <Grid container spacing={2} alignItems="center">
-              <Grid item md={3} xs={6}>
+              <Grid item md={6} xs={6}>
                 <FormInputText
-                  name={"planTitle"}
+                  name={"cashTitle"}
                   control={control}
                   label={"Title"}
                   required={true}
-                  error={errors.planTitle ? true : false}
+                  error={errors.cashTitle ? true : false}
                 />
                 <Typography variant="inherit" color="textSecondary">
-                  {errors.planTitle?.message}
+                  {errors.cashTitle?.message}
                 </Typography>
               </Grid>
-              <Grid item md={3} xs={6}>
+              <Grid item md={6} xs={6}>
                 <FormInputText
-                  name={"planDescription"}
+                  name={"cashValue"}
                   control={control}
-                  label={"Description"}
-                />
-              </Grid>
-              <Grid item md={3} xs={6}>
-                <FormInputText
-                  name={"planTags"}
-                  control={control}
-                  label={"Tags"}
-                />
-              </Grid>
-              <Grid item md={3} xs={6}>
-                <FormInputText
-                  name={"planResult"}
-                  control={control}
-                  label={"Result"}
+                  label={"Budget"}
                 />
               </Grid>
             </Grid>
-            <Divider>Status of todos</Divider>
+            <Divider>About why and for whom I spent</Divider>
             <Grid container spacing={2} alignItems="center">
-              <Grid item xs={6} md={3}>
-                <FormInputDropdown
-                  id="status"
-                  labelId="status-label"
-                  labelText="Status"
-                  options={myConsts.PLAN_STATUS_OPTIONS}
-                  name={"planStatus"}
+              <Grid item md={6} xs={6}>
+                <FormInputText
+                  name={"cashForWhom"}
                   control={control}
+                  label={"For whom"}
                 />
               </Grid>
-
-              <Grid item xs={6} md={3}>
-                <FormInputDatePicker name={"createDate"} control={control} />
+              <Grid item md={6} xs={6}>
+                <FormInputText
+                  name={"cashWhy"}
+                  control={control}
+                  label={"Reason"}
+                />
               </Grid>
             </Grid>
           </Box>
