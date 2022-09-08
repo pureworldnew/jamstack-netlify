@@ -50,7 +50,6 @@ function Plan() {
   };
 
   const handleSubmitNew = (data) => {
-    console.log("data is ", data);
     planApi.create(data);
     window.location.reload();
     handleClose();

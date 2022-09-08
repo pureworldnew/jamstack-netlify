@@ -67,6 +67,29 @@ function createFaunaDB(key) {
       );
     });
 
+  const cashEntryPromise = client
+    .query(q.CreateCollection({ name: "cash_entries" }))
+    .then(() => {
+      return client.query(
+        q.CreateIndex({
+          name: "all_cash_entries",
+          source: q.Collection("cash_entries"),
+          terms: [{ field: ["data", "element"] }],
+        })
+      );
+    });
+  const stressEntryPromise = client
+    .query(q.CreateCollection({ name: "stress_entries" }))
+    .then(() => {
+      return client.query(
+        q.CreateIndex({
+          name: "all_stress_entries",
+          source: q.Collection("stress_entries"),
+          terms: [{ field: ["data", "element"] }],
+        })
+      );
+    });
+
   const planEntryPromise = client
     .query(q.CreateCollection({ name: "plan_entries" }))
     .then(() => {
@@ -97,6 +120,8 @@ function createFaunaDB(key) {
     workEntryPromise,
     planEntryPromise,
     timeEntryPromise,
+    cashEntryPromise,
+    stressEntryPromise,
   ];
 
   return Promise.allSettled(allPromises)
