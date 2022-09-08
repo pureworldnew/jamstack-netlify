@@ -7,6 +7,7 @@ import { ReactTable } from "components/table";
 import { BackDrop } from "components/backdrop";
 import AddNewPlan from "./AddNewPlan";
 import planApi from "services/plan";
+import { formatDate } from "util/formatDate";
 import * as myConsts from "consts";
 
 function Plan() {
@@ -24,9 +25,7 @@ function Plan() {
         const { data, ref } = each;
         data["id"] = ref["@ref"]["id"];
         if (data["createDate"] !== undefined) {
-          data["createDate"] = new Date(
-            data["createDate"]
-          ).toLocaleDateString();
+          data["createDate"] = formatDate(new Date(data["createDate"]));
         }
         entryArray.push(data);
       });

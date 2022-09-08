@@ -155,6 +155,10 @@ export const PLAN_COLUMNS = [
         Header: "Status",
         accessor: "planStatus",
       },
+      {
+        Header: "Date",
+        accessor: "createDate",
+      },
     ],
   },
 ];
