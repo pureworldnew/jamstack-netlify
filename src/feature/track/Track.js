@@ -142,7 +142,7 @@ export default function Track() {
       {loading ? (
         <BackDrop open={loading} />
       ) : (
-        <ReactTable columns={[...columns]} data={entry} />
+        <ReactTable columns={[...columns]} data={entry} mode={"trackEntry"} />
       )}
     </>
   );

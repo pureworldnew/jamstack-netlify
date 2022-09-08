@@ -127,6 +127,7 @@ function Plan() {
             },
           ]}
           data={entry}
+          mode={"cashEntry"}
         />
       )}
     </>

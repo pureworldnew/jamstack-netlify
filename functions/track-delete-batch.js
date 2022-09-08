@@ -11,14 +11,15 @@ exports.handler = async (event, context) => {
     scheme: "https",
   });
   const data = JSON.parse(event.body);
-  console.log("Function `cash-delete-batch` invoked", data.ids);
+  console.log("data", data);
+  console.log("Function `track-delete-batch` invoked", data.ids);
   // construct batch query from IDs
-  const deleteAllCompletedCashQuery = data.ids.map((id) => {
-    return q.Delete(q.Ref(`classes/cash_entries/${id}`));
+  const deleteAllCompletedTrackQuery = data.ids.map((id) => {
+    return q.Delete(q.Ref(`classes/time_entries/${id}`));
   });
   // Hit fauna with the query to delete the completed items
   return client
-    .query(deleteAllCompletedCashQuery)
+    .query(deleteAllCompletedTrackQuery)
     .then((response) => {
       console.log("success", response);
       return {

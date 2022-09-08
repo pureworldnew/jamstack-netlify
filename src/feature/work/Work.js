@@ -127,6 +127,7 @@ function Work() {
             },
           ]}
           data={entry}
+          mode={"workEntry"}
         />
       )}
     </>

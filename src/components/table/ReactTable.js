@@ -17,6 +17,9 @@ import {
   useSortBy,
 } from "react-table";
 import workApi from "services/work";
+import trackApi from "services/track";
+import planApi from "services/plan";
+import cashApi from "services/cash";
 
 const IndeterminateCheckbox = React.forwardRef(
   ({ indeterminate, ...rest }, ref) => {
@@ -90,7 +93,7 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 // Let the table remove the filter if the string is empty
 fuzzyTextFilterFn.autoRemove = (val) => !val;
 
-export function ReactTable({ columns, data }) {
+export function ReactTable({ columns, data, mode }) {
   const filterTypes = React.useMemo(
     () => ({
       // Add a new fuzzyTextFilterFn filter type.
@@ -175,7 +178,23 @@ export function ReactTable({ columns, data }) {
       const ids = selectedFlatRows.map((each) => {
         return each.original.id;
       });
-      workApi.batchDelete(ids).then((res) => console.log(res));
+      console.log("mode is", mode);
+      switch (mode) {
+        case "workEntry":
+          workApi.batchDelete(ids).then((res) => console.log(res));
+          break;
+        case "trackEntry":
+          trackApi.batchDelete(ids).then((res) => console.log(res));
+          break;
+        case "planEntry":
+          planApi.batchDelete(ids).then((res) => console.log(res));
+          break;
+        case "cashEntry":
+          cashApi.batchDelete(ids).then((res) => console.log(res));
+          break;
+        default:
+          break;
+      }
       window.location.reload();
     }
   };

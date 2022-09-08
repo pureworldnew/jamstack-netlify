@@ -12,14 +12,14 @@ exports.handler = async (event, context) => {
   });
   const data = JSON.parse(event.body);
   console.log("data", data);
-  console.log("Function `todo-delete-batch` invoked", data.ids);
+  console.log("Function `work-delete-batch` invoked", data.ids);
   // construct batch query from IDs
-  const deleteAllCompletedTodoQuery = data.ids.map((id) => {
+  const deleteAllCompletedWorkQuery = data.ids.map((id) => {
     return q.Delete(q.Ref(`classes/work_entries/${id}`));
   });
   // Hit fauna with the query to delete the completed items
   return client
-    .query(deleteAllCompletedTodoQuery)
+    .query(deleteAllCompletedWorkQuery)
     .then((response) => {
       console.log("success", response);
       return {
