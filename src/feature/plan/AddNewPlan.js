@@ -27,11 +27,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const validationSchema = Yup.object().shape({
-  directCompany: Yup.string().required("Direct Company is required"),
-  position: Yup.string().required("Position is required"),
+  planTitle: Yup.string().required("Title is required"),
 });
 
-export default function AddNewWork({
+export default function AddNewPlan({
   open,
   handleClickOpen,
   handleSubmitNew,
@@ -52,15 +51,12 @@ export default function AddNewWork({
   React.useEffect(() => {
     if (Object.keys(editData).length !== 0) {
       console.log(editData);
-      setValue("directCompany", editData.directCompany);
-      setValue("agencyCompany", editData.agencyCompany);
-      setValue("companyUrl", editData.companyUrl);
-      setValue("status", editData.status);
-      setValue("account", editData.account);
-      setValue("jobBoard", editData.jobBoard);
+      setValue("planTitle", editData.planTitle);
+      setValue("planDescription", editData.planDescription);
+      setValue("planTags", editData.planTags);
+      setValue("planResult", editData.planResult);
+      setValue("planStatus", editData.planStatus);
       setValue("createDate", new Date(editData.createDate));
-      setValue("jobDescription", editData.jobDescription);
-      setValue("position", editData.position);
     }
   }, [editData]);
 
@@ -74,14 +70,11 @@ export default function AddNewWork({
 
   const handleCloseDialog = () => {
     reset({
-      directCompany: "",
-      agencyCompany: "",
-      companyUrl: "",
-      status: "",
-      account: "",
-      jobBoard: "",
-      jobDescription: "",
-      position: "",
+      planTitle: "",
+      planDescription: "",
+      planTags: "",
+      planResult: "",
+      planStatus: "",
     });
     handleClose();
   };
@@ -128,93 +121,57 @@ export default function AddNewWork({
             noValidate
             autoComplete="off"
           >
-            <Divider>Company Information</Divider>
+            <Divider>What must be done tomorrow?</Divider>
             <Grid container spacing={2} alignItems="center">
               <Grid item md={3} xs={6}>
                 <FormInputText
-                  name={"directCompany"}
+                  name={"planTitle"}
                   control={control}
-                  label={"Direct Company"}
+                  label={"Title"}
                   required={true}
-                  error={errors.directCompany ? true : false}
+                  error={errors.planTitle ? true : false}
                 />
                 <Typography variant="inherit" color="textSecondary">
-                  {errors.directCompany?.message}
+                  {errors.planTitle?.message}
                 </Typography>
               </Grid>
               <Grid item md={3} xs={6}>
                 <FormInputText
-                  name={"agencyCompany"}
+                  name={"planDescription"}
                   control={control}
-                  label={"Agency Company"}
+                  label={"Description"}
                 />
               </Grid>
-              <Grid item md={6} xs={6}>
+              <Grid item md={3} xs={6}>
                 <FormInputText
-                  name={"companyUrl"}
+                  name={"planTags"}
                   control={control}
-                  label={"Company Url"}
+                  label={"Tags"}
+                />
+              </Grid>
+              <Grid item md={3} xs={6}>
+                <FormInputText
+                  name={"planResult"}
+                  control={control}
+                  label={"Result"}
                 />
               </Grid>
             </Grid>
-            <Divider>Application Information</Divider>
+            <Divider>Status of todos</Divider>
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={6} md={3}>
                 <FormInputDropdown
                   id="status"
                   labelId="status-label"
                   labelText="Status"
-                  options={myConsts.STATUS_OPTIONS}
-                  name={"status"}
+                  options={myConsts.PLAN_STATUS_OPTIONS}
+                  name={"planStatus"}
                   control={control}
                 />
               </Grid>
 
-              <Grid item xs={6} md={3}>
-                <FormInputDropdown
-                  id="account"
-                  labelId="account-label"
-                  labelText="Account"
-                  options={myConsts.ACCOUNT_OPTIONS}
-                  name={"account"}
-                  control={control}
-                />
-              </Grid>
-
-              <Grid item xs={6} md={3}>
-                <FormInputDropdown
-                  id="job-board"
-                  labelId="job-board-label"
-                  labelText="Job Board"
-                  options={myConsts.JOB_BOARD_OPTIONS}
-                  name={"jobBoard"}
-                  control={control}
-                />
-              </Grid>
               <Grid item xs={6} md={3}>
                 <FormInputDatePicker name={"createDate"} control={control} />
-              </Grid>
-            </Grid>
-            <Divider>Job Details</Divider>
-            <Grid container spacing={2} alignItems="center">
-              <Grid item md={4} xs={6}>
-                <FormInputText
-                  name={"position"}
-                  control={control}
-                  label={"Position"}
-                  required={true}
-                  error={errors.position ? true : false}
-                />
-                <Typography variant="inherit" color="textSecondary">
-                  {errors.position?.message}
-                </Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <FormInputTextarea
-                  name={"jobDescription"}
-                  control={control}
-                  label="Job Description"
-                />
               </Grid>
             </Grid>
           </Box>

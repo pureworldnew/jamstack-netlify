@@ -1,9 +1,8 @@
 /* Import faunaDB sdk */
 const faunadb = require("faunadb");
+const q = faunadb.query;
 const getDBSecret = require("./utils/getDBSecret");
-const multiUpsert = require("./utils/multiUpsert");
 
-/* export our lambda function as named "handler" export */
 exports.handler = async (event, context) => {
   /* configure faunaDB Client with our secret */
   const client = new faunadb.Client({
@@ -11,17 +10,18 @@ exports.handler = async (event, context) => {
     domain: "db.us.fauna.com",
     scheme: "https",
   });
-  /* parse the string body into a useable JS object */
   const data = JSON.parse(event.body);
-
-  console.log("Function `clockify-create` invoked", data);
-
-  /* construct the fauna query */
+  console.log("data", data);
+  console.log("Function `plan-delete-batch` invoked", data.ids);
+  // construct batch query from IDs
+  const deleteAllCompletedPlanQuery = data.ids.map((id) => {
+    return q.Delete(q.Ref(`classes/work_entries/${id}`));
+  });
+  // Hit fauna with the query to delete the completed items
   return client
-    .query(multiUpsert(data))
+    .query(deleteAllCompletedPlanQuery)
     .then((response) => {
       console.log("success", response);
-      /* Success! return the response with statusCode 200 */
       return {
         statusCode: 200,
         body: JSON.stringify(response),
@@ -29,11 +29,9 @@ exports.handler = async (event, context) => {
     })
     .catch((error) => {
       console.log("error", error);
-      /* Error! return the error with statusCode 400 */
       return {
         statusCode: 400,
         body: JSON.stringify(error),
       };
     });
-  // res = await client.query(multiUpsert("time_entries", todoItem));
 };

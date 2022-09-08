@@ -1,8 +1,7 @@
 /* Import faunaDB sdk */
 const faunadb = require("faunadb");
+const q = faunadb.query;
 const getDBSecret = require("./utils/getDBSecret");
-const multiUpsert = require("./utils/multiUpsert");
-
 /* export our lambda function as named "handler" export */
 exports.handler = async (event, context) => {
   /* configure faunaDB Client with our secret */
@@ -13,14 +12,19 @@ exports.handler = async (event, context) => {
   });
   /* parse the string body into a useable JS object */
   const data = JSON.parse(event.body);
-
-  console.log("Function `clockify-create` invoked", data);
-
+  if (!data.hasOwnProperty("createDate")) {
+    data["createDate"] = new Date().toLocaleDateString();
+  }
+  console.log("Function `plan-create` invoked", data);
+  const planItem = {
+    data: data,
+  };
+  console.log("planItem is ", planItem);
   /* construct the fauna query */
   return client
-    .query(multiUpsert(data))
+    .query(q.Create(q.Collection("plan_entries"), planItem))
     .then((response) => {
-      console.log("success", response);
+      console.log("plan_entries insertsuccess", response);
       /* Success! return the response with statusCode 200 */
       return {
         statusCode: 200,
@@ -35,5 +39,4 @@ exports.handler = async (event, context) => {
         body: JSON.stringify(error),
       };
     });
-  // res = await client.query(multiUpsert("time_entries", todoItem));
 };

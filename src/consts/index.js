@@ -11,6 +11,13 @@ export const STATUS_OPTIONS = [
   { value: "onboarding", label: "Onboarding" },
   { value: "first_payment", label: "First Payment" },
 ];
+
+export const PLAN_STATUS_OPTIONS = [
+  { value: "finished", label: "Finished" },
+  { value: "notFinished", label: "Not Finished" },
+  { value: "inProgress", label: "In progress" },
+  { value: "holding", label: "Holding" },
+];
 export const ACCOUNT_OPTIONS = [
   { value: "dante_roland", label: "Dante Roland" },
   { value: "travis_dalton", label: "Travis Dalton" },
@@ -114,6 +121,39 @@ export const TRACK_COLUMNS = [
       {
         Header: "Duration",
         accessor: "duration",
+      },
+    ],
+  },
+];
+
+export const PLAN_COLUMNS = [
+  {
+    Header: "What must be done tomorrow?",
+    columns: [
+      {
+        Header: "Title",
+        accessor: "planTitle",
+      },
+      {
+        Header: "Description",
+        accessor: "planDescription",
+      },
+      {
+        Header: "Tags",
+        accessor: "planTags",
+      },
+      {
+        Header: "Result",
+        accessor: "planResult",
+      },
+    ],
+  },
+  {
+    Header: "Status of todos",
+    columns: [
+      {
+        Header: "Status",
+        accessor: "planStatus",
       },
     ],
   },
