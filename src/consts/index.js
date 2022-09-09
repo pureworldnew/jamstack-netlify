@@ -122,6 +122,11 @@ export const TRACK_COLUMNS = [
         Header: "Duration",
         accessor: "duration",
       },
+      {
+        Header: "Time Entry Id",
+        accessor: "timeEntryId",
+        show: false,
+      },
     ],
   },
 ];

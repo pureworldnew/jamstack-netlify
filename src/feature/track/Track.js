@@ -13,6 +13,8 @@ export default function Track() {
   const [entry, setEntry] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const initialState = { hiddenColumns: ["timeEntryId"] };
+
   const columns = React.useMemo(() => myConsts.TRACK_COLUMNS, []);
 
   const getData = () => {
@@ -102,7 +104,7 @@ export default function Track() {
               }
               paramArray.push({
                 data: {
-                  id: each.id,
+                  timeEntryId: each.id,
                   description: each.description,
                   projectId: projectName,
                   start: each.timeInterval.start,
@@ -130,6 +132,12 @@ export default function Track() {
       .catch((err) => console.log(err));
   };
 
+  const handleClickDelete = (rowData) => {
+    trackApi.delete(rowData.id).then((res) => {
+      window.location.reload();
+    });
+  };
+
   return (
     <>
       <CssBaseline />
@@ -142,7 +150,33 @@ export default function Track() {
       {loading ? (
         <BackDrop open={loading} />
       ) : (
-        <ReactTable columns={[...columns]} data={entry} mode={"trackEntry"} />
+        <ReactTable
+          columns={[
+            ...columns,
+            {
+              Header: "Delete",
+              id: "delete",
+              accessor: (str) => "delete",
+              Cell: (row) => (
+                <span
+                  style={{
+                    cursor: "pointer",
+                    color: "blue",
+                    textDecoration: "underline",
+                  }}
+                  onClick={() => {
+                    handleClickDelete(row.row.original);
+                  }}
+                >
+                  Delete
+                </span>
+              ),
+            },
+          ]}
+          data={entry}
+          mode={"trackEntry"}
+          initialState={initialState}
+        />
       )}
     </>
   );

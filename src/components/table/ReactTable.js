@@ -93,7 +93,7 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 // Let the table remove the filter if the string is empty
 fuzzyTextFilterFn.autoRemove = (val) => !val;
 
-export function ReactTable({ columns, data, mode }) {
+export function ReactTable({ columns, data, mode, initialState }) {
   const filterTypes = React.useMemo(
     () => ({
       // Add a new fuzzyTextFilterFn filter type.
@@ -140,7 +140,7 @@ export function ReactTable({ columns, data, mode }) {
       data,
       defaultColumn, // Be sure to pass the defaultColumn option
       filterTypes,
-      initialState: { pageIndex: 0 },
+      initialState: { ...initialState, pageIndex: 0 },
     },
     useFilters, // useFilters!
     useGlobalFilter, // useGlobalFilter!

@@ -10,7 +10,7 @@ module.exports = function multiUpsert(arrData) {
         q.Exists(
           q.Match(
             q.Index("all_time_entries"),
-            q.Select(["data", "id"], q.Var("d"))
+            q.Select(["data", "timeEntryId"], q.Var("d"))
           )
         ),
         q.Replace(
@@ -19,7 +19,7 @@ module.exports = function multiUpsert(arrData) {
             q.Get(
               q.Match(
                 q.Index("all_time_entries"),
-                q.Select(["data", "id"], q.Var("d"))
+                q.Select(["data", "timeEntryId"], q.Var("d"))
               )
             )
           ),
