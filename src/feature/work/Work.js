@@ -20,7 +20,7 @@ function Work() {
     setLoading(true);
     workApi.readAll().then((res) => {
       let entryArray = [];
-      res.forEach((each) => {
+      res?.forEach((each) => {
         const { data, ref } = each;
         data["id"] = ref["@ref"]["id"];
         if (data["createDate"] !== undefined) {
