@@ -43,12 +43,12 @@ function createFaunaDB(key) {
   /* Based on your requirements, change the schema here */
 
   const clockifyPromise = client
-    .query(q.CreateCollection({ name: "clockify" }))
+    .query(q.CreateCollection({ name: "clockify_meta_entries" }))
     .then(() => {
       return client.query(
         q.CreateIndex({
-          name: "all_clockify",
-          source: q.Collection("clockify"),
+          name: "all_clockify_meta_entries",
+          source: q.Collection("clockify_meta_entries"),
           terms: [{ field: ["data", "element"] }],
           values: [{ field: ["data", "name"] }],
         })

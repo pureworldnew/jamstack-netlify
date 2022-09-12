@@ -65,6 +65,10 @@ export default function Track() {
       .then((response) => {
         const workspaceId = response[0][0].id;
         const userId = response[1].id;
+        // trackApi
+        //   .createClockifyApiMeta({ workspaceId, userId })
+        //   .then((res) => console.log("res from clockify meta", res));
+
         useClockify(
           `https://api.clockify.me/api/v1/workspaces/${workspaceId}/user/${userId}/time-entries`
         )
@@ -133,6 +137,7 @@ export default function Track() {
   };
 
   const handleClickDelete = (rowData) => {
+    // trackApi.readClockifyApiMeta().then((res) => console.log(res));
     trackApi.delete(rowData.id).then((res) => {
       window.location.reload();
     });

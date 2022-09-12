@@ -10,10 +10,28 @@ const create = (data) => {
   });
 };
 
+const createClockifyApiMeta = (data) => {
+  return fetch("/.netlify/functions/track-clockify-meta-create", {
+    body: JSON.stringify(data),
+    method: "POST",
+  }).then((response) => {
+    console.log("response", response);
+    return response.json();
+  });
+};
+
 const readAll = () => {
   return fetch("/.netlify/functions/track-read-all").then((response) => {
     return response.json();
   });
+};
+
+const readClockifyApiMeta = () => {
+  return fetch("/.netlify/functions/track-clockify-meta-read").then(
+    (response) => {
+      return response.json();
+    }
+  );
 };
 
 const update = (todoId, data) => {
@@ -46,6 +64,8 @@ const batchDeleteTrack = (todoIds) => {
 
 export default {
   create,
+  createClockifyApiMeta,
+  readClockifyApiMeta,
   readAll,
   update,
   delete: deleteTrack,
