@@ -22,7 +22,22 @@ exports.handler = async (event, context) => {
 
   /* construct the fauna query */
   return client
-    .query(q.Create(q.Collection("clockify_meta_entries"), clockifyMetaItem))
+    .query(
+      q.Let(
+        {
+          match: q.Match(
+            q.Index("all_clockify_meta_entries"),
+            data.workspaceId
+          ),
+          data: clockifyMetaItem,
+        },
+        q.If(
+          q.Exists(q.Var("match")),
+          q.Update(q.Select("ref", q.Get(q.Var("match"))), q.Var("data")),
+          q.Create(q.Collection("clockify_meta_entries"), q.Var("data"))
+        )
+      )
+    )
     .then((response) => {
       console.log("clockify_meta_entries insertsuccess", response);
       /* Success! return the response with statusCode 200 */

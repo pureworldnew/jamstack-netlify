@@ -14,7 +14,7 @@ exports.handler = async (event, context) => {
   const id = getId(event.path);
   console.log(`Function 'track-delete' invoked. delete id: ${id}`);
   return client
-    .query(q.Delete(q.Ref(`classes/time_entries/${id}`)))
+    .query(q.Delete(q.Ref(`classes/track_entries/${id}`)))
     .then((response) => {
       console.log("success", response);
       return {

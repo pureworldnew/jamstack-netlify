@@ -2,6 +2,7 @@
 const faunadb = require("faunadb");
 const getDBSecret = require("./utils/getDBSecret");
 const multiUpsert = require("./utils/multiUpsert");
+const deleteAll = require("./utils/deleteAll");
 
 /* export our lambda function as named "handler" export */
 exports.handler = async (event, context) => {
@@ -18,14 +19,16 @@ exports.handler = async (event, context) => {
 
   /* construct the fauna query */
   return client
-    .query(multiUpsert(data))
+    .query(deleteAll())
     .then((response) => {
-      console.log("success", response);
-      /* Success! return the response with statusCode 200 */
-      return {
-        statusCode: 200,
-        body: JSON.stringify(response),
-      };
+      console.log("success in deleting existing track_entires", response);
+      return client.query(multiUpsert(data)).then((res) => {
+        /* Success! return the response with statusCode 200 */
+        return {
+          statusCode: 200,
+          body: JSON.stringify(res),
+        };
+      });
     })
     .catch((error) => {
       console.log("error", error);

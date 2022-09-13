@@ -49,8 +49,7 @@ function createFaunaDB(key) {
         q.CreateIndex({
           name: "all_clockify_meta_entries",
           source: q.Collection("clockify_meta_entries"),
-          terms: [{ field: ["data", "element"] }],
-          values: [{ field: ["data", "name"] }],
+          values: [{ field: ["data", "workspaceId"] }],
         })
       );
     });
@@ -104,13 +103,13 @@ function createFaunaDB(key) {
     });
 
   const timeEntryPromise = client
-    .query(q.CreateCollection({ name: "time_entries" }))
+    .query(q.CreateCollection({ name: "track_entries" }))
     .then(() => {
       return client.query(
         q.CreateIndex({
-          name: "all_time_entries",
-          source: q.Collection("time_entries"),
-          terms: [{ field: ["data", "start"] }, { field: ["ref"] }],
+          name: "all_track_entries",
+          source: q.Collection("track_entries"),
+          values: [{ field: ["data", "timeEntryId"] }, { field: ["ref"] }],
         })
       );
     });

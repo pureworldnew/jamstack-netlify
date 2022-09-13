@@ -1,9 +1,9 @@
-/* Import faunaDB sdk */
 const faunadb = require("faunadb");
-const q = faunadb.query;
+const getId = require("./utils/getId");
 const getDBSecret = require("./utils/getDBSecret");
+const q = faunadb.query;
 
-exports.handler = async (event, context) => {
+exports.handler = (event, context) => {
   /* configure faunaDB Client with our secret */
   const client = new faunadb.Client({
     secret: getDBSecret(),
@@ -11,15 +11,12 @@ exports.handler = async (event, context) => {
     scheme: "https",
   });
   const data = JSON.parse(event.body);
-  console.log("data", data);
-  console.log("Function `track-delete-batch` invoked", data.ids);
-  // construct batch query from IDs
-  const deleteAllCompletedTrackQuery = data.ids.map((id) => {
-    return q.Delete(q.Ref(`classes/track_entries/${id}`));
-  });
-  // Hit fauna with the query to delete the completed items
+  const id = getId(event.path);
+  console.log(
+    `Function 'track-clockify-meta-update' invoked. update id: ${id}`
+  );
   return client
-    .query(deleteAllCompletedTrackQuery)
+    .query(q.Update(q.Ref(`classes/clockify_meta_entries/${id}`), { data }))
     .then((response) => {
       console.log("success", response);
       return {

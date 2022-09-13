@@ -14,16 +14,16 @@ exports.handler = (event, context) => {
   return client
     .query(
       q.Map(
-        q.Paginate(q.Documents(q.Collection("time_entries"))),
+        q.Paginate(q.Documents(q.Collection("track_entries"))),
         q.Lambda((x) => q.Get(x))
       )
     )
     .then((response) => {
-      const todoRefs = response.data;
-      console.log("Todo refs", response);
+      const trackRefs = response.data;
+      console.log(`${trackRefs.length} Tracks found`);
       return {
         statusCode: 200,
-        body: JSON.stringify(todoRefs),
+        body: JSON.stringify(trackRefs),
       };
     })
     .catch((error) => {

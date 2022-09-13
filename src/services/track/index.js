@@ -34,8 +34,20 @@ const readClockifyApiMeta = () => {
   );
 };
 
-const update = (todoId, data) => {
-  return fetch(`/.netlify/functions/track-update/${todoId}`, {
+const udpateClockifyApiMeta = (clockifyMetaId, data) => {
+  return fetch(
+    `/.netlify/functions/track-clockify-meta-update/${clockifyMetaId}`,
+    {
+      body: JSON.stringify(data),
+      method: "POST",
+    }
+  ).then((response) => {
+    return response.json();
+  });
+};
+
+const update = (trackId, data) => {
+  return fetch(`/.netlify/functions/track-update/${trackId}`, {
     body: JSON.stringify(data),
     method: "POST",
   }).then((response) => {
@@ -43,18 +55,18 @@ const update = (todoId, data) => {
   });
 };
 
-const deleteTrack = (todoId) => {
-  return fetch(`/.netlify/functions/track-delete/${todoId}`, {
+const deleteTrack = (trackId) => {
+  return fetch(`/.netlify/functions/track-delete/${trackId}`, {
     method: "POST",
   }).then((response) => {
     return response.json();
   });
 };
 
-const batchDeleteTrack = (todoIds) => {
+const batchDeleteTrack = (trackIds) => {
   return fetch(`/.netlify/functions/track-delete-batch`, {
     body: JSON.stringify({
-      ids: todoIds,
+      ids: trackIds,
     }),
     method: "POST",
   }).then((response) => {
@@ -66,6 +78,7 @@ export default {
   create,
   createClockifyApiMeta,
   readClockifyApiMeta,
+  udpateClockifyApiMeta,
   readAll,
   update,
   delete: deleteTrack,

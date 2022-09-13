@@ -1,32 +1,12 @@
 const faunadb = require("faunadb");
+// const deleteAll = require("./deleteAll");
+
 const q = faunadb.query;
 
 module.exports = function multiUpsert(arrData) {
+  console.log("arrData", arrData);
   return q.Map(
     arrData,
-    q.Lambda(
-      ["d"],
-      q.If(
-        q.Exists(
-          q.Match(
-            q.Index("all_time_entries"),
-            q.Select(["data", "timeEntryId"], q.Var("d"))
-          )
-        ),
-        q.Replace(
-          q.Select(
-            "ref",
-            q.Get(
-              q.Match(
-                q.Index("all_time_entries"),
-                q.Select(["data", "timeEntryId"], q.Var("d"))
-              )
-            )
-          ),
-          q.Var("d")
-        ),
-        q.Create(q.Collection("time_entries"), q.Var("d"))
-      )
-    )
+    q.Lambda(["d"], q.Create(q.Collection("track_entries"), q.Var("d")))
   );
 };
