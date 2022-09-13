@@ -20,6 +20,7 @@ import workApi from "services/work";
 import trackApi from "services/track";
 import planApi from "services/plan";
 import cashApi from "services/cash";
+import stressApi from "services/stress";
 
 const IndeterminateCheckbox = React.forwardRef(
   ({ indeterminate, ...rest }, ref) => {
@@ -191,6 +192,9 @@ export function ReactTable({ columns, data, mode, initialState }) {
           break;
         case "cashEntry":
           cashApi.batchDelete(ids).then((res) => console.log(res));
+          break;
+        case "stressEntry":
+          stressApi.batchDelete(ids).then((res) => console.log(res));
           break;
         default:
           break;

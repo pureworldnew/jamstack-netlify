@@ -15,13 +15,13 @@ exports.handler = async (event, context) => {
   if (!data.hasOwnProperty("createDate")) {
     data["createDate"] = new Date().toLocaleDateString();
   }
-  console.log("Function `todo-create` invoked", data);
-  const todoItem = {
+  console.log("Function `work-create` invoked", data);
+  const workItem = {
     data: data,
   };
   /* construct the fauna query */
   return client
-    .query(q.Create(q.Collection("work_entries"), todoItem))
+    .query(q.Create(q.Collection("work_entries"), workItem))
     .then((response) => {
       console.log("work_entries insertsuccess", response);
       /* Success! return the response with statusCode 200 */

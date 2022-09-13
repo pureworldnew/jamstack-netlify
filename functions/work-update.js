@@ -1,29 +1,24 @@
-/* Import faunaDB sdk */
 const faunadb = require("faunadb");
-const q = faunadb.query;
+const getId = require("./utils/getId");
 const getDBSecret = require("./utils/getDBSecret");
+const q = faunadb.query;
 
 exports.handler = (event, context) => {
-  console.log("Function `todo-read-all` invoked");
   /* configure faunaDB Client with our secret */
   const client = new faunadb.Client({
     secret: getDBSecret(),
     domain: "db.us.fauna.com",
     scheme: "https",
   });
+  const data = JSON.parse(event.body);
+  const id = getId(event.path);
+  console.log(`Function 'work-update' invoked. update id: ${id}`);
   return client
-    .query(
-      q.Map(
-        q.Paginate(q.Documents(q.Collection("work_entries"))),
-        q.Lambda((x) => q.Get(x))
-      )
-    )
+    .query(q.Update(q.Ref(`classes/work_entries/${id}`), { data }))
     .then((response) => {
-      const todoRefs = response.data;
-      console.log(`${todoRefs.length} todos found`);
       return {
         statusCode: 200,
-        body: JSON.stringify(todoRefs),
+        body: JSON.stringify(response),
       };
     })
     .catch((error) => {

@@ -1,3 +1,4 @@
+/* Import faunaDB sdk */
 const faunadb = require("faunadb");
 const getId = require("./utils/getId");
 const getDBSecret = require("./utils/getDBSecret");
@@ -10,13 +11,11 @@ exports.handler = (event, context) => {
     domain: "db.us.fauna.com",
     scheme: "https",
   });
-  const data = JSON.parse(event.body);
   const id = getId(event.path);
-  console.log(`Function 'todo-update' invoked. update id: ${id}`);
+  console.log(`Function 'work-read' invoked. Read id: ${id}`);
   return client
-    .query(q.Update(q.Ref(`classes/work_entries/${id}`), { data }))
+    .query(q.Get(q.Ref(`classes/work_entries/${id}`)))
     .then((response) => {
-      console.log("success", response);
       return {
         statusCode: 200,
         body: JSON.stringify(response),

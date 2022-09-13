@@ -1,7 +1,7 @@
 /* Api methods to call /functions */
 
 const create = (data) => {
-  return fetch("/.netlify/functions/work-create", {
+  return fetch("/.netlify/functions/stress-create", {
     body: JSON.stringify(data),
     method: "POST",
   }).then((response) => {
@@ -10,13 +10,13 @@ const create = (data) => {
 };
 
 const readAll = () => {
-  return fetch("/.netlify/functions/work-read-all").then((response) => {
+  return fetch("/.netlify/functions/stress-read-all").then((response) => {
     return response.json();
   });
 };
 
-const update = (workId, data) => {
-  return fetch(`/.netlify/functions/work-update/${workId}`, {
+const update = (stressId, data) => {
+  return fetch(`/.netlify/functions/stress-update/${stressId}`, {
     body: JSON.stringify(data),
     method: "POST",
   }).then((response) => {
@@ -24,18 +24,18 @@ const update = (workId, data) => {
   });
 };
 
-const deleteWork = (workId) => {
-  return fetch(`/.netlify/functions/work-delete/${workId}`, {
+const deleteStress = (stressId) => {
+  return fetch(`/.netlify/functions/stress-delete/${stressId}`, {
     method: "POST",
   }).then((response) => {
     return response.json();
   });
 };
 
-const batchDeleteWork = (workIds) => {
-  return fetch(`/.netlify/functions/work-delete-batch`, {
+const batchDeleteStress = (stressIds) => {
+  return fetch(`/.netlify/functions/stress-delete-batch`, {
     body: JSON.stringify({
-      ids: workIds,
+      ids: stressIds,
     }),
     method: "POST",
   }).then((response) => {
@@ -47,6 +47,6 @@ export default {
   create,
   readAll,
   update,
-  delete: deleteWork,
-  batchDelete: batchDeleteWork,
+  delete: deleteStress,
+  batchDelete: batchDeleteStress,
 };

@@ -12,6 +12,13 @@ export const STATUS_OPTIONS = [
   { value: "first_payment", label: "First Payment" },
 ];
 
+export const STRESS_STATUS_OPTIONS = [
+  { value: "finished", label: "Finished" },
+  { value: "notFinished", label: "Not Finished" },
+  { value: "inProgress", label: "In progress" },
+  { value: "holding", label: "Holding" },
+];
+
 export const PLAN_STATUS_OPTIONS = [
   { value: "finished", label: "Finished" },
   { value: "notFinished", label: "Not Finished" },
@@ -80,6 +87,47 @@ export const WORK_COLUMNS = [
       {
         Header: "Job Description",
         accessor: "jobDescription",
+      },
+    ],
+  },
+];
+
+export const STRESS_COLUMNS = [
+  {
+    Header: "Stress Information",
+    columns: [
+      {
+        Header: "Stress Title",
+        accessor: "stressTitle",
+      },
+      {
+        Header: "Stress Description",
+        accessor: "stressDescription",
+      },
+      {
+        Header: "Stress Starting Date",
+        accessor: "stressStartDate",
+      },
+      {
+        Header: "Stress Ending Date",
+        accessor: "stressEndDate",
+      },
+    ],
+  },
+  {
+    Header: "Stress Status / Reason / Solution",
+    columns: [
+      {
+        Header: "Status",
+        accessor: "stressStatus",
+      },
+      {
+        Header: "Reason",
+        accessor: "stressReason",
+      },
+      {
+        Header: "Solution",
+        accessor: "stressSolution",
       },
     ],
   },

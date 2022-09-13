@@ -1,25 +1,29 @@
 /* Import faunaDB sdk */
 const faunadb = require("faunadb");
-const getId = require("./utils/getId");
-const getDBSecret = require("./utils/getDBSecret");
 const q = faunadb.query;
+const getDBSecret = require("./utils/getDBSecret");
 
 exports.handler = (event, context) => {
+  console.log("Function `stress-read-all` invoked");
   /* configure faunaDB Client with our secret */
   const client = new faunadb.Client({
     secret: getDBSecret(),
     domain: "db.us.fauna.com",
     scheme: "https",
   });
-  const id = getId(event.path);
-  console.log(`Function 'todo-read' invoked. Read id: ${id}`);
   return client
-    .query(q.Get(q.Ref(`classes/work_entries/${id}`)))
+    .query(
+      q.Map(
+        q.Paginate(q.Documents(q.Collection("stress_entries"))),
+        q.Lambda((x) => q.Get(x))
+      )
+    )
     .then((response) => {
-      console.log("success", response);
+      const refs = response.data;
+      console.log(`${refs.length} stresss found`);
       return {
         statusCode: 200,
-        body: JSON.stringify(response),
+        body: JSON.stringify(refs),
       };
     })
     .catch((error) => {
