@@ -57,7 +57,7 @@ export default function App() {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <Container sx={{ mt: 4, mb: 4 }}>
             <Routes>
               <Route path="/plan" element={<PlanComponent />} />
               <Route path="/track" element={<TrackComponent />} />
