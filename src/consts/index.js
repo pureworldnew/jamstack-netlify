@@ -181,7 +181,7 @@ export const TRACK_COLUMNS = [
 
 export const PLAN_COLUMNS = [
   {
-    Header: "What must be done tomorrowtest?",
+    Header: "What must be done tomorrow?",
     columns: [
       {
         Header: "Title",

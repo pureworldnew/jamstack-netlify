@@ -15,6 +15,14 @@ const readAll = () => {
   });
 };
 
+const readOnlyCurrent = () => {
+  return fetch("/.netlify/functions/plan-read-only-current").then(
+    (response) => {
+      return response.json();
+    }
+  );
+};
+
 const update = (planId, data) => {
   return fetch(`/.netlify/functions/plan-update/${planId}`, {
     body: JSON.stringify(data),
@@ -46,6 +54,7 @@ const batchDeletePlan = (planIds) => {
 export default {
   create,
   readAll,
+  readOnlyCurrent,
   update,
   delete: deletePlan,
   batchDelete: batchDeletePlan,

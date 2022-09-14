@@ -1,5 +1,4 @@
 const { REACT_APP_CLOCKIFY_API_KEY } = process.env;
-console.log("REACT_APP_CLOCKIFY_API_KEY", REACT_APP_CLOCKIFY_API_KEY);
 export default async function useClockify(url, method) {
   if (method !== "DELETE") {
     return await fetch(url, {
