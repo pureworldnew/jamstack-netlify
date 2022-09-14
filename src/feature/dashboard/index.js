@@ -5,15 +5,10 @@ import Chart from "./Chart";
 import Deposits from "./Deposits";
 import Orders from "./Orders";
 
-function Bomb() {
-  throw new Error("💥 CABOOM 💥");
-}
-
 export default function Dashboard() {
   return (
     <Grid container spacing={3}>
       {/* Chart */}
-      <Bomb />
       <Grid item xs={12} md={8} lg={9}>
         <Paper
           sx={{
