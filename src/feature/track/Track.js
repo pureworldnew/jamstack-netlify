@@ -7,7 +7,7 @@ import { BackDrop } from "components/backdrop";
 import * as myConsts from "consts";
 import trackApi from "services/track";
 import useClockify from "hooks/useClockify";
-import { formatDate } from "util/formatDate";
+import { formatDate } from "utils/formatDate";
 
 export default function Track() {
   const [entry, setEntry] = useState([]);

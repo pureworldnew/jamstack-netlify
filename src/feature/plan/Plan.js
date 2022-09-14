@@ -7,7 +7,7 @@ import { ReactTable } from "components/table";
 import { BackDrop } from "components/backdrop";
 import AddNewPlan from "./AddNewPlan";
 import planApi from "services/plan";
-import { formatDate } from "util/formatDate";
+import { formatDate } from "utils/formatDate";
 import * as myConsts from "consts";
 
 function Plan() {
