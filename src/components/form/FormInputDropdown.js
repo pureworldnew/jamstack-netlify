@@ -35,13 +35,10 @@ export const FormInputDropdown = ({
             labelId={labelId}
             id={id}
             onChange={onChange}
-            value={value || ""}
+            value={value || "notFinished"}
             autoWidth
             label={labelText}
           >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
             {generateSelectOptions()}
           </Select>
         </FormControl>

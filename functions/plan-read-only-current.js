@@ -14,7 +14,7 @@ exports.handler = (event, context) => {
   return client
     .query(
       q.Map(
-        q.Paginate(q.Documents(q.Collection("plan_entries"))),
+        q.Paginate(q.Match(q.Index("all_plan_entries"), "notFinished")),
         q.Lambda((x) => q.Get(x))
       )
     )

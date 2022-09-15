@@ -49,6 +49,10 @@ function Plan() {
   };
 
   const handleSubmitNew = (data) => {
+    if (data.planStatus === undefined) {
+      data.planStatus = "notFinished";
+    }
+
     planApi.create(data);
     window.location.reload();
     handleClose();

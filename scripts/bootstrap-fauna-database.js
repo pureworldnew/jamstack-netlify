@@ -96,8 +96,8 @@ function createFaunaDB(key) {
         q.CreateIndex({
           name: "all_plan_entries",
           source: q.Collection("plan_entries"),
-          terms: [{ field: ["data", "element"] }],
-          values: [{ field: ["data", "name"] }],
+          terms: [{ field: ["data", "planStatus"] }],
+          values: [{ field: ["ref"] }],
         })
       );
     });

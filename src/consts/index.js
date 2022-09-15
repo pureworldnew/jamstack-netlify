@@ -20,8 +20,8 @@ export const STRESS_STATUS_OPTIONS = [
 ];
 
 export const PLAN_STATUS_OPTIONS = [
-  { value: "finished", label: "Finished" },
   { value: "notFinished", label: "Not Finished" },
+  { value: "finished", label: "Finished" },
   { value: "inProgress", label: "In progress" },
   { value: "holding", label: "Holding" },
 ];
