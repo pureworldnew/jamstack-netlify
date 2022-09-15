@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
+import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
 import { ReactTable } from "components/table";
 import { BackDrop } from "components/backdrop";
@@ -229,18 +230,11 @@ export default function Track() {
               id: "delete",
               accessor: (str) => "delete",
               Cell: (row) => (
-                <span
-                  style={{
-                    cursor: "pointer",
-                    color: "blue",
-                    textDecoration: "underline",
-                  }}
-                  onClick={() => {
-                    handleClickDelete(row.row.original);
-                  }}
-                >
-                  Delete
-                </span>
+                <Chip
+                  label="Delete"
+                  onClick={() => handleClickDelete(row.row.original)}
+                  onDelete={() => handleClickDelete(row.row.original)}
+                />
               ),
             },
           ]}

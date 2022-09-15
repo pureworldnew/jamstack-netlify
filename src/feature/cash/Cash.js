@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from "react";
 
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
+import Chip from "@mui/material/Chip";
 
 import { ReactTable } from "components/table";
 import { BackDrop } from "components/backdrop";
@@ -92,18 +93,11 @@ function Plan() {
               id: "delete",
               accessor: (str) => "delete",
               Cell: (row) => (
-                <span
-                  style={{
-                    cursor: "pointer",
-                    color: "blue",
-                    textDecoration: "underline",
-                  }}
-                  onClick={() => {
-                    handleClickDelete(row.row.original);
-                  }}
-                >
-                  Delete
-                </span>
+                <Chip
+                  label="Delete"
+                  onClick={() => handleClickDelete(row.row.original)}
+                  onDelete={() => handleClickDelete(row.row.original)}
+                />
               ),
             },
             {
@@ -111,18 +105,10 @@ function Plan() {
               id: "edit",
               accessor: (str) => "Edit",
               Cell: (row) => (
-                <span
-                  style={{
-                    cursor: "pointer",
-                    color: "blue",
-                    textDecoration: "underline",
-                  }}
-                  onClick={() => {
-                    handleClickEdit(row.row.original);
-                  }}
-                >
-                  Edit
-                </span>
+                <Chip
+                  label="Edit"
+                  onClick={() => handleClickEdit(row.row.original)}
+                />
               ),
             },
           ]}

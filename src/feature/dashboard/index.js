@@ -3,7 +3,6 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Chart from "./Chart";
 import Deposits from "./Deposits";
-import Orders from "./Orders";
 import CurrentPlan from "./CurrentPlan";
 
 export default function Dashboard() {

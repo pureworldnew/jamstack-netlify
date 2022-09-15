@@ -7,6 +7,7 @@ import Chip from "@mui/material/Chip";
 import { ReactTable } from "components/table";
 import { BackDrop } from "components/backdrop";
 import AddNewPlan from "feature/plan/AddNewPlan";
+import Title from "./Title";
 import planApi from "services/plan";
 import { formatDate } from "utils/formatDate";
 import * as myConsts from "consts";
@@ -72,6 +73,7 @@ function CurrentPlan() {
 
   return (
     <>
+      <Title>Today Plan</Title>
       <CssBaseline />
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
         <AddNewPlan

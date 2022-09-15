@@ -1,4 +1,4 @@
-import Chip from "@mui/material/Chip";
+import { LabelChip } from "components/label-chip/LabelChip";
 export const DRAWER_WIDTH = 240;
 export const STATUS_OPTIONS = [
   { value: "job_apply_waiting", label: "Job Apply & Waiting" },
@@ -210,13 +210,13 @@ export const PLAN_COLUMNS = [
         accessor: "planStatus",
         Cell: (props) => {
           if (props.value === "notFinished") {
-            return <Chip label="Not Finished" color="warning" />;
+            return <LabelChip label="Not Finished" color="warning" />;
           } else if (props.value === "holding") {
-            return <Chip label="Holiding" color="error" />;
+            return <LabelChip label="Holiding" color="error" />;
           } else if (props.value === "finished") {
-            return <Chip label="Finished" color="success" />;
+            return <LabelChip label="Finished" color="success" />;
           } else if (props.value === "inProgress") {
-            return <Chip label="In Progress" color="secondary" />;
+            return <LabelChip label="In Progress" color="secondary" />;
           }
         },
       },
