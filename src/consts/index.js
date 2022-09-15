@@ -1,3 +1,4 @@
+import Chip from "@mui/material/Chip";
 export const DRAWER_WIDTH = 240;
 export const STATUS_OPTIONS = [
   { value: "job_apply_waiting", label: "Job Apply & Waiting" },
@@ -207,6 +208,17 @@ export const PLAN_COLUMNS = [
       {
         Header: "Status",
         accessor: "planStatus",
+        Cell: (props) => {
+          if (props.value === "notFinished") {
+            return <Chip label="Not Finished" color="warning" />;
+          } else if (props.value === "holding") {
+            return <Chip label="Holiding" color="error" />;
+          } else if (props.value === "finished") {
+            return <Chip label="Finished" color="success" />;
+          } else if (props.value === "inProgress") {
+            return <Chip label="In Progress" color="secondary" />;
+          }
+        },
       },
       {
         Header: "Date",

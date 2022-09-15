@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from "react";
 
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
+import Chip from "@mui/material/Chip";
 
 import { ReactTable } from "components/table";
 import { BackDrop } from "components/backdrop";
@@ -20,6 +21,7 @@ function CurrentPlan() {
   useEffect(() => {
     setLoading(true);
     planApi.readOnlyCurrent().then((res) => {
+      console.log("res", res);
       let entryArray = [];
       res.forEach((each) => {
         const { data, ref } = each;
@@ -49,6 +51,9 @@ function CurrentPlan() {
   };
 
   const handleSubmitNew = (data) => {
+    if (data.planStatus === undefined) {
+      data.planStatus = "notFinished";
+    }
     planApi.create(data);
     window.location.reload();
     handleClose();
@@ -91,18 +96,11 @@ function CurrentPlan() {
               id: "delete",
               accessor: (str) => "delete",
               Cell: (row) => (
-                <span
-                  style={{
-                    cursor: "pointer",
-                    color: "blue",
-                    textDecoration: "underline",
-                  }}
-                  onClick={() => {
-                    handleClickDelete(row.row.original);
-                  }}
-                >
-                  Delete
-                </span>
+                <Chip
+                  label="Delete"
+                  onClick={() => handleClickDelete(row.row.original)}
+                  onDelete={() => handleClickDelete(row.row.original)}
+                />
               ),
             },
             {
@@ -110,18 +108,10 @@ function CurrentPlan() {
               id: "edit",
               accessor: (str) => "Edit",
               Cell: (row) => (
-                <span
-                  style={{
-                    cursor: "pointer",
-                    color: "blue",
-                    textDecoration: "underline",
-                  }}
-                  onClick={() => {
-                    handleClickEdit(row.row.original);
-                  }}
-                >
-                  Edit
-                </span>
+                <Chip
+                  label="Edit"
+                  onClick={() => handleClickEdit(row.row.original)}
+                />
               ),
             },
           ]}
