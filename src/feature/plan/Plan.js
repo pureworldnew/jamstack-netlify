@@ -8,6 +8,8 @@ import { ReactTable } from "components/table";
 import { BackDrop } from "components/backdrop";
 import AddNewPlan from "./AddNewPlan";
 import planApi from "services/plan";
+import DeleteModal from "components/delete-modal/DeleteModal";
+
 import { formatDate } from "utils/formatDate";
 import * as myConsts from "consts";
 
@@ -15,6 +17,10 @@ function Plan() {
   const [entry, setEntry] = useState([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [popup, setPopup] = useState({
+    show: false, // initial values set to false and null
+    rowData: null,
+  });
   const [editData, setEditData] = useState({});
 
   const columns = useMemo(() => myConsts.PLAN_COLUMNS, []);
@@ -46,9 +52,18 @@ function Plan() {
   };
 
   const handleClickDelete = (rowData) => {
-    planApi.delete(rowData.id).then((res) => {
-      window.location.reload();
+    setPopup({
+      show: true,
+      rowData,
     });
+  };
+
+  const handleClickConfirm = () => {
+    if (popup.show && popup.rowData) {
+      planApi.delete(popup.rowData.id).then((res) => {
+        window.location.reload();
+      });
+    }
   };
 
   const handleSubmitNew = (data) => {
@@ -86,7 +101,11 @@ function Plan() {
           editData={editData}
         />
       </Box>
-
+      <DeleteModal
+        delOpen={popup.show}
+        setDelOpen={setPopup}
+        handleClickConfirm={handleClickConfirm}
+      />
       {loading ? (
         <BackDrop open={loading} />
       ) : (

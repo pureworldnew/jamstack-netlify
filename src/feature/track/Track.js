@@ -7,12 +7,17 @@ import { ReactTable } from "components/table";
 import { BackDrop } from "components/backdrop";
 import * as myConsts from "consts";
 import trackApi from "services/track";
+import DeleteModal from "components/delete-modal/DeleteModal";
 import useClockify from "hooks/useClockify";
 import { formatDate } from "utils/formatDate";
 
 export default function Track() {
   const [entry, setEntry] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [popup, setPopup] = useState({
+    show: false, // initial values set to false and null
+    rowData: null,
+  });
 
   const initialState = { hiddenColumns: ["timeEntryId"] };
 
@@ -42,6 +47,7 @@ export default function Track() {
         entryArray.push(data);
       });
       setLoading(false);
+      setPopup({ show: false });
       setEntry(entryArray);
     });
   };
@@ -177,29 +183,38 @@ export default function Track() {
   };
 
   const handleClickDelete = async (rowData) => {
-    setLoading(true);
-    try {
-      const clockifyMeta = await trackApi.readClockifyApiMeta();
-      const { workspaceId } = clockifyMeta[0].data;
-      const timeEntryId = rowData.timeEntryId;
-      useClockify(
-        `https://api.clockify.me/api/v1/workspaces/${workspaceId}/time-entries/${timeEntryId}`,
-        "DELETE"
-      )
-        .then(() => {
-          console.log("success after deleting from clockify api");
-          trackApi.delete(rowData.id).then((res) => {
-            getData();
-            console.log("successfully deleted from Fauna", res);
+    setPopup({
+      show: true,
+      rowData,
+    });
+  };
+
+  const handleClickConfirm = async () => {
+    if (popup.show && popup.rowData) {
+      setLoading(true);
+      try {
+        const clockifyMeta = await trackApi.readClockifyApiMeta();
+        const { workspaceId } = clockifyMeta[0].data;
+        const timeEntryId = popup.rowData.timeEntryId;
+        useClockify(
+          `https://api.clockify.me/api/v1/workspaces/${workspaceId}/time-entries/${timeEntryId}`,
+          "DELETE"
+        )
+          .then(() => {
+            console.log("success after deleting from clockify api");
+            trackApi.delete(popup.rowData.id).then((res) => {
+              getData();
+              console.log("successfully deleted from Fauna", res);
+            });
+          })
+          .catch((err) => {
+            setLoading(false);
+            console.log(err);
           });
-        })
-        .catch((err) => {
-          setLoading(false);
-          console.log(err);
-        });
-    } catch (err) {
-      setLoading(false);
-      console.log(err);
+      } catch (err) {
+        setLoading(false);
+        console.log(err);
+      }
     }
   };
 
@@ -218,6 +233,12 @@ export default function Track() {
           Clockify Initialization
         </Button>
       </Box>
+
+      <DeleteModal
+        delOpen={popup.show}
+        setDelOpen={setPopup}
+        handleClickConfirm={handleClickConfirm}
+      />
 
       {loading ? (
         <BackDrop open={loading} />

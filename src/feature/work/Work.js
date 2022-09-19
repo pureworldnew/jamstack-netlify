@@ -8,12 +8,17 @@ import { ReactTable } from "components/table";
 import { BackDrop } from "components/backdrop";
 import AddNewWork from "./AddNewWork";
 import workApi from "services/work";
+import DeleteModal from "components/delete-modal/DeleteModal";
 import * as myConsts from "consts";
 
 function Work() {
   const [entry, setEntry] = useState([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [popup, setPopup] = useState({
+    show: false, // initial values set to false and null
+    rowData: null,
+  });
   const [editData, setEditData] = useState({});
 
   const columns = useMemo(() => myConsts.WORK_COLUMNS, []);
@@ -45,9 +50,18 @@ function Work() {
   };
 
   const handleClickDelete = (rowData) => {
-    workApi.delete(rowData.id).then((res) => {
-      window.location.reload();
+    setPopup({
+      show: true,
+      rowData,
     });
+  };
+
+  const handleClickConfirm = () => {
+    if (popup.show && popup.rowData) {
+      workApi.delete(popup.rowData.id).then((res) => {
+        window.location.reload();
+      });
+    }
   };
 
   const handleSubmitNew = (data) => {
@@ -81,6 +95,12 @@ function Work() {
           editData={editData}
         />
       </Box>
+
+      <DeleteModal
+        delOpen={popup.show}
+        setDelOpen={setPopup}
+        handleClickConfirm={handleClickConfirm}
+      />
 
       {loading ? (
         <BackDrop open={loading} />

@@ -21,6 +21,7 @@ import trackApi from "services/track";
 import planApi from "services/plan";
 import cashApi from "services/cash";
 import stressApi from "services/stress";
+import DeleteModal from "components/delete-modal/DeleteModal";
 
 const IndeterminateCheckbox = React.forwardRef(
   ({ indeterminate, ...rest }, ref) => {
@@ -95,6 +96,10 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 fuzzyTextFilterFn.autoRemove = (val) => !val;
 
 export function ReactTable({ columns, data, mode, initialState }) {
+  const [popup, setPopup] = React.useState({
+    show: false, // initial values set to false and null
+    rowData: null,
+  });
   const filterTypes = React.useMemo(
     () => ({
       // Add a new fuzzyTextFilterFn filter type.
@@ -173,13 +178,21 @@ export function ReactTable({ columns, data, mode, initialState }) {
     }
   );
 
+  const handleClickDelete = () => {
+    setPopup({
+      show: true,
+      rowData: selectedFlatRows,
+    });
+  };
+
   const handleClickRows = () => {
-    console.log(selectedFlatRows);
-    if (selectedFlatRows.length) {
+    console.log("here is deleting all", popup);
+
+    if (popup.show && popup.rowData && popup.rowData.length) {
+      console.log("here is ");
       const ids = selectedFlatRows.map((each) => {
         return each.original.id;
       });
-      console.log("mode is", mode);
       switch (mode) {
         case "workEntry":
           workApi.batchDelete(ids).then((res) => console.log(res));
@@ -217,11 +230,16 @@ export function ReactTable({ columns, data, mode, initialState }) {
     <>
       <Button
         variant="outlined"
-        onClick={handleClickRows}
+        onClick={handleClickDelete}
         disabled={!selectedFlatRows.length}
       >
         Delete Rows
       </Button>
+      <DeleteModal
+        delOpen={popup.show}
+        setDelOpen={setPopup}
+        handleClickConfirm={handleClickRows}
+      />
       <MaUTable {...getTableProps()}>
         <TableHead>
           {headerGroups.map((headerGroup) => (

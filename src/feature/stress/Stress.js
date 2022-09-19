@@ -8,6 +8,8 @@ import { ReactTable } from "components/table";
 import { BackDrop } from "components/backdrop";
 import AddNewStress from "./AddNewStress";
 import stressApi from "services/stress";
+import DeleteModal from "components/delete-modal/DeleteModal";
+
 import * as myConsts from "consts";
 
 function Stress() {
@@ -15,6 +17,10 @@ function Stress() {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [editData, setEditData] = useState({});
+  const [popup, setPopup] = useState({
+    show: false, // initial values set to false and null
+    rowData: null,
+  });
 
   const columns = useMemo(() => myConsts.STRESS_COLUMNS, []);
   useEffect(() => {
@@ -45,9 +51,18 @@ function Stress() {
   };
 
   const handleClickDelete = (rowData) => {
-    stressApi.delete(rowData.id).then((res) => {
-      window.location.reload();
+    setPopup({
+      show: true,
+      rowData,
     });
+  };
+
+  const handleClickConfirm = () => {
+    if (popup.show && popup.rowData) {
+      stressApi.delete(popup.rowData.id).then((res) => {
+        window.location.reload();
+      });
+    }
   };
 
   const handleSubmitNew = (data) => {
@@ -81,6 +96,12 @@ function Stress() {
           editData={editData}
         />
       </Box>
+
+      <DeleteModal
+        delOpen={popup.show}
+        setDelOpen={setPopup}
+        handleClickConfirm={handleClickConfirm}
+      />
 
       {loading ? (
         <BackDrop open={loading} />
