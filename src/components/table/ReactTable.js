@@ -186,8 +186,6 @@ export function ReactTable({ columns, data, mode, initialState }) {
   };
 
   const handleClickRows = () => {
-    console.log("here is deleting all", popup);
-
     if (popup.show && popup.rowData && popup.rowData.length) {
       console.log("here is ");
       const ids = selectedFlatRows.map((each) => {

@@ -260,4 +260,13 @@ export const CASH_COLUMNS = [
       },
     ],
   },
+  {
+    Header: "When?",
+    columns: [
+      {
+        Header: "Date",
+        accessor: "createDate",
+      },
+    ],
+  },
 ];

@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 
-import { FormInputText } from "components/form";
+import { FormInputText, FormInputDatePicker } from "components/form";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -129,12 +129,15 @@ export default function AddNewCash({
                   {errors.cashTitle?.message}
                 </Typography>
               </Grid>
-              <Grid item md={6} xs={6}>
+              <Grid item md={3} xs={6}>
                 <FormInputText
                   name={"cashValue"}
                   control={control}
                   label={"Budget"}
                 />
+              </Grid>
+              <Grid item md={3} xs={6}>
+                <FormInputDatePicker name={"createDate"} control={control} />
               </Grid>
             </Grid>
             <Divider>About why and for whom I spent</Divider>

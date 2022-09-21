@@ -34,7 +34,8 @@ function Plan() {
         const { data, ref } = each;
         data["id"] = ref["@ref"]["id"];
         if (data["createDate"] !== undefined) {
-          data["createDate"] = formatDate(new Date(data["createDate"]));
+          console.log("data]", data["createDate"]);
+          data["createDate"] = new Date(data["createDate"]).toLocaleString();
         }
         entryArray.push(data);
       });
@@ -48,6 +49,7 @@ function Plan() {
   };
 
   const handleClose = () => {
+    setEditData({});
     setOpen(false);
   };
 

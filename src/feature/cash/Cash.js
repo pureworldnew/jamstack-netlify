@@ -46,6 +46,7 @@ function Plan() {
   };
 
   const handleClose = () => {
+    setEditData({});
     setOpen(false);
   };
 

@@ -47,6 +47,7 @@ function Stress() {
   };
 
   const handleClose = () => {
+    setEditData({});
     setOpen(false);
   };
 
