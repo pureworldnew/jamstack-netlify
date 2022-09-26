@@ -33,7 +33,12 @@ function CurrentPlan() {
         const { data, ref } = each;
         data["id"] = ref["@ref"]["id"];
         if (data["createDate"] !== undefined) {
-          data["createDate"] = formatDate(new Date(data["createDate"]));
+          data["createDate"] = new Date(data["createDate"]).toLocaleString();
+        }
+        if (data["finishedDate"] !== undefined) {
+          data["finishedDate"] = new Date(
+            data["finishedDate"]
+          ).toLocaleString();
         }
         entryArray.push(data);
       });

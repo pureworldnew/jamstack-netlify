@@ -57,7 +57,10 @@ export default function AddNewPlan({
       setValue("planResult", editData.planResult);
       setValue("planStatus", editData.planStatus);
       setValue("createDate", new Date(editData.createDate));
-      setValue("finishedDate", new Date(editData.finishedDate));
+      setValue(
+        "finishedDate",
+        editData.finishedDate ? new Date(editData.finishedDate) : new Date()
+      );
     }
   }, [editData]);
 

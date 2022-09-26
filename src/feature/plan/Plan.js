@@ -10,7 +10,6 @@ import AddNewPlan from "./AddNewPlan";
 import planApi from "services/plan";
 import DeleteModal from "components/delete-modal/DeleteModal";
 
-import { formatDate } from "utils/formatDate";
 import * as myConsts from "consts";
 
 function Plan() {
