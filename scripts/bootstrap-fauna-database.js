@@ -92,14 +92,26 @@ function createFaunaDB(key) {
   const planEntryPromise = client
     .query(q.CreateCollection({ name: "plan_entries" }))
     .then(() => {
-      return client.query(
+      let allPlanEntriesByStatusPromise = client.query(
         q.CreateIndex({
-          name: "all_plan_entries",
+          name: "all_plan_entries_by_planStatus",
           source: q.Collection("plan_entries"),
           terms: [{ field: ["data", "planStatus"] }],
           values: [{ field: ["ref"] }],
         })
       );
+
+      let allPlanEntriesByCreateDatePromise = client.query(
+        q.CreateIndex({
+          name: "all_plan_entries_by_createDate",
+          source: q.Collection("plan_entries"),
+          values: [{ field: ["data", "createDate"] }, { field: ["ref"] }],
+        })
+      );
+      return Promise.all([
+        allPlanEntriesByStatusPromise,
+        allPlanEntriesByCreateDatePromise,
+      ]);
     });
 
   const timeEntryPromise = client
