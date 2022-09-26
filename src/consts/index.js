@@ -224,6 +224,10 @@ export const PLAN_COLUMNS = [
         Header: "Date",
         accessor: "createDate",
       },
+      {
+        Header: "Finished Date",
+        accessor: "finishedDate",
+      },
     ],
   },
 ];

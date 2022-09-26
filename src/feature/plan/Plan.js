@@ -34,8 +34,12 @@ function Plan() {
         const { data, ref } = each;
         data["id"] = ref["@ref"]["id"];
         if (data["createDate"] !== undefined) {
-          console.log("data]", data["createDate"]);
           data["createDate"] = new Date(data["createDate"]).toLocaleString();
+        }
+        if (data["finishedDate"] !== undefined) {
+          data["finishedDate"] = new Date(
+            data["finishedDate"]
+          ).toLocaleString();
         }
         entryArray.push(data);
       });

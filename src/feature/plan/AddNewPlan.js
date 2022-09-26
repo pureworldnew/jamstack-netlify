@@ -20,6 +20,7 @@ import {
   FormInputDropdown,
   FormInputDatePicker,
 } from "components/form";
+import InputLabel from "@mui/material/InputLabel";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -56,6 +57,7 @@ export default function AddNewPlan({
       setValue("planResult", editData.planResult);
       setValue("planStatus", editData.planStatus);
       setValue("createDate", new Date(editData.createDate));
+      setValue("finishedDate", new Date(editData.finishedDate));
     }
   }, [editData]);
 
@@ -170,7 +172,12 @@ export default function AddNewPlan({
               </Grid>
 
               <Grid item xs={6} md={3}>
+                <InputLabel>Create Date</InputLabel>
                 <FormInputDatePicker name={"createDate"} control={control} />
+              </Grid>
+              <Grid item xs={6} md={3}>
+                <InputLabel>Finished Date</InputLabel>
+                <FormInputDatePicker name={"finishedDate"} control={control} />
               </Grid>
             </Grid>
           </Box>

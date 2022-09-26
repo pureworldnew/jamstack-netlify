@@ -15,6 +15,9 @@ exports.handler = async (event, context) => {
   if (!data.hasOwnProperty("createDate")) {
     data["createDate"] = new Date().toISOString();
   }
+  if (!data.hasOwnProperty("finishedDate")) {
+    data["finishedDate"] = new Date().toISOString();
+  }
   console.log("Function `plan-create` invoked", data);
   const planItem = {
     data: data,
