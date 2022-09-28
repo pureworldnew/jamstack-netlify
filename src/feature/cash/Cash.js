@@ -9,12 +9,16 @@ import { BackDrop } from "components/backdrop";
 import AddNewCash from "./AddNewCash";
 import cashApi from "services/cash";
 import DeleteModal from "components/delete-modal/DeleteModal";
+import CustomizedSnackbars from "components/customized-snackbars/CustomizedSnackbars";
 import * as myConsts from "consts";
 
 function Plan() {
   const [entry, setEntry] = useState([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [openToast, setOpenToast] = useState(false);
+  const [toastText, setToastText] = useState("");
+  const [refreshData, setRefreshData] = useState(false);
   const [popup, setPopup] = useState({
     show: false, // initial values set to false and null
     rowData: null,
@@ -22,24 +26,29 @@ function Plan() {
   const [editData, setEditData] = useState({});
 
   const columns = useMemo(() => myConsts.CASH_COLUMNS, []);
+  const getData = async () => {
+    const res = await cashApi.readAll();
+    let entryArray = [];
+    res.forEach((each) => {
+      const { data, ref } = each;
+      data["id"] = ref["@ref"]["id"];
+      if (data["createDate"] !== undefined) {
+        data["createDate"] = new Date(data["createDate"]).toLocaleDateString();
+      }
+      entryArray.push(data);
+    });
+    setEntry(entryArray);
+    setLoading(false);
+  };
   useEffect(() => {
     setLoading(true);
-    cashApi.readAll().then((res) => {
-      let entryArray = [];
-      res.forEach((each) => {
-        const { data, ref } = each;
-        data["id"] = ref["@ref"]["id"];
-        if (data["createDate"] !== undefined) {
-          data["createDate"] = new Date(
-            data["createDate"]
-          ).toLocaleDateString();
-        }
-        entryArray.push(data);
-      });
-      setEntry(entryArray);
-      setLoading(false);
-    });
+    getData();
   }, []);
+
+  useEffect(() => {
+    getData();
+    setRefreshData(false);
+  }, [refreshData]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -59,22 +68,30 @@ function Plan() {
 
   const handleClickConfirm = () => {
     if (popup.show && popup.rowData) {
-      cashApi.delete(popup.rowData.id).then((res) => {
-        window.location.reload();
-      });
+      cashApi.delete(popup.rowData.id);
+      setToastText("Deleted Successfully!");
+      setOpenToast(true);
+      setRefreshData(true);
+      setPopup({ show: false, rowData: null });
     }
   };
 
   const handleSubmitNew = (data) => {
-    cashApi.create(data);
-    window.location.reload();
-    handleClose();
+    cashApi.create(data).then((res) => {
+      setToastText("Inserted Successfully!");
+      setOpenToast(true);
+      setRefreshData(true);
+      handleClose();
+    });
   };
 
   const handleSubmitEdit = (id, data) => {
-    cashApi.update(id, data);
-    window.location.reload();
-    handleClose();
+    cashApi.update(id, data).then((res) => {
+      setToastText("Updated Successfully!");
+      setOpenToast(true);
+      setRefreshData(true);
+      handleClose();
+    });
   };
 
   const handleClickEdit = (rowData) => {
@@ -96,6 +113,12 @@ function Plan() {
           editData={editData}
         />
       </Box>
+
+      <CustomizedSnackbars
+        open={openToast}
+        setOpen={setOpenToast}
+        labelText={toastText}
+      />
 
       <DeleteModal
         delOpen={popup.show}

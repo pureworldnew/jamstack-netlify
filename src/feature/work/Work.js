@@ -9,12 +9,16 @@ import { BackDrop } from "components/backdrop";
 import AddNewWork from "./AddNewWork";
 import workApi from "services/work";
 import DeleteModal from "components/delete-modal/DeleteModal";
+import CustomizedSnackbars from "components/customized-snackbars/CustomizedSnackbars";
 import * as myConsts from "consts";
 
 function Work() {
   const [entry, setEntry] = useState([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [openToast, setOpenToast] = useState(false);
+  const [toastText, setToastText] = useState("");
+  const [refreshData, setRefreshData] = useState(false);
   const [popup, setPopup] = useState({
     show: false, // initial values set to false and null
     rowData: null,
@@ -22,24 +26,30 @@ function Work() {
   const [editData, setEditData] = useState({});
 
   const columns = useMemo(() => myConsts.WORK_COLUMNS, []);
+
+  const getData = async () => {
+    const res = await workApi.readAll();
+    let entryArray = [];
+    res?.forEach((each) => {
+      const { data, ref } = each;
+      data["id"] = ref["@ref"]["id"];
+      if (data["createDate"] !== undefined) {
+        data["createDate"] = new Date(data["createDate"]).toLocaleDateString();
+      }
+      entryArray.push(data);
+    });
+    setEntry(entryArray);
+    setLoading(false);
+  };
   useEffect(() => {
     setLoading(true);
-    workApi.readAll().then((res) => {
-      let entryArray = [];
-      res?.forEach((each) => {
-        const { data, ref } = each;
-        data["id"] = ref["@ref"]["id"];
-        if (data["createDate"] !== undefined) {
-          data["createDate"] = new Date(
-            data["createDate"]
-          ).toLocaleDateString();
-        }
-        entryArray.push(data);
-      });
-      setEntry(entryArray);
-      setLoading(false);
-    });
+    getData();
   }, []);
+
+  useEffect(() => {
+    getData();
+    setRefreshData(false);
+  }, [refreshData]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -60,21 +70,30 @@ function Work() {
   const handleClickConfirm = () => {
     if (popup.show && popup.rowData) {
       workApi.delete(popup.rowData.id).then((res) => {
-        window.location.reload();
+        setToastText("Deleted Successfully!");
+        setOpenToast(true);
+        setRefreshData(true);
+        setPopup({ show: false, rowData: null });
       });
     }
   };
 
   const handleSubmitNew = (data) => {
-    workApi.create(data);
-    window.location.reload();
-    handleClose();
+    workApi.create(data).then((res) => {
+      setToastText("Inserted Successfully!");
+      setOpenToast(true);
+      setRefreshData(true);
+      handleClose();
+    });
   };
 
   const handleSubmitEdit = (id, data) => {
-    workApi.update(id, data);
-    window.location.reload();
-    handleClose();
+    workApi.update(id, data).then((res) => {
+      setToastText("Updated Successfully!");
+      setOpenToast(true);
+      setRefreshData(true);
+      handleClose();
+    });
   };
 
   const handleClickEdit = (rowData) => {
@@ -96,6 +115,12 @@ function Work() {
           editData={editData}
         />
       </Box>
+
+      <CustomizedSnackbars
+        open={openToast}
+        setOpen={setOpenToast}
+        labelText={toastText}
+      />
 
       <DeleteModal
         delOpen={popup.show}

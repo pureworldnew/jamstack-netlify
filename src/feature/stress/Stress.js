@@ -9,6 +9,7 @@ import { BackDrop } from "components/backdrop";
 import AddNewStress from "./AddNewStress";
 import stressApi from "services/stress";
 import DeleteModal from "components/delete-modal/DeleteModal";
+import CustomizedSnackbars from "components/customized-snackbars/CustomizedSnackbars";
 
 import * as myConsts from "consts";
 
@@ -16,6 +17,9 @@ function Stress() {
   const [entry, setEntry] = useState([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [openToast, setOpenToast] = useState(false);
+  const [toastText, setToastText] = useState("");
+  const [refreshData, setRefreshData] = useState(false);
   const [editData, setEditData] = useState({});
   const [popup, setPopup] = useState({
     show: false, // initial values set to false and null
@@ -23,24 +27,30 @@ function Stress() {
   });
 
   const columns = useMemo(() => myConsts.STRESS_COLUMNS, []);
+
+  const getData = async () => {
+    let res = await stressApi.readAll();
+    let entryArray = [];
+    res?.forEach((each) => {
+      const { data, ref } = each;
+      data["id"] = ref["@ref"]["id"];
+      if (data["createDate"] !== undefined) {
+        data["createDate"] = new Date(data["createDate"]).toLocaleDateString();
+      }
+      entryArray.push(data);
+    });
+    setEntry(entryArray);
+    setLoading(false);
+  };
   useEffect(() => {
     setLoading(true);
-    stressApi.readAll().then((res) => {
-      let entryArray = [];
-      res?.forEach((each) => {
-        const { data, ref } = each;
-        data["id"] = ref["@ref"]["id"];
-        if (data["createDate"] !== undefined) {
-          data["createDate"] = new Date(
-            data["createDate"]
-          ).toLocaleDateString();
-        }
-        entryArray.push(data);
-      });
-      setEntry(entryArray);
-      setLoading(false);
-    });
+    getData();
   }, []);
+
+  useEffect(() => {
+    getData();
+    setRefreshData(false);
+  }, [refreshData]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -61,21 +71,30 @@ function Stress() {
   const handleClickConfirm = () => {
     if (popup.show && popup.rowData) {
       stressApi.delete(popup.rowData.id).then((res) => {
-        window.location.reload();
+        setToastText("Deleted Successfully!");
+        setOpenToast(true);
+        setRefreshData(true);
+        setPopup({ show: false, rowData: null });
       });
     }
   };
 
   const handleSubmitNew = (data) => {
-    stressApi.create(data);
-    window.location.reload();
-    handleClose();
+    stressApi.create(data).then((res) => {
+      setToastText("Inserted Successfully!");
+      setOpenToast(true);
+      setRefreshData(true);
+      handleClose();
+    });
   };
 
   const handleSubmitEdit = (id, data) => {
-    stressApi.update(id, data);
-    window.location.reload();
-    handleClose();
+    stressApi.update(id, data).then((res) => {
+      setToastText("Updated Successfully!");
+      setOpenToast(true);
+      setRefreshData(true);
+      handleClose();
+    });
   };
 
   const handleClickEdit = (rowData) => {
@@ -97,6 +116,12 @@ function Stress() {
           editData={editData}
         />
       </Box>
+
+      <CustomizedSnackbars
+        open={openToast}
+        setOpen={setOpenToast}
+        labelText={toastText}
+      />
 
       <DeleteModal
         delOpen={popup.show}

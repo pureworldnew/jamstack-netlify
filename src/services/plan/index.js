@@ -9,10 +9,9 @@ const create = (data) => {
   });
 };
 
-const readAll = () => {
-  return fetch("/.netlify/functions/plan-read-all").then((response) => {
-    return response.json();
-  });
+const readAll = async () => {
+  let response = await fetch("/.netlify/functions/plan-read-all");
+  return response.json();
 };
 
 const readOnlyCurrent = () => {

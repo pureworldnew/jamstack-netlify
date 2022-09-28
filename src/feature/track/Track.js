@@ -9,11 +9,16 @@ import * as myConsts from "consts";
 import trackApi from "services/track";
 import DeleteModal from "components/delete-modal/DeleteModal";
 import useClockify from "hooks/useClockify";
+import CustomizedSnackbars from "components/customized-snackbars/CustomizedSnackbars";
+
 import { formatDate } from "utils/formatDate";
 
 export default function Track() {
   const [entry, setEntry] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [openToast, setOpenToast] = useState(false);
+  const [toastText, setToastText] = useState("");
+  const [refreshData, setRefreshData] = useState(false);
   const [popup, setPopup] = useState({
     show: false, // initial values set to false and null
     rowData: null,
@@ -54,6 +59,10 @@ export default function Track() {
   useEffect(() => {
     getData();
   }, []);
+  useEffect(() => {
+    getData();
+    setRefreshData(false);
+  }, [refreshData]);
 
   const handleClickClockifyImport = async () => {
     setLoading(true);
@@ -120,11 +129,11 @@ export default function Track() {
             trackApi
               .create(paramArray)
               .then((res) => {
-                setLoading(false);
-                getData();
+                setToastText("Track Data imported successfully!");
+                setOpenToast(true);
+                setRefreshData(true);
               })
               .catch((err) => console.log(err));
-            setLoading(false);
           })
           .catch((err) => console.log(err));
       } else {
@@ -165,12 +174,16 @@ export default function Track() {
               .udpateClockifyApiMeta(clockifyMetaId, { workspaceId, userId })
               .then((res) => {
                 console.log("clockify api key updated successfully", res);
+                setToastText("clockify api key updated successfully");
+                setOpenToast(true);
                 setLoading(false);
               });
           } else {
             trackApi
               .createClockifyApiMeta({ workspaceId, userId })
               .then((res) => {
+                setToastText("clockify api key created successfully");
+                setOpenToast(true);
                 console.log("clockify api key created successfully", res);
                 setLoading(false);
               });
@@ -201,10 +214,14 @@ export default function Track() {
           "DELETE"
         )
           .then(() => {
-            console.log("success after deleting from clockify api");
             trackApi.delete(popup.rowData.id).then((res) => {
-              getData();
-              console.log("successfully deleted from Fauna", res);
+              setPopup({
+                show: false,
+                rowData: null,
+              });
+              setToastText("Track Data deleted successfully!");
+              setOpenToast(true);
+              setRefreshData(true);
             });
           })
           .catch((err) => {
@@ -233,6 +250,12 @@ export default function Track() {
           Clockify Initialization
         </Button>
       </Box>
+
+      <CustomizedSnackbars
+        open={openToast}
+        setOpen={setOpenToast}
+        labelText={toastText}
+      />
 
       <DeleteModal
         delOpen={popup.show}

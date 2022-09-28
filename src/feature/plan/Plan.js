@@ -9,6 +9,7 @@ import { BackDrop } from "components/backdrop";
 import AddNewPlan from "./AddNewPlan";
 import planApi from "services/plan";
 import DeleteModal from "components/delete-modal/DeleteModal";
+import CustomizedSnackbars from "components/customized-snackbars/CustomizedSnackbars";
 
 import * as myConsts from "consts";
 
@@ -16,6 +17,9 @@ function Plan() {
   const [entry, setEntry] = useState([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [openToast, setOpenToast] = useState(false);
+  const [toastText, setToastText] = useState("");
+  const [refreshData, setRefreshData] = useState(false);
   const [popup, setPopup] = useState({
     show: false, // initial values set to false and null
     rowData: null,
@@ -23,29 +27,33 @@ function Plan() {
   const [editData, setEditData] = useState({});
 
   const columns = useMemo(() => myConsts.PLAN_COLUMNS, []);
+
+  const getData = async () => {
+    const res = await planApi.readAll();
+    let entryArray = [];
+    res.forEach((each) => {
+      const { data, ref } = each;
+      data["id"] = ref["@ref"]["id"];
+      if (data["createDate"] !== undefined) {
+        data["createDate"] = new Date(data["createDate"]).toLocaleString();
+      }
+      if (data["finishedDate"] !== undefined) {
+        data["finishedDate"] = new Date(data["finishedDate"]).toLocaleString();
+      }
+      entryArray.push(data);
+    });
+    setEntry(entryArray);
+    setLoading(false);
+  };
   useEffect(() => {
     setLoading(true);
-    planApi.readAll().then((res) => {
-      console.log("res", res);
-
-      let entryArray = [];
-      res.forEach((each) => {
-        const { data, ref } = each;
-        data["id"] = ref["@ref"]["id"];
-        if (data["createDate"] !== undefined) {
-          data["createDate"] = new Date(data["createDate"]).toLocaleString();
-        }
-        if (data["finishedDate"] !== undefined) {
-          data["finishedDate"] = new Date(
-            data["finishedDate"]
-          ).toLocaleString();
-        }
-        entryArray.push(data);
-      });
-      setEntry(entryArray);
-      setLoading(false);
-    });
+    getData();
   }, []);
+
+  useEffect(() => {
+    getData();
+    setRefreshData(false);
+  }, [refreshData]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -65,9 +73,11 @@ function Plan() {
 
   const handleClickConfirm = () => {
     if (popup.show && popup.rowData) {
-      planApi.delete(popup.rowData.id).then((res) => {
-        window.location.reload();
-      });
+      planApi.delete(popup.rowData.id);
+      setToastText("Deleted Successfully!");
+      setOpenToast(true);
+      setRefreshData(true);
+      setPopup({ show: false, rowData: null });
     }
   };
 
@@ -75,16 +85,21 @@ function Plan() {
     if (data.planStatus === undefined) {
       data.planStatus = "notFinished";
     }
-
-    planApi.create(data);
-    window.location.reload();
-    handleClose();
+    planApi.create(data).then((res) => {
+      setToastText("Inserted Successfully!");
+      setOpenToast(true);
+      setRefreshData(true);
+      handleClose();
+    });
   };
 
   const handleSubmitEdit = (id, data) => {
-    planApi.update(id, data);
-    window.location.reload();
-    handleClose();
+    planApi.update(id, data).then((res) => {
+      setToastText("Updated Successfully!");
+      setOpenToast(true);
+      setRefreshData(true);
+      handleClose();
+    });
   };
 
   const handleClickEdit = (rowData) => {
@@ -106,6 +121,11 @@ function Plan() {
           editData={editData}
         />
       </Box>
+      <CustomizedSnackbars
+        open={openToast}
+        setOpen={setOpenToast}
+        labelText={toastText}
+      />
       <DeleteModal
         delOpen={popup.show}
         setDelOpen={setPopup}
