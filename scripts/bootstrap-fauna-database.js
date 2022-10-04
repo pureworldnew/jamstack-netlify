@@ -69,13 +69,25 @@ function createFaunaDB(key) {
   const cashEntryPromise = client
     .query(q.CreateCollection({ name: "cash_entries" }))
     .then(() => {
-      return client.query(
+      let cashByDatePromise = client.query(
+        q.CreateIndex({
+          name: "all_cash_entries_by_date",
+          source: q.Collection("cash_entries"),
+          values: [
+            { field: ["data", "createDate"] },
+            { field: ["data", "cashValue"] },
+            { field: ["ref"] },
+          ],
+        })
+      );
+      let allCashPromise = client.query(
         q.CreateIndex({
           name: "all_cash_entries",
           source: q.Collection("cash_entries"),
           terms: [{ field: ["data", "element"] }],
         })
       );
+      return Promise.all([cashByDatePromise, allCashPromise]);
     });
   const stressEntryPromise = client
     .query(q.CreateCollection({ name: "stress_entries" }))

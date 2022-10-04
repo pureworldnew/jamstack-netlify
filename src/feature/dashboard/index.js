@@ -2,7 +2,7 @@ import * as React from "react";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Chart from "./Chart";
-import Deposits from "./Deposits";
+import Expense from "./Expense";
 import CurrentPlan from "./CurrentPlan";
 
 export default function Dashboard() {
@@ -21,7 +21,7 @@ export default function Dashboard() {
           <Chart />
         </Paper>
       </Grid>
-      {/* Recent Deposits */}
+      {/* Recent Expense */}
       <Grid item xs={12} md={4} lg={3}>
         <Paper
           sx={{
@@ -31,7 +31,7 @@ export default function Dashboard() {
             height: 240,
           }}
         >
-          <Deposits />
+          <Expense />
         </Paper>
       </Grid>
       {/* Recent Track */}

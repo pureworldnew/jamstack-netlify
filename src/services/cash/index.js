@@ -43,10 +43,21 @@ const batchDeleteCash = (cashIds) => {
   });
 };
 
+const cashDashboardSum = async (dateMonth) => {
+  let response = await fetch("/.netlify/functions/cash-dashboard-sum", {
+    body: JSON.stringify({
+      dateMonth: dateMonth,
+    }),
+    method: "POST",
+  });
+  return response.json();
+};
+
 export default {
   create,
   readAll,
   update,
   delete: deleteCash,
   batchDelete: batchDeleteCash,
+  cashDashboardSum,
 };

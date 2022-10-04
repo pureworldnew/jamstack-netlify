@@ -1,0 +1,38 @@
+import * as React from "react";
+
+import { Link } from "react-router-dom";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import Typography from "@mui/material/Typography";
+import Title from "./Title";
+import cashApi from "services/cash";
+import { formatDate } from "utils/formatDate";
+
+export default function Expense() {
+  const [expense, setExpernse] = React.useState(0);
+  React.useEffect(() => {
+    cashApi.cashDashboardSum("2022-09-27T05:00:00.000Z").then((res) => {
+      console.log("res from expense", res);
+      setExpernse(res.data[0]);
+    });
+  }, []);
+  return (
+    <React.Fragment>
+      <Title>Recent Expense</Title>
+      <Typography component="p" variant="h4">
+        {parseFloat(expense).toFixed(2)}
+      </Typography>
+      <Typography color="text.secondary" sx={{ flex: 1 }}>
+        {formatDate(new Date())}
+      </Typography>
+      <ListItemButton component={Link} to="/cash">
+        <ListItemIcon>
+          <AddShoppingCartIcon />
+        </ListItemIcon>
+        <ListItemText primary="Cash" />
+      </ListItemButton>
+    </React.Fragment>
+  );
+}

@@ -28,13 +28,11 @@ function Plan() {
   const columns = useMemo(() => myConsts.CASH_COLUMNS, []);
   const getData = async () => {
     const res = await cashApi.readAll();
+    console.log("res cash", res);
     let entryArray = [];
     res.forEach((each) => {
       const { data, ref } = each;
       data["id"] = ref["@ref"]["id"];
-      if (data["createDate"] !== undefined) {
-        data["createDate"] = new Date(data["createDate"]).toLocaleDateString();
-      }
       entryArray.push(data);
     });
     setEntry(entryArray);

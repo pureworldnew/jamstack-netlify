@@ -20,10 +20,16 @@ exports.handler = (event, context) => {
     )
     .then((response) => {
       const cashRefs = response.data;
-      console.log("cash refs", response);
+      let newCashRefs = cashRefs.map((each) => {
+        each.data.createDate = JSON.parse(JSON.stringify(each.data.createDate))[
+          "@date"
+        ];
+        return each;
+      });
+
       return {
         statusCode: 200,
-        body: JSON.stringify(cashRefs),
+        body: JSON.stringify(newCashRefs),
       };
     })
     .catch((error) => {

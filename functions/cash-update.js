@@ -13,6 +13,7 @@ exports.handler = (event, context) => {
   const data = JSON.parse(event.body);
   const id = getId(event.path);
   console.log(`Function 'cash-update' invoked. update id: ${id}`);
+  data["createDate"] = q.Date(data["createDate"].split("T")[0]);
   return client
     .query(q.Update(q.Ref(`classes/cash_entries/${id}`), { data }))
     .then((response) => {

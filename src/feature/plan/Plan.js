@@ -89,6 +89,7 @@ function Plan() {
       setToastText("Inserted Successfully!");
       setOpenToast(true);
       setRefreshData(true);
+      setPopup({ show: false, rowData: null });
       handleClose();
     });
   };
@@ -98,6 +99,7 @@ function Plan() {
       setToastText("Updated Successfully!");
       setOpenToast(true);
       setRefreshData(true);
+      setPopup({ show: false, rowData: null });
       handleClose();
     });
   };

@@ -12,20 +12,39 @@ exports.handler = async (event, context) => {
   });
   /* parse the string body into a useable JS object */
   const data = JSON.parse(event.body);
-  if (!data.hasOwnProperty("createDate")) {
-    data["createDate"] = new Date().toISOString().split("T")[0];
-  }
-  console.log("Function `cash-create` invoked", data);
-  data["createDate"] = q.Date(data["createDate"].split("T")[0]);
-  const cashItem = {
-    data: data,
-  };
-  console.log("cashItem is ", cashItem);
+
+  console.log("Function `cash-dashbaord-sum` invoked", data.dateMonth);
+  const date = new Date();
+  const firstDay = new Date(date.getFullYear(), date.getMonth(), 1)
+    .toISOString()
+    .split("T")[0];
+  const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0)
+    .toISOString()
+    .split("T")[0];
+
+  console.log("firstDay", firstDay, lastDay);
+
   /* construct the fauna query */
   return client
-    .query(q.Create(q.Collection("cash_entries"), cashItem))
+    .query(
+      q.Sum(
+        q.Map(
+          q.Paginate(
+            q.Range(
+              q.Match(q.Index("all_cash_entries_by_date")),
+              q.Date(firstDay),
+              q.Date(lastDay)
+            )
+          ),
+          q.Lambda(
+            ["createDate", "cashValue", "ref"],
+            q.ToNumber(q.Var("cashValue"))
+          )
+        )
+      )
+    )
     .then((response) => {
-      console.log("cash_entries insertsuccess", response);
+      console.log("cash_entries dashboard sum", response);
       /* Success! return the response with statusCode 200 */
       return {
         statusCode: 200,
