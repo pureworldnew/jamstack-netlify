@@ -34,7 +34,7 @@ export default function Track() {
     }
     trackApi.readAll().then((res) => {
       let entryArray = [];
-      console.log("trackData length", res.length);
+      console.log("res trackData", res);
       res.forEach((each) => {
         const { data, ref } = each;
         data["id"] = ref["@ref"]["id"];
