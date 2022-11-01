@@ -5,7 +5,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import loadable from "@loadable/component";
 import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
-import { Fallback } from "./components/fallback";
+import { Fallback } from "components/fallback";
 import { AppBar, Drawer, Copyright } from "components/nav";
 import { withErrorBoundary } from "react-error-boundary";
 import Alert from "@mui/material/Alert";

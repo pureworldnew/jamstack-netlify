@@ -2,8 +2,11 @@ import React from "react";
 import MaUTable from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
+import TableContainer from '@mui/material/TableContainer';
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import Paper from '@mui/material/Paper';
+import './TableStyle.css';
 import Button from "@mui/material/Button";
 import TablePagination from "@mui/material/TablePagination";
 
@@ -238,69 +241,72 @@ export function ReactTable({ columns, data, mode, initialState }) {
         setDelOpen={setPopup}
         handleClickConfirm={handleClickRows}
       />
-      <MaUTable {...getTableProps()}>
-        <TableHead>
-          {headerGroups.map((headerGroup) => (
-            <TableRow {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <TableCell
-                  {...column.getHeaderProps(column.getSortByToggleProps())}
-                >
-                  {column.render("Header")}
-                  {/* Render the columns filter UI */}
-                  <div>{column.canFilter ? column.render("Filter") : null}</div>
-                  {/* Add a sort direction indicator */}
-                  <span>
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? " 🔽"
-                        : " 🔼"
-                      : ""}
-                  </span>
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-          <tr>
-            <th
-              colSpan={visibleColumns.length}
-              style={{
-                textAlign: "left",
-              }}
-            >
-              <GlobalFilter
-                preGlobalFilteredRows={preGlobalFilteredRows}
-                globalFilter={globalFilter}
-                setGlobalFilter={setGlobalFilter}
-              />
-            </th>
-          </tr>
-        </TableHead>
-        <TableBody>
-          {page.map((row, i) => {
-            prepareRow(row);
-            return (
-              <TableRow {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return (
-                    <TableCell {...cell.getCellProps()}>
-                      {cell.render("Cell")}
-                    </TableCell>
-                  );
-                })}
+      <TableContainer component={Paper}>
+        <MaUTable sx={{ minWidth: 650 }} aria-label="simple table" {...getTableProps()}>
+          <TableHead>
+            {headerGroups.map((headerGroup) => (
+              <TableRow {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <TableCell component="th" scope="row"
+                    {...column.getHeaderProps(column.getSortByToggleProps())}
+                  >
+                    {column.render("Header")}
+                    {/* Render the columns filter UI */}
+                    <div>{column.canFilter ? column.render("Filter") : null}</div>
+                    {/* Add a sort direction indicator */}
+                    <span>
+                      {column.isSorted
+                        ? column.isSortedDesc
+                          ? " 🔽"
+                          : " 🔼"
+                        : ""}
+                    </span>
+                  </TableCell>
+                ))}
               </TableRow>
-            );
-          })}
-        </TableBody>
-      </MaUTable>
-      <TablePagination
-        component="div"
-        count={data.length}
-        page={pageIndex}
-        onPageChange={handleChangePage}
-        rowsPerPage={pageSize}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+            ))}
+            <tr>
+              <th
+                colSpan={visibleColumns.length}
+                style={{
+                  textAlign: "left",
+                }}
+              >
+                <GlobalFilter
+                  preGlobalFilteredRows={preGlobalFilteredRows}
+                  globalFilter={globalFilter}
+                  setGlobalFilter={setGlobalFilter}
+                />
+              </th>
+            </tr>
+          </TableHead>
+          <TableBody>
+            {page.map((row, i) => {
+              prepareRow(row);
+              return (
+                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} {...row.getRowProps()}>
+                  {row.cells.map((cell) => {
+                    return (
+                      <TableCell align="right" {...cell.getCellProps()}>
+                        {cell.render("Cell")}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </MaUTable>
+          <TablePagination
+            component="div"
+            count={data.length}
+            page={pageIndex}
+            onPageChange={handleChangePage}
+            rowsPerPage={pageSize}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+      </TableContainer>
+      
     </>
   );
 }

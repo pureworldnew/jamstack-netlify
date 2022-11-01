@@ -55,10 +55,6 @@ export default function Expense() {
             <ListItemText primary="Cash" />
           </ListItemButton>
         </Grid>
-        <Grid item md={6} xs={6}>
-          <InputLabel>Select Month</InputLabel>
-          <FormInputDatePicker name={"createDate"} control={control} />
-        </Grid>
       </Grid>
     </React.Fragment>
   );
