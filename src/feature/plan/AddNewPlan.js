@@ -41,6 +41,8 @@ export default function AddNewPlan({
   handleClose,
   editData,
 }) {
+  console.log("editData on props", editData);
+  let planEditData = { ...editData };
   const {
     control,
     handleSubmit,
@@ -68,17 +70,24 @@ export default function AddNewPlan({
   }, [editData]);
 
   const onSubmit = (data) => {
-    if (Object.keys(editData).length !== 0) {
-      handleSubmitEdit(editData.id, data);
+    console.log("onSubmitt function is here", planEditData, data);
+    console.log(
+      "Object.keys(editData).length",
+      Object.keys(planEditData).length
+    );
+    if (Object.keys(planEditData).length !== 0) {
+      console.log("updated console");
+      handleSubmitEdit(planEditData.id, data);
     } else {
-      handleSubmitNew(data);
+      console.log("added console");
+      debouncedClick(data);
     }
   };
 
   const debouncedClick = React.useCallback(
     debounce(
       (data) => {
-        onSubmit(data);
+        handleSubmitNew(data);
       },
       INTERVAL,
       { leading: true, trailing: false, maxWait: INTERVAL }
@@ -125,7 +134,7 @@ export default function AddNewPlan({
               <Button
                 autoFocus
                 color="inherit"
-                onClick={handleSubmit(debouncedClick)}
+                onClick={handleSubmit(onSubmit)}
               >
                 Save
               </Button>

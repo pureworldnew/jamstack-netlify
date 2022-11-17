@@ -90,10 +90,10 @@ function CurrentPlan() {
       local_data.planStatus = "notFinished";
     }
     planApi.create(local_data).then((res) => {
-      handleClose();
       setToastText("Inserted Successfully!");
       setOpenToast(true);
       setRefreshData(true);
+      handleClose();
     });
   };
 
