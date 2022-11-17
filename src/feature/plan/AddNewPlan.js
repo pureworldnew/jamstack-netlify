@@ -12,6 +12,7 @@ import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { debounce } from "lodash";
 import * as Yup from "yup";
 
 import * as myConsts from "consts";
@@ -25,6 +26,8 @@ import InputLabel from "@mui/material/InputLabel";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+
+const INTERVAL = 1000;
 
 const validationSchema = Yup.object().shape({
   planTitle: Yup.string().required("Title is required"),
@@ -72,6 +75,17 @@ export default function AddNewPlan({
     }
   };
 
+  const debouncedClick = React.useCallback(
+    debounce(
+      (data) => {
+        onSubmit(data);
+      },
+      INTERVAL,
+      { leading: true, trailing: false, maxWait: INTERVAL }
+    ),
+    []
+  );
+
   const handleCloseDialog = () => {
     reset({
       planTitle: "",
@@ -111,7 +125,7 @@ export default function AddNewPlan({
               <Button
                 autoFocus
                 color="inherit"
-                onClick={handleSubmit(onSubmit)}
+                onClick={handleSubmit(debouncedClick)}
               >
                 Save
               </Button>
