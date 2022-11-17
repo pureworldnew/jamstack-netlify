@@ -84,9 +84,10 @@ function CurrentPlan() {
   };
 
   const handleSubmitNew = (data) => {
+    console.log("data on handleSubmitNew", data);
     let local_data = JSON.parse(JSON.stringify(data));
-
-    if (local_data.planStatus === undefined) {
+    console.log("localData", local_data);
+    if (local_data.planStatus === undefined || local_data.planStatus === "") {
       local_data.planStatus = "notFinished";
     }
     planApi.create(local_data).then((res) => {

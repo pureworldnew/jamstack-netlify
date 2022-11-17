@@ -84,10 +84,9 @@ function Plan() {
   const handleSubmitNew = (data) => {
     let local_data = JSON.parse(JSON.stringify(data));
 
-    if (local_data.planStatus === undefined) {
+    if (local_data.planStatus === undefined || local_data.planStatus === "") {
       local_data.planStatus = "notFinished";
     }
-
     planApi.create(local_data).then((res) => {
       setToastText("Inserted Successfully!");
       setOpenToast(true);

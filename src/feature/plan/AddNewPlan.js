@@ -41,7 +41,6 @@ export default function AddNewPlan({
   handleClose,
   editData,
 }) {
-  console.log("editData on props", editData);
   let planEditData = { ...editData };
   const {
     control,
@@ -55,7 +54,6 @@ export default function AddNewPlan({
 
   React.useEffect(() => {
     if (Object.keys(editData).length !== 0) {
-      console.log(editData);
       setValue("planTitle", editData.planTitle);
       setValue("planDescription", editData.planDescription);
       setValue("planTags", editData.planTags);
@@ -70,16 +68,9 @@ export default function AddNewPlan({
   }, [editData]);
 
   const onSubmit = (data) => {
-    console.log("onSubmitt function is here", planEditData, data);
-    console.log(
-      "Object.keys(editData).length",
-      Object.keys(planEditData).length
-    );
     if (Object.keys(planEditData).length !== 0) {
-      console.log("updated console");
       handleSubmitEdit(planEditData.id, data);
     } else {
-      console.log("added console");
       debouncedClick(data);
     }
   };
@@ -88,6 +79,7 @@ export default function AddNewPlan({
     debounce(
       (data) => {
         handleSubmitNew(data);
+        handleCloseDialog();
       },
       INTERVAL,
       { leading: true, trailing: false, maxWait: INTERVAL }
