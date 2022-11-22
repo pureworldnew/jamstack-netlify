@@ -7,6 +7,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import * as myConsts from "consts";
+import { RouterBreadcrumbs } from "./Breadcrumbs";
 
 const CustomAppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -53,7 +54,7 @@ export function AppBar({ position, open, toggleDrawer }) {
           noWrap
           sx={{ flexGrow: 1 }}
         >
-          Dashboard
+          <RouterBreadcrumbs />
         </Typography>
         <IconButton color="inherit">
           <Badge badgeContent={4} color="secondary">
