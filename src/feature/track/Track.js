@@ -280,6 +280,8 @@ export default function Track() {
                   onDelete={() => handleClickDelete(row.row.original)}
                 />
               ),
+              disableFilters: true,
+              disableSortBy: true,
             },
           ]}
           data={entry}

@@ -141,6 +141,8 @@ function Plan() {
                   onDelete={() => handleClickDelete(row.row.original)}
                 />
               ),
+              disableFilters: true,
+              disableSortBy: true,
             },
             {
               Header: "Edit",
@@ -152,6 +154,8 @@ function Plan() {
                   onClick={() => handleClickEdit(row.row.original)}
                 />
               ),
+              disableFilters: true,
+              disableSortBy: true,
             },
           ]}
           data={entry}

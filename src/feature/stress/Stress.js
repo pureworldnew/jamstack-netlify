@@ -146,6 +146,8 @@ function Stress() {
                   onDelete={() => handleClickDelete(row.row.original)}
                 />
               ),
+              disableFilters: true,
+              disableSortBy: true,
             },
             {
               Header: "Edit",
@@ -157,6 +159,8 @@ function Stress() {
                   onClick={() => handleClickEdit(row.row.original)}
                 />
               ),
+              disableFilters: true,
+              disableSortBy: true,
             },
           ]}
           data={entry}

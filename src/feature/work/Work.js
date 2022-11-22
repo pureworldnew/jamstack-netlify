@@ -145,6 +145,8 @@ function Work() {
                   onDelete={() => handleClickDelete(row.row.original)}
                 />
               ),
+              disableFilters: true,
+              disableSortBy: true,
             },
             {
               Header: "Edit",
@@ -156,6 +158,8 @@ function Work() {
                   onClick={() => handleClickEdit(row.row.original)}
                 />
               ),
+              disableFilters: true,
+              disableSortBy: true,
             },
           ]}
           data={entry}
