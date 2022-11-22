@@ -15,7 +15,7 @@ export default function Dashboard() {
             p: 2,
             display: "flex",
             flexDirection: "column",
-            height: 240,
+            height: 440,
           }}
         >
           <Chart />
@@ -28,7 +28,7 @@ export default function Dashboard() {
             p: 2,
             display: "flex",
             flexDirection: "column",
-            height: 240,
+            height: 440,
           }}
         >
           <Expense />
