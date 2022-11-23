@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import trackApi from "services/track";
 import { BackDrop } from "components/backdrop";
+import useClockify from "hooks/useClockify";
 import * as dayjs from "dayjs";
 
 import {
@@ -20,53 +21,60 @@ import {
 export default function Chart() {
   const [loading, setLoading] = useState(false);
   const [graphData, setGraphData] = useState([]);
+  const [projectName, setProjectName] = useState([]);
 
-  const parseChartData = (entryArray) => {
+  const getProjectName = async () => {
+    try {
+      const clockifyMeta = await trackApi.readClockifyApiMeta();
+      console.log("clockifyMeta ", clockifyMeta);
+      if (clockifyMeta.length === 1) {
+        const { workspaceId } = clockifyMeta[0].data;
+        return useClockify(
+          `https://api.clockify.me/api/v1/workspaces/${workspaceId}/projects`,
+          "GET"
+        )
+          .then((response) => response.map((each) => each.name))
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        alert("Please initialize clockify first");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const parseChartData = async (entryArray) => {
     let chartDataArr = new Array(7);
+    let projectNameArr = await getProjectName();
+    setProjectName(projectNameArr);
     for (let i = 0; i < 7; i++) {
       let dateOfWeek = dayjs(dayjs().day(i)).format("YYYY-MM-DD");
+
       chartDataArr[i] = {
         name: dateOfWeek + " / " + dayjs(dateOfWeek).format("ddd"),
-        workT: 0,
-        languageT: 0,
-        sportsT: 0,
-        sleepT: 0,
       };
+      projectNameArr.forEach((projectName) => {
+        chartDataArr[i][projectName] = 0;
+      });
 
       entryArray.forEach((each) => {
         for (let j = 0; j < each.length; j++) {
           let recordObj = each[j];
           if (recordObj.trackCreateDate === dateOfWeek) {
-            switch (recordObj.projectName) {
-              case "WorkT": {
-                console.log(
-                  "chartDataArr[i].workT",
-                  chartDataArr[i].workT,
-                  recordObj.duration
-                );
-                chartDataArr[i].workT += Number(recordObj.duration);
-                break;
+            projectNameArr.forEach((projectName) => {
+              if (recordObj.projectName === projectName) {
+                chartDataArr[i][projectName] += +recordObj.duration;
               }
-              case "languageT":
-                chartDataArr[i].languageT += Number(recordObj.duration);
-                break;
-              case "sportsT": {
-                chartDataArr[i].sportsT += parseFloat(recordObj.duration);
-                break;
-              }
-              case "SleepT":
-                chartDataArr[i].sleepT += Number(recordObj.duration);
-                break;
-              default:
-                break;
-            }
+            });
           }
         }
       });
-      chartDataArr[i].workT = chartDataArr[i].workT.toFixed(2);
-      chartDataArr[i].languageT = chartDataArr[i].languageT.toFixed(2);
-      chartDataArr[i].sportsT = chartDataArr[i].sportsT.toFixed(2);
-      chartDataArr[i].sleepT = chartDataArr[i].sleepT.toFixed(2);
+
+      projectNameArr.forEach((projectName) => {
+        chartDataArr[i][projectName] = chartDataArr[i][projectName].toFixed(2);
+      });
     }
     setGraphData(chartDataArr);
   };
@@ -77,7 +85,6 @@ export default function Chart() {
     }
     trackApi.readAll().then((res) => {
       let entryArray = [];
-      console.log("res trackData", res);
       res.forEach((each) => {
         entryArray.push(each.data.chartStatusData);
       });
@@ -112,13 +119,13 @@ export default function Chart() {
             <Legend />
             <Area
               type="monotone"
-              dataKey="workT"
+              dataKey={projectName[3]}
               fill="#8884d8"
               stroke="#8884d8"
             />
-            <Bar dataKey="sportsT" barSize={20} fill="#413ea0" />
-            <Line type="monotone" dataKey="sleepT" stroke="#ff7300" />
-            <Scatter dataKey="languageT" fill="red" />
+            <Bar dataKey={projectName[2]} barSize={20} fill="#413ea0" />
+            <Line type="monotone" dataKey={projectName[1]} stroke="#ff7300" />
+            <Scatter dataKey={projectName[0]} fill="red" />
           </ComposedChart>
         </ResponsiveContainer>
       )}
