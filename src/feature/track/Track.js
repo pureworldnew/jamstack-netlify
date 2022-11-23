@@ -10,6 +10,7 @@ import trackApi from "services/track";
 import DeleteModal from "components/delete-modal/DeleteModal";
 import useClockify from "hooks/useClockify";
 import CustomizedSnackbars from "components/customized-snackbars/CustomizedSnackbars";
+import * as dayjs from "dayjs";
 
 import { formatDate } from "utils/formatDate";
 
@@ -112,11 +113,46 @@ export default function Track() {
                   tagName = res.join(",");
                 });
               }
+              let startDateString = dayjs(each.timeInterval.start).format(
+                "YYYY-MM-DD"
+              );
+              if (each.timeInterval.end === null) continue;
+              let endDateString = dayjs(each.timeInterval.end).format(
+                "YYYY-MM-DD"
+              );
+              console.log("endDateString", endDateString);
+              let chartStatusData = [];
+              if (startDateString === endDateString) {
+                chartStatusData.push({
+                  trackCreateDate: startDateString,
+                  duration: dayjs(each.timeInterval.end)
+                    .diff(dayjs(each.timeInterval.start), "m", true)
+                    .toFixed(2),
+                  projectName,
+                });
+              } else {
+                chartStatusData.push({
+                  trackCreateDate: startDateString,
+                  duration: dayjs(dayjs(startDateString).add(1, "day"))
+                    .diff(dayjs(each.timeInterval.start), "m", true)
+                    .toFixed(2),
+                  projectName,
+                });
+                chartStatusData.push({
+                  trackCreateDate: endDateString,
+                  duration: dayjs(each.timeInterval.end)
+                    .diff(dayjs(endDateString), "m", true)
+                    .toFixed(2),
+                  projectName,
+                });
+              }
+
               paramArray.push({
                 data: {
                   timeEntryId: each.id,
                   description: each.description,
                   projectId: projectName,
+                  chartStatusData,
                   start: each.timeInterval.start,
                   end: each.timeInterval.end,
                   duration: each.timeInterval.duration,
