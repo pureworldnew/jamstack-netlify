@@ -77,6 +77,7 @@ export default function Chart() {
       });
     }
     setGraphData(chartDataArr);
+    setLoading(false);
   };
 
   const getData = () => {
@@ -88,7 +89,6 @@ export default function Chart() {
       res.forEach((each) => {
         entryArray.push(each.data.chartStatusData);
       });
-      setLoading(false);
       parseChartData(entryArray);
     });
   };
