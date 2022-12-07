@@ -15,7 +15,7 @@ exports.handler = (event, context) => {
     .query(
       q.Map(
         q.Paginate(q.Match(q.Index("all_track_entries")), { size: 100 }),
-        q.Lambda(["timeEntryId", "ref"], q.Get(q.Var("ref")))
+        q.Lambda(["endDateTime", "timeEntryId", "ref"], q.Get(q.Var("ref")))
       )
     )
     .then((response) => {

@@ -139,7 +139,11 @@ function createFaunaDB(key) {
         q.CreateIndex({
           name: "all_track_entries",
           source: q.Collection("track_entries"),
-          values: [{ field: ["data", "timeEntryId"] }, { field: ["ref"] }],
+          values: [
+            { field: ["data", "end"], reverse: true },
+            { field: ["data", "timeEntryId"] },
+            { field: ["ref"] },
+          ],
         })
       );
     });
