@@ -135,9 +135,9 @@ function createFaunaDB(key) {
   const timeEntryPromise = client
     .query(q.CreateCollection({ name: "track_entries" }))
     .then(() => {
-      return client.query(
+      let trackSortByEndPromise = client.query(
         q.CreateIndex({
-          name: "all_track_entries",
+          name: "track_sort_by_end",
           source: q.Collection("track_entries"),
           values: [
             { field: ["data", "end"], reverse: true },
@@ -146,6 +146,19 @@ function createFaunaDB(key) {
           ],
         })
       );
+
+      let trackSearchByTimeEntryIdPromise = client.query(
+        q.CreateIndex({
+          name: "track_search_by_timeEntryId",
+          source: q.Collection("track_entries"),
+          terms: [{ field: ["data", "timeEntryId"] }],
+        })
+      );
+
+      return Promise.all([
+        trackSortByEndPromise,
+        trackSearchByTimeEntryIdPromise,
+      ]);
     });
 
   const allPromises = [
