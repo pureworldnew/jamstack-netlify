@@ -15,7 +15,7 @@ exports.handler = (event, context) => {
     .query(
       q.Map(
         q.Paginate(q.Match(q.Index("all_plan_entries_by_createDate"))),
-        q.Lambda("createDate", q.Get(q.Select([1], q.Var("createDate"))))
+        q.Lambda(["createDate", "ref"], q.Get(q.Var("ref")))
       )
     )
     .then((response) => {

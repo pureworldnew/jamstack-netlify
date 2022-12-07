@@ -109,7 +109,10 @@ function createFaunaDB(key) {
           name: "all_plan_entries_by_planStatus",
           source: q.Collection("plan_entries"),
           terms: [{ field: ["data", "planStatus"] }],
-          values: [{ field: ["ref"] }],
+          values: [
+            { field: ["data", "createDate"], reverse: true },
+            { field: ["ref"] },
+          ],
         })
       );
 
@@ -117,7 +120,10 @@ function createFaunaDB(key) {
         q.CreateIndex({
           name: "all_plan_entries_by_createDate",
           source: q.Collection("plan_entries"),
-          values: [{ field: ["data", "createDate"] }, { field: ["ref"] }],
+          values: [
+            { field: ["data", "createDate"], reverse: true },
+            { field: ["ref"] },
+          ],
         })
       );
       return Promise.all([

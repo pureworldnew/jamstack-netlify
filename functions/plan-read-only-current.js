@@ -17,7 +17,7 @@ exports.handler = (event, context) => {
         q.Paginate(
           q.Match(q.Index("all_plan_entries_by_planStatus"), "notFinished")
         ),
-        q.Lambda((x) => q.Get(x))
+        q.Lambda(["createDate", "ref"], q.Get(q.Var("ref")))
       )
     )
     .then((response) => {
