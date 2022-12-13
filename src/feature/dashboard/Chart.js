@@ -46,6 +46,8 @@ export default function Chart() {
   };
 
   const parseChartData = async (entryArray) => {
+    console.log("EntryArray", entryArray);
+    if (!entryArray.length) return;
     let chartDataArr = new Array(7);
     let projectNameArr = await getProjectName();
     setProjectName(projectNameArr);
@@ -60,6 +62,7 @@ export default function Chart() {
       });
 
       entryArray.forEach((each) => {
+        if (!each?.length) return;
         for (let j = 0; j < each.length; j++) {
           let recordObj = each[j];
           if (recordObj.trackCreateDate === dateOfWeek) {
