@@ -12,6 +12,7 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import signInImage from "assets/difficult-roads.jpg";
 
 function Copyright(props) {
   return (
@@ -31,9 +32,19 @@ function Copyright(props) {
   );
 }
 
-const theme = createTheme();
+const theme = createTheme({
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          overflow: "hidden",
+        },
+      },
+    },
+  },
+});
 
-export default function SignInSide() {
+function SignInSide() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -53,7 +64,7 @@ export default function SignInSide() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: "url(https://source.unsplash.com/random)",
+            backgroundImage: `url(${signInImage})`,
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
               t.palette.mode === "light"
@@ -137,3 +148,5 @@ export default function SignInSide() {
     </ThemeProvider>
   );
 }
+
+export default SignInSide;

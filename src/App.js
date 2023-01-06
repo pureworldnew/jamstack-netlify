@@ -1,14 +1,12 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
+import { Routes, Route } from "react-router-dom";
+
 import loadable from "@loadable/component";
-import Toolbar from "@mui/material/Toolbar";
-import Container from "@mui/material/Container";
-import { Fallback } from "components/fallback";
-import { AppBar, Drawer, Copyright } from "components/nav";
 import { withErrorBoundary } from "react-error-boundary";
 import Alert from "@mui/material/Alert";
+
+import { Fallback } from "components/fallback";
+import { ProtectedLayout, HomeLayout } from "components/layout";
 
 function ErrorFallback({ error, resetErrorBoundary }) {
   return (
@@ -19,6 +17,30 @@ function ErrorFallback({ error, resetErrorBoundary }) {
     </Alert>
   );
 }
+
+const LoginComponent = loadable(() => import("./feature/auth/signin/Signin"), {
+  fallback: <Fallback />,
+});
+
+const LoginComponentWithErrorBoundary = withErrorBoundary(LoginComponent, {
+  FallbackComponent: ErrorFallback,
+  onError(error, info) {
+    // Do something with the error
+    // E.g. log to an error logging client here
+  },
+});
+
+const SignupComponent = loadable(() => import("./feature/auth/signup/Signup"), {
+  fallback: <Fallback />,
+});
+
+const SignupComponentWithErrorBoundary = withErrorBoundary(SignupComponent, {
+  FallbackComponent: ErrorFallback,
+  onError(error, info) {
+    // Do something with the error
+    // E.g. log to an error logging client here
+  },
+});
 
 const PlanComponent = loadable(() => import("./feature/plan/Plan"), {
   fallback: <Fallback />,
@@ -96,61 +118,20 @@ const TrackComponentWithErrorBoundary = withErrorBoundary(TrackComponent, {
 });
 
 export default function App() {
-  const [open, setOpen] = React.useState(true);
-  const toggleDrawer = () => {
-    setOpen(!open);
-  };
-
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <Router>
-        <AppBar position="absolute" open={open} toggleDrawer={toggleDrawer} />
-        <Drawer variant="permanent" open={open} toggleDrawer={toggleDrawer} />
-        <Box
-          component="main"
-          sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === "light"
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-            flexGrow: 1,
-            height: "100vh",
-            overflow: "auto",
-          }}
-        >
-          <Toolbar />
-          <Container maxWidth="false" sx={{ mt: 4, mb: 4 }}>
-            <Routes>
-              <Route
-                path="/plan"
-                element={<PlanComponentWithErrorBoundary />}
-              />
-              <Route
-                path="/track"
-                element={<TrackComponentWithErrorBoundary />}
-              />
-              <Route
-                path="/stress"
-                element={<StressComponentWithErrorBoundary />}
-              />
-              <Route
-                path="/cash"
-                element={<CashComponentWithErrorBoundary />}
-              />
-              <Route
-                path="/work"
-                element={<WorkComponentWithErrorBoundary />}
-              />
-              <Route
-                path="/"
-                element={<DashboardComponentWithErrorBoundary />}
-              />
-            </Routes>
-            <Copyright sx={{ pt: 4 }} />
-          </Container>
-        </Box>
-      </Router>
-    </Box>
+    <Routes>
+      <Route path="/" element={<ProtectedLayout />}>
+        <Route index element={<DashboardComponentWithErrorBoundary />} />
+        <Route path="/plan" element={<PlanComponentWithErrorBoundary />} />
+        <Route path="/track" element={<TrackComponentWithErrorBoundary />} />
+        <Route path="/stress" element={<StressComponentWithErrorBoundary />} />
+        <Route path="/cash" element={<CashComponentWithErrorBoundary />} />
+        <Route path="/work" element={<WorkComponentWithErrorBoundary />} />
+      </Route>
+      <Route element={<HomeLayout />}>
+        <Route path="/signin" element={<LoginComponentWithErrorBoundary />} />
+        <Route path="/signup" element={<SignupComponentWithErrorBoundary />} />
+      </Route>
+    </Routes>
   );
 }

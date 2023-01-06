@@ -12,7 +12,7 @@ import DeleteModal from "components/delete-modal/DeleteModal";
 import CustomizedSnackbars from "components/customized-snackbars/CustomizedSnackbars";
 import * as myConsts from "consts";
 
-function Plan() {
+function Cash() {
   const [entry, setEntry] = useState([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -166,4 +166,4 @@ function Plan() {
   );
 }
 
-export default Plan;
+export default Cash;

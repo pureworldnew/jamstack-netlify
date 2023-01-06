@@ -6,4 +6,13 @@ export default createTheme({
       main: "#4caf50",
     },
   },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          overflow: "hidden",
+        },
+      },
+    },
+  },
 });
