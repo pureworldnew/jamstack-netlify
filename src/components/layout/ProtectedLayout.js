@@ -1,5 +1,6 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { useAuth } from "hooks/useAuth";
+import { Navigate, Outlet } from "react-router-dom";
 
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -9,7 +10,11 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { AppBar, Drawer, Copyright } from "components/nav";
 
 export function ProtectedLayout() {
+  const { user } = useAuth();
   const [open, setOpen] = React.useState(true);
+  if (!user) {
+    return <Navigate to="/" />;
+  }
 
   const toggleDrawer = () => {
     setOpen(!open);

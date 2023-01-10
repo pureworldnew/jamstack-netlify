@@ -274,3 +274,5 @@ export const CASH_COLUMNS = [
     ],
   },
 ];
+
+export const SETTINGS = ["Profile", "Account", "Dashboard", "Logout"];

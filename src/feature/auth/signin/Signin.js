@@ -13,24 +13,8 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import signInImage from "assets/difficult-roads.jpg";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import { Copyright } from "components/nav";
+import { useAuth } from "hooks/useAuth";
 
 const theme = createTheme({
   components: {
@@ -45,10 +29,15 @@ const theme = createTheme({
 });
 
 function SignInSide() {
+  const { login } = useAuth();
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
+      email: data.get("email"),
+      password: data.get("password"),
+    });
+    login({
       email: data.get("email"),
       password: data.get("password"),
     });
@@ -135,7 +124,7 @@ function SignInSide() {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link href="/signup" variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>

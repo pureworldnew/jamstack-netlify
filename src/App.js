@@ -120,17 +120,21 @@ const TrackComponentWithErrorBoundary = withErrorBoundary(TrackComponent, {
 export default function App() {
   return (
     <Routes>
+      <Route path="/" element={<HomeLayout />}>
+        <Route index element={<LoginComponentWithErrorBoundary />} />
+        <Route path="/signin" element={<LoginComponentWithErrorBoundary />} />
+        <Route path="/signup" element={<SignupComponentWithErrorBoundary />} />
+      </Route>
       <Route path="/" element={<ProtectedLayout />}>
-        <Route index element={<DashboardComponentWithErrorBoundary />} />
+        <Route
+          path="/dashboard"
+          element={<DashboardComponentWithErrorBoundary />}
+        />
         <Route path="/plan" element={<PlanComponentWithErrorBoundary />} />
         <Route path="/track" element={<TrackComponentWithErrorBoundary />} />
         <Route path="/stress" element={<StressComponentWithErrorBoundary />} />
         <Route path="/cash" element={<CashComponentWithErrorBoundary />} />
         <Route path="/work" element={<WorkComponentWithErrorBoundary />} />
-      </Route>
-      <Route element={<HomeLayout />}>
-        <Route path="/signin" element={<LoginComponentWithErrorBoundary />} />
-        <Route path="/signup" element={<SignupComponentWithErrorBoundary />} />
       </Route>
     </Routes>
   );
