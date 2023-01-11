@@ -1,46 +1,41 @@
 /* Api methods to call /functions */
 
-const create = (data) => {
-  return fetch("/.netlify/functions/cash-create", {
+const create = async (data) => {
+  const response = await fetch("/.netlify/functions/cash-create", {
     body: JSON.stringify(data),
     method: "POST",
-  }).then((response) => {
-    return response.json();
   });
+  return await response.json();
 };
 
-const readAll = () => {
-  return fetch("/.netlify/functions/cash-read-all").then((response) => {
-    return response.json();
-  });
+const readAll = async () => {
+  const response = await fetch("/.netlify/functions/cash-read-all");
+  return await response.json();
 };
 
-const update = (cashId, data) => {
-  return fetch(`/.netlify/functions/cash-update/${cashId}`, {
+const update = async (cashId, data) => {
+  const response = await fetch(`/.netlify/functions/cash-update/${cashId}`, {
     body: JSON.stringify(data),
     method: "POST",
-  }).then((response) => {
-    return response.json();
   });
+  return await response.json();
 };
 
-const deleteCash = (cashId) => {
-  return fetch(`/.netlify/functions/cash-delete/${cashId}`, {
+const deleteCash = async (cashId) => {
+  const response = await fetch(`/.netlify/functions/cash-delete/${cashId}`, {
     method: "POST",
-  }).then((response) => {
-    return response.json();
   });
+  return await response.json();
 };
 
-const batchDeleteCash = (cashIds) => {
-  return fetch(`/.netlify/functions/cash-delete-batch`, {
+const batchDeleteCash = async (cashIds) => {
+  const response = await fetch(`/.netlify/functions/cash-delete-batch`, {
     body: JSON.stringify({
       ids: cashIds,
     }),
     method: "POST",
-  }).then((response) => {
-    return response.json();
   });
+  return await response.json();
 };
 
 const cashDashboardSum = async (dateMonth) => {

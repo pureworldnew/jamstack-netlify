@@ -18,72 +18,10 @@ function ErrorFallback({ error, resetErrorBoundary }) {
   );
 }
 
-const LoginComponent = loadable(() => import("./feature/auth/signin/Signin"), {
-  fallback: <Fallback />,
-});
-
-const LoginComponentWithErrorBoundary = withErrorBoundary(LoginComponent, {
-  FallbackComponent: ErrorFallback,
-  onError(error, info) {
-    // Do something with the error
-    // E.g. log to an error logging client here
-  },
-});
-
-const SignupComponent = loadable(() => import("./feature/auth/signup/Signup"), {
-  fallback: <Fallback />,
-});
-
-const SignupComponentWithErrorBoundary = withErrorBoundary(SignupComponent, {
-  FallbackComponent: ErrorFallback,
-  onError(error, info) {
-    // Do something with the error
-    // E.g. log to an error logging client here
-  },
-});
-
-const PlanComponent = loadable(() => import("./feature/plan/Plan"), {
-  fallback: <Fallback />,
-});
-
-const PlanComponentWithErrorBoundary = withErrorBoundary(PlanComponent, {
-  FallbackComponent: ErrorFallback,
-  onError(error, info) {
-    // Do something with the error
-    // E.g. log to an error logging client here
-  },
-});
-
-const CashComponent = loadable(() => import("./feature/cash/Cash"), {
-  fallback: <Fallback />,
-});
-
-const CashComponentWithErrorBoundary = withErrorBoundary(CashComponent, {
-  FallbackComponent: ErrorFallback,
-  onError(error, info) {
-    // Do something with the error
-    // E.g. log to an error logging client here
-  },
-});
-
-const WorkComponent = loadable(() => import("./feature/work/Work"), {
-  fallback: <Fallback />,
-});
-
-const WorkComponentWithErrorBoundary = withErrorBoundary(WorkComponent, {
-  FallbackComponent: ErrorFallback,
-  onError(error, info) {
-    // Do something with the error
-    // E.g. log to an error logging client here
-  },
-});
-
-const DashboardComponent = loadable(() => import("./feature/dashboard"), {
-  fallback: <Fallback />,
-});
-
-const DashboardComponentWithErrorBoundary = withErrorBoundary(
-  DashboardComponent,
+const LoginComponentWithErrorBoundary = withErrorBoundary(
+  loadable(() => import("./feature/auth/signin/Signin"), {
+    fallback: <Fallback />,
+  }),
   {
     FallbackComponent: ErrorFallback,
     onError(error, info) {
@@ -93,29 +31,96 @@ const DashboardComponentWithErrorBoundary = withErrorBoundary(
   }
 );
 
-const StressComponent = loadable(() => import("./feature/stress/Stress"), {
-  fallback: <Fallback />,
-});
+const SignupComponentWithErrorBoundary = withErrorBoundary(
+  loadable(() => import("./feature/auth/signup/Signup"), {
+    fallback: <Fallback />,
+  }),
+  {
+    FallbackComponent: ErrorFallback,
+    onError(error, info) {
+      // Do something with the error
+      // E.g. log to an error logging client here
+    },
+  }
+);
 
-const StressComponentWithErrorBoundary = withErrorBoundary(StressComponent, {
-  FallbackComponent: ErrorFallback,
-  onError(error, info) {
-    // Do something with the error
-    // E.g. log to an error logging client here
-  },
-});
+const PlanComponentWithErrorBoundary = withErrorBoundary(
+  loadable(() => import("./feature/plan/Plan"), {
+    fallback: <Fallback />,
+  }),
+  {
+    FallbackComponent: ErrorFallback,
+    onError(error, info) {
+      // Do something with the error
+      // E.g. log to an error logging client here
+    },
+  }
+);
 
-const TrackComponent = loadable(() => import("./feature/track/Track"), {
-  fallback: <Fallback />,
-});
+const CashComponentWithErrorBoundary = withErrorBoundary(
+  loadable(() => import("./feature/cash/Cash"), {
+    fallback: <Fallback />,
+  }),
+  {
+    FallbackComponent: ErrorFallback,
+    onError(error, info) {
+      // Do something with the error
+      // E.g. log to an error logging client here
+    },
+  }
+);
 
-const TrackComponentWithErrorBoundary = withErrorBoundary(TrackComponent, {
-  FallbackComponent: ErrorFallback,
-  onError(error, info) {
-    // Do something with the error
-    // E.g. log to an error logging client here
-  },
-});
+const WorkComponentWithErrorBoundary = withErrorBoundary(
+  loadable(() => import("./feature/work/Work"), {
+    fallback: <Fallback />,
+  }),
+  {
+    FallbackComponent: ErrorFallback,
+    onError(error, info) {
+      // Do something with the error
+      // E.g. log to an error logging client here
+    },
+  }
+);
+
+const DashboardComponentWithErrorBoundary = withErrorBoundary(
+  loadable(() => import("./feature/dashboard"), {
+    fallback: <Fallback />,
+  }),
+  {
+    FallbackComponent: ErrorFallback,
+    onError(error, info) {
+      // Do something with the error
+      // E.g. log to an error logging client here
+    },
+  }
+);
+
+const StressComponentWithErrorBoundary = withErrorBoundary(
+  loadable(() => import("./feature/stress/Stress"), {
+    fallback: <Fallback />,
+  }),
+  {
+    FallbackComponent: ErrorFallback,
+    onError(error, info) {
+      // Do something with the error
+      // E.g. log to an error logging client here
+    },
+  }
+);
+
+const TrackComponentWithErrorBoundary = withErrorBoundary(
+  loadable(() => import("./feature/track/Track"), {
+    fallback: <Fallback />,
+  }),
+  {
+    FallbackComponent: ErrorFallback,
+    onError(error, info) {
+      // Do something with the error
+      // E.g. log to an error logging client here
+    },
+  }
+);
 
 export default function App() {
   return (
