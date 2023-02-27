@@ -30,6 +30,7 @@ const theme = createTheme({
 
 function SignInSide() {
   const { login } = useAuth();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
