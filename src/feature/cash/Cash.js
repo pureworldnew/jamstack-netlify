@@ -6,164 +6,136 @@ import Chip from "@mui/material/Chip";
 
 import { ReactTable } from "components/table";
 import { BackDrop } from "components/backdrop";
-import AddNewCash from "./AddNewCash";
 import cashApi from "services/cash";
 import DeleteModal from "components/delete-modal/DeleteModal";
 import CustomizedSnackbars from "components/customized-snackbars/CustomizedSnackbars";
 import * as myConsts from "consts";
+import AddNewCash from "./AddNewCash";
 
 function Cash() {
-  const [entry, setEntry] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [openToast, setOpenToast] = useState(false);
-  const [toastText, setToastText] = useState("");
-  const [refreshData, setRefreshData] = useState(false);
-  const [popup, setPopup] = useState({
-    show: false, // initial values set to false and null
-    rowData: null,
-  });
-  const [editData, setEditData] = useState({});
+   const [entry, setEntry] = useState([]);
+   const [loading, setLoading] = useState(false);
+   const [open, setOpen] = useState(false);
+   const [openToast, setOpenToast] = useState(false);
+   const [toastText, setToastText] = useState("");
+   const [refreshData, setRefreshData] = useState(false);
+   const [popup, setPopup] = useState({
+      show: false, // initial values set to false and null
+      rowData: null,
+   });
+   const [editData, setEditData] = useState({});
 
-  const columns = useMemo(() => myConsts.CASH_COLUMNS, []);
-  const getData = async () => {
-    const res = await cashApi.readAll();
-    console.log("res cash", res);
-    let entryArray = [];
-    res.forEach((each) => {
-      const { data, ref } = each;
-      data["id"] = ref["@ref"]["id"];
-      entryArray.push(data);
-    });
-    setEntry(entryArray);
-    setLoading(false);
-  };
-  useEffect(() => {
-    setLoading(true);
-    getData();
-  }, []);
+   const columns = useMemo(() => myConsts.CASH_COLUMNS, []);
+   const getData = async () => {
+      const res = await cashApi.readAll();
+      const entryArray = [];
+      res.forEach((each) => {
+         const { data, ref } = each;
+         data.id = ref["@ref"].id;
+         entryArray.push(data);
+      });
+      setEntry(entryArray);
+      setLoading(false);
+   };
+   useEffect(() => {
+      setLoading(true);
+      getData();
+   }, []);
 
-  useEffect(() => {
-    getData();
-    setRefreshData(false);
-  }, [refreshData]);
+   useEffect(() => {
+      getData();
+      setRefreshData(false);
+   }, [refreshData]);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+   const handleClickOpen = () => {
+      setOpen(true);
+   };
 
-  const handleClose = () => {
-    setEditData({});
-    setOpen(false);
-  };
+   const handleClose = () => {
+      setEditData({});
+      setOpen(false);
+   };
 
-  const handleClickDelete = (rowData) => {
-    setPopup({
-      show: true,
-      rowData,
-    });
-  };
+   const handleClickDelete = (rowData) => {
+      setPopup({
+         show: true,
+         rowData,
+      });
+   };
 
-  const handleClickConfirm = () => {
-    if (popup.show && popup.rowData) {
-      cashApi.delete(popup.rowData.id);
-      setToastText("Deleted Successfully!");
-      setOpenToast(true);
-      setRefreshData(true);
-      setPopup({ show: false, rowData: null });
-    }
-  };
+   const handleClickConfirm = () => {
+      if (popup.show && popup.rowData) {
+         cashApi.delete(popup.rowData.id);
+         setToastText("Deleted Successfully!");
+         setOpenToast(true);
+         setRefreshData(true);
+         setPopup({ show: false, rowData: null });
+      }
+   };
 
-  const handleSubmitNew = (data) => {
-    cashApi.create(data).then((res) => {
-      setToastText("Inserted Successfully!");
-      setOpenToast(true);
-      setRefreshData(true);
-      handleClose();
-    });
-  };
+   const handleSubmitNew = (data) => {
+      cashApi.create(data).then((res) => {
+         setToastText("Inserted Successfully!");
+         setOpenToast(true);
+         setRefreshData(true);
+         handleClose();
+      });
+   };
 
-  const handleSubmitEdit = (id, data) => {
-    cashApi.update(id, data).then((res) => {
-      setToastText("Updated Successfully!");
-      setOpenToast(true);
-      setRefreshData(true);
-      handleClose();
-    });
-  };
+   const handleSubmitEdit = (id, data) => {
+      cashApi.update(id, data).then((res) => {
+         setToastText("Updated Successfully!");
+         setOpenToast(true);
+         setRefreshData(true);
+         handleClose();
+      });
+   };
 
-  const handleClickEdit = (rowData) => {
-    setEditData(rowData);
-    setOpen(true);
-  };
+   const handleClickEdit = (rowData) => {
+      setEditData(rowData);
+      setOpen(true);
+   };
 
-  return (
-    <>
-      <CssBaseline />
-      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-        <AddNewCash
-          open={open}
-          setOpen={setOpen}
-          handleClickOpen={handleClickOpen}
-          handleClose={handleClose}
-          handleSubmitNew={handleSubmitNew}
-          handleSubmitEdit={handleSubmitEdit}
-          editData={editData}
-        />
-      </Box>
+   return (
+      <>
+         <CssBaseline />
+         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <AddNewCash open={open} setOpen={setOpen} handleClickOpen={handleClickOpen} handleClose={handleClose} handleSubmitNew={handleSubmitNew} handleSubmitEdit={handleSubmitEdit} editData={editData} />
+         </Box>
 
-      <CustomizedSnackbars
-        open={openToast}
-        setOpen={setOpenToast}
-        labelText={toastText}
-      />
+         <CustomizedSnackbars open={openToast} setOpen={setOpenToast} labelText={toastText} />
 
-      <DeleteModal
-        delOpen={popup.show}
-        setDelOpen={setPopup}
-        handleClickConfirm={handleClickConfirm}
-      />
+         <DeleteModal delOpen={popup.show} setDelOpen={setPopup} handleClickConfirm={handleClickConfirm} />
 
-      {loading ? (
-        <BackDrop open={loading} />
-      ) : (
-        <ReactTable
-          columns={[
-            ...columns,
-            {
-              Header: "Delete",
-              id: "delete",
-              accessor: (str) => "delete",
-              Cell: (row) => (
-                <Chip
-                  label="Delete"
-                  onClick={() => handleClickDelete(row.row.original)}
-                  onDelete={() => handleClickDelete(row.row.original)}
-                />
-              ),
-              disableFilters: true,
-              disableSortBy: true,
-            },
-            {
-              Header: "Edit",
-              id: "edit",
-              accessor: (str) => "Edit",
-              Cell: (row) => (
-                <Chip
-                  label="Edit"
-                  onClick={() => handleClickEdit(row.row.original)}
-                />
-              ),
-              disableFilters: true,
-              disableSortBy: true,
-            },
-          ]}
-          data={entry}
-          mode={"cashEntry"}
-        />
-      )}
-    </>
-  );
+         {loading ? (
+            <BackDrop open={loading} />
+         ) : (
+            <ReactTable
+               columns={[
+                  ...columns,
+                  {
+                     Header: "Delete",
+                     id: "delete",
+                     accessor: (str) => "delete",
+                     Cell: (row) => <Chip label="Delete" onClick={() => handleClickDelete(row.row.original)} onDelete={() => handleClickDelete(row.row.original)} />,
+                     disableFilters: true,
+                     disableSortBy: true,
+                  },
+                  {
+                     Header: "Edit",
+                     id: "edit",
+                     accessor: (str) => "Edit",
+                     Cell: (row) => <Chip label="Edit" onClick={() => handleClickEdit(row.row.original)} />,
+                     disableFilters: true,
+                     disableSortBy: true,
+                  },
+               ]}
+               data={entry}
+               mode="cashEntry"
+            />
+         )}
+      </>
+   );
 }
 
 export default Cash;

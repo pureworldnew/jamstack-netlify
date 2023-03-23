@@ -16,150 +16,111 @@ import * as Yup from "yup";
 
 import { FormInputText, FormInputDatePicker } from "components/form";
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 const validationSchema = Yup.object().shape({
-  cashTitle: Yup.string().required("Title is required"),
+   cashTitle: Yup.string().required("Title is required"),
 });
 
-export default function AddNewCash({
-  open,
-  handleClickOpen,
-  handleSubmitNew,
-  handleSubmitEdit,
-  handleClose,
-  editData,
-}) {
-  const {
-    control,
-    handleSubmit,
-    setValue,
-    reset,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(validationSchema),
-  });
+function AddNewCash({ open, handleClickOpen, handleSubmitNew, handleSubmitEdit, handleClose, editData }) {
+   const {
+      control,
+      handleSubmit,
+      setValue,
+      reset,
+      formState: { errors },
+   } = useForm({
+      resolver: yupResolver(validationSchema),
+   });
 
-  React.useEffect(() => {
-    if (Object.keys(editData).length !== 0) {
-      console.log(editData);
-      setValue("cashTitle", editData.cashTitle);
-      setValue("cashValue", editData.cashValue);
-      setValue("cashForWhom", editData.cashForWhom);
-      setValue("cashWhy", editData.cashWhy);
-      setValue("planStatus", editData.planStatus);
-      setValue("createDate", new Date(editData.createDate));
-    }
-  }, [editData]);
+   React.useEffect(() => {
+      if (Object.keys(editData).length !== 0) {
+         console.log(editData);
+         setValue("cashTitle", editData.cashTitle);
+         setValue("cashValue", editData.cashValue);
+         setValue("cashForWhom", editData.cashForWhom);
+         setValue("cashWhy", editData.cashWhy);
+         setValue("planStatus", editData.planStatus);
+         setValue("createDate", new Date(editData.createDate));
+      }
+   }, [editData]);
 
-  const onSubmit = (data) => {
-    if (Object.keys(editData).length !== 0) {
-      handleSubmitEdit(editData.id, data);
-    } else {
-      handleSubmitNew(data);
-    }
-  };
+   const onSubmit = (data) => {
+      if (Object.keys(editData).length !== 0) {
+         handleSubmitEdit(editData.id, data);
+      } else {
+         handleSubmitNew(data);
+      }
+   };
 
-  const handleCloseDialog = () => {
-    reset({
-      cashTitle: "",
-      cashValue: "",
-      cashForWhom: "",
-      cashWhy: "",
-      planStatus: "",
-    });
-    handleClose();
-  };
+   const handleCloseDialog = () => {
+      reset({
+         cashTitle: "",
+         cashValue: "",
+         cashForWhom: "",
+         cashWhy: "",
+         planStatus: "",
+      });
+      handleClose();
+   };
 
-  return (
-    <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Create New
-      </Button>
-      <Dialog
-        fullScreen
-        open={open}
-        onClose={handleCloseDialog}
-        TransitionComponent={Transition}
-      >
-        <form>
-          <AppBar sx={{ position: "relative" }}>
-            <Toolbar>
-              <IconButton
-                edge="start"
-                color="inherit"
-                onClick={handleCloseDialog}
-                aria-label="close"
-              >
-                <CloseIcon />
-              </IconButton>
-              <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-                Delete
-              </Typography>
-              <Button
-                autoFocus
-                color="inherit"
-                onClick={handleSubmit(onSubmit)}
-              >
-                Save
-              </Button>
-            </Toolbar>
-          </AppBar>
-          <Box
-            sx={{
-              "& .MuiTextField-root": { m: 1 },
-              p: 3,
-            }}
-            noValidate
-            autoComplete="off"
-          >
-            <Divider>About what I spent</Divider>
-            <Grid container spacing={2} alignItems="center">
-              <Grid item md={6} xs={6}>
-                <FormInputText
-                  name={"cashTitle"}
-                  control={control}
-                  label={"Title"}
-                  required={true}
-                  error={errors.cashTitle ? true : false}
-                />
-                <Typography variant="inherit" color="textSecondary">
-                  {errors.cashTitle?.message}
-                </Typography>
-              </Grid>
-              <Grid item md={3} xs={6}>
-                <FormInputText
-                  name={"cashValue"}
-                  control={control}
-                  label={"Budget"}
-                />
-              </Grid>
-              <Grid item md={3} xs={6}>
-                <FormInputDatePicker name={"createDate"} control={control} />
-              </Grid>
-            </Grid>
-            <Divider>About why and for whom I spent</Divider>
-            <Grid container spacing={2} alignItems="center">
-              <Grid item md={6} xs={6}>
-                <FormInputText
-                  name={"cashForWhom"}
-                  control={control}
-                  label={"For whom"}
-                />
-              </Grid>
-              <Grid item md={6} xs={6}>
-                <FormInputText
-                  name={"cashWhy"}
-                  control={control}
-                  label={"Reason"}
-                />
-              </Grid>
-            </Grid>
-          </Box>
-        </form>
-      </Dialog>
-    </div>
-  );
+   return (
+      <div>
+         <Button variant="outlined" onClick={handleClickOpen}>
+            Create New
+         </Button>
+         <Dialog fullScreen open={open} onClose={handleCloseDialog} TransitionComponent={Transition}>
+            <form>
+               <AppBar sx={{ position: "relative" }}>
+                  <Toolbar>
+                     <IconButton edge="start" color="inherit" onClick={handleCloseDialog} aria-label="close">
+                        <CloseIcon />
+                     </IconButton>
+                     <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+                        Delete
+                     </Typography>
+                     <Button autoFocus color="inherit" onClick={handleSubmit(onSubmit)}>
+                        Save
+                     </Button>
+                  </Toolbar>
+               </AppBar>
+               <Box
+                  sx={{
+                     "& .MuiTextField-root": { m: 1 },
+                     p: 3,
+                  }}
+                  noValidate
+                  autoComplete="off"
+               >
+                  <Divider>About what I spent</Divider>
+                  <Grid container spacing={2} alignItems="center">
+                     <Grid item md={6} xs={6}>
+                        <FormInputText name="cashTitle" control={control} label="Title" required error={!!errors.cashTitle} />
+                        <Typography variant="inherit" color="textSecondary">
+                           {errors.cashTitle?.message}
+                        </Typography>
+                     </Grid>
+                     <Grid item md={3} xs={6}>
+                        <FormInputText name="cashValue" control={control} label="Budget" />
+                     </Grid>
+                     <Grid item md={3} xs={6}>
+                        <FormInputDatePicker name="createDate" control={control} />
+                     </Grid>
+                  </Grid>
+                  <Divider>About why and for whom I spent</Divider>
+                  <Grid container spacing={2} alignItems="center">
+                     <Grid item md={6} xs={6}>
+                        <FormInputText name="cashForWhom" control={control} label="For whom" />
+                     </Grid>
+                     <Grid item md={6} xs={6}>
+                        <FormInputText name="cashWhy" control={control} label="Reason" />
+                     </Grid>
+                  </Grid>
+               </Box>
+            </form>
+         </Dialog>
+      </div>
+   );
 }
+
+export default AddNewCash;

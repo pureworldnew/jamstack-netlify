@@ -1,1 +1,1 @@
-export * from "./Cash";
+export { default as Cash } from "./Cash";
