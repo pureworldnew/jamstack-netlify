@@ -1,6 +1,7 @@
 /* Api methods to call /functions */
 
 const create = async (data) => {
+  console.log("plan is for testing", data);
   const response = await fetch("/.netlify/functions/plan-create", {
     body: JSON.stringify(data),
     method: "POST",

@@ -53,7 +53,6 @@ function createFaunaDB(key) {
         })
       );
     });
-
   const workEntryPromise = client
     .query(q.CreateCollection({ name: "work_entries" }))
     .then(() => {
@@ -65,7 +64,6 @@ function createFaunaDB(key) {
         })
       );
     });
-
   const cashEntryPromise = client
     .query(q.CreateCollection({ name: "cash_entries" }))
     .then(() => {
@@ -100,7 +98,6 @@ function createFaunaDB(key) {
         })
       );
     });
-
   const planEntryPromise = client
     .query(q.CreateCollection({ name: "plan_entries" }))
     .then(() => {
@@ -131,7 +128,6 @@ function createFaunaDB(key) {
         allPlanEntriesByCreateDatePromise,
       ]);
     });
-
   const timeEntryPromise = client
     .query(q.CreateCollection({ name: "track_entries" }))
     .then(() => {
@@ -160,6 +156,16 @@ function createFaunaDB(key) {
         trackSearchByTimeEntryIdPromise,
       ]);
     });
+  const userEntryPromise = client
+    .query(q.CreateCollection({ name: "user_entries" }))
+    .then(() => {
+      return client.query(
+        q.CreateIndex({
+          name: "all_user_entries",
+          source: q.Collection("user_entries"),
+        })
+      );
+    });
 
   const allPromises = [
     clockifyPromise,
@@ -168,6 +174,7 @@ function createFaunaDB(key) {
     timeEntryPromise,
     cashEntryPromise,
     stressEntryPromise,
+    userEntryPromise,
   ];
 
   return Promise.allSettled(allPromises)

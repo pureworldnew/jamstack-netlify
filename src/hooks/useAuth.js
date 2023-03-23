@@ -1,6 +1,7 @@
 import { createContext, useContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "./useLocalStorage";
+import authService from "services/auth";
 
 const AuthContext = createContext();
 
@@ -10,6 +11,7 @@ export const AuthProvider = ({ children, userData }) => {
 
   const login = async (data) => {
     setUser(data);
+    authService.signIn(data).then((res) => console.log(res));
     navigate("/dashboard", { replace: true });
   };
 

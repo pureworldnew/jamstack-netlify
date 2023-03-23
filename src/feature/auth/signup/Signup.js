@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Copyright } from "components/nav";
+import authService from "services/auth";
 
 const theme = createTheme();
 
@@ -23,7 +24,17 @@ export default function SignUp() {
     console.log({
       email: data.get("email"),
       password: data.get("password"),
+      firstName: data.get("firstName"),
+      lastName: data.get("lastName"),
     });
+    authService
+      .signUp({
+        email: data.get("email"),
+        password: data.get("password"),
+        firstName: data.get("firstName"),
+        lastName: data.get("lastName"),
+      })
+      .then((res) => console.log(res));
   };
 
   return (

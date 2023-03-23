@@ -2,6 +2,9 @@
 const faunadb = require("faunadb");
 const q = faunadb.query;
 const getDBSecret = require("./utils/getDBSecret");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
 /* export our lambda function as named "handler" export */
 exports.handler = async (event, context) => {
   /* configure faunaDB Client with our secret */
@@ -12,20 +15,20 @@ exports.handler = async (event, context) => {
   });
   /* parse the string body into a useable JS object */
   const data = JSON.parse(event.body);
-  if (!data.hasOwnProperty("createDate")) {
-    data["createDate"] = new Date().toISOString().split("T")[0];
-  }
   console.log("Function `auth-signup` invoked", data);
-  data["createDate"] = q.Date(data["createDate"].split("T")[0]);
-  const cashItem = {
-    data: data,
+
+  const salt = await bcrypt.genSalt();
+  const hashPassword = await bcrypt.hash(data.password, salt);
+  const userItem = {
+    data: { ...data, password: hashPassword },
   };
-  console.log("cashItem is ", cashItem);
+
+  console.log("hashPassword", hashPassword);
   /* construct the fauna query */
   return client
-    .query(q.Create(q.Collection("cash_entries"), cashItem))
+    .query(q.Create(q.Collection("user_entries"), userItem))
     .then((response) => {
-      console.log("cash_entries insertsuccess", response);
+      console.log("user_entries insertsuccess", response);
       /* Success! return the response with statusCode 200 */
       return {
         statusCode: 200,

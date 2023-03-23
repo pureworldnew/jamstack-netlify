@@ -1,4 +1,4 @@
-const singUp = async (data) => {
+const signUp = async (data) => {
   const response = await fetch("/.netlify/functions/auth-signup", {
     body: JSON.stringify(data),
     method: "POST",
@@ -13,14 +13,14 @@ const signIn = async () => {
 
 const logOut = async () => {
   const response = await fetch(`/.netlify/functions/auth-logout`, {
-    body: JSON.stringify(data),
+    body: JSON.stringify(),
     method: "POST",
   });
   return await response.json();
 };
 
 export default {
-  singUp,
+  signUp,
   signIn,
   logOut,
 };
