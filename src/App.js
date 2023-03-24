@@ -1,9 +1,12 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 import loadable from "@loadable/component";
 import { withErrorBoundary } from "react-error-boundary";
 import Alert from "@mui/material/Alert";
+
+import { Button } from "@mui/material";
 
 import { Fallback } from "components/fallback";
 import { ProtectedLayout, HomeLayout } from "components/layout";
@@ -13,7 +16,7 @@ function ErrorFallback({ error, resetErrorBoundary }) {
       <Alert severity="error">
          <p>Something went wrong:</p>
          <pre>{error.message}</pre>
-         <button onClick={resetErrorBoundary}>Try again</button>
+         <Button onClick={resetErrorBoundary}>Try again</Button>
       </Alert>
    );
 }
