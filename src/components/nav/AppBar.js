@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
@@ -93,7 +94,13 @@ function AppBar({ position, open, toggleDrawer }) {
             >
                <MenuIcon />
             </IconButton>
-            <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
+            <Typography
+               component="h1"
+               variant="h6"
+               color="inherit"
+               noWrap
+               sx={{ flexGrow: 1 }}
+            >
                <RouterBreadcrumbs />
             </Typography>
             <IconButton color="inherit">
@@ -131,7 +138,9 @@ function AppBar({ position, open, toggleDrawer }) {
                                  {setting}
                               </Typography>
                            ) : (
-                              <Typography textAlign="center">{setting}</Typography>
+                              <Typography textAlign="center">
+                                 {setting}
+                              </Typography>
                            )}
                         </MenuItem>
                      ))}

@@ -5,7 +5,10 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 
 // eslint-disable-next-line react/jsx-props-no-spreading
-const Alert = React.forwardRef((props, ref) => <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />);
+const Alert = React.forwardRef((props, ref) => (
+   // eslint-disable-next-line react/jsx-props-no-spreading
+   <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
+));
 
 export default function CustomizedSnackbars({ open, setOpen, labelText }) {
    const handleClose = (event, reason) => {
@@ -18,7 +21,11 @@ export default function CustomizedSnackbars({ open, setOpen, labelText }) {
    return (
       <Stack spacing={2} sx={{ width: "100%" }}>
          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-            <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+            <Alert
+               onClose={handleClose}
+               severity="success"
+               sx={{ width: "100%" }}
+            >
                {labelText}
             </Alert>
          </Snackbar>

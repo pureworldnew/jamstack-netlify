@@ -6,7 +6,14 @@ import Select from "@mui/material/Select";
 
 import { Controller } from "react-hook-form";
 
-export function FormInputDropdown({ name, control, id, labelId, labelText, options }) {
+export function FormInputDropdown({
+   name,
+   control,
+   id,
+   labelId,
+   labelText,
+   options,
+}) {
    const generateSelectOptions = () =>
       options.map((option) => (
          <MenuItem key={option.value} value={option.value}>
@@ -21,7 +28,14 @@ export function FormInputDropdown({ name, control, id, labelId, labelText, optio
          render={({ field: { onChange, value } }) => (
             <FormControl sx={{ m: 1, minWidth: 120 }}>
                <InputLabel id={labelId}>{labelText}</InputLabel>
-               <Select labelId={labelId} id={id} onChange={onChange} value={value || "notFinished"} autoWidth label={labelText}>
+               <Select
+                  labelId={labelId}
+                  id={id}
+                  onChange={onChange}
+                  value={value || "notFinished"}
+                  autoWidth
+                  label={labelText}
+               >
                   {generateSelectOptions()}
                </Select>
             </FormControl>
