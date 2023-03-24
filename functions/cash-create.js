@@ -13,9 +13,11 @@ exports.handler = async (event, context) => {
    });
    /* parse the string body into a useable JS object */
    const data = JSON.parse(event.body);
-   if (!data.hasOwnProperty("createDate")) {
-      data.createDate = new Date().toISOString().split("T")[0];
+   if (!Object.prototype.hasOwnProperty.call(data, "createDate")) {
+      const [one] = new Date().toISOString().split("T");
+      data.createDate = one;
    }
+
    console.log("Function `cash-create` invoked", data);
    data.createDate = q.Date(data.createDate.split("T")[0]);
    const cashItem = {

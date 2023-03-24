@@ -14,7 +14,9 @@ exports.handler = async (event, context) => {
    const data = JSON.parse(event.body);
    console.log("Function `cash-delete-batch` invoked", data.ids);
    // construct batch query from IDs
-   const deleteAllCompletedCashQuery = data.ids.map((id) => q.Delete(q.Ref(`classes/cash_entries/${id}`)));
+   const deleteAllCompletedCashQuery = data.ids.map((id) =>
+      q.Delete(q.Ref(`classes/cash_entries/${id}`))
+   );
    // Hit fauna with the query to delete the completed items
    return client
       .query(deleteAllCompletedCashQuery)

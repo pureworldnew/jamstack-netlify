@@ -5,7 +5,6 @@ const q = faunadb.query;
 const getDBSecret = require("./utils/getDBSecret");
 
 exports.handler = async (event, context) => {
-   console.log("Function `auth-signin` invoked");
    /* configure faunaDB Client with our secret */
    const client = new faunadb.Client({
       secret: getDBSecret(),
@@ -13,6 +12,7 @@ exports.handler = async (event, context) => {
       scheme: "https",
    });
    const data = JSON.parse(event.body);
+   console.log("Function `auth-signin` invoked", data);
 
    return client
       .query(
@@ -21,18 +21,7 @@ exports.handler = async (event, context) => {
             q.Lambda((x) => q.Get(x))
          )
       )
-      .then((response) => {
-         const cashRefs = response.data;
-         const newCashRefs = cashRefs.map((each) => {
-            each.data.createDate = JSON.parse(JSON.stringify(each.data.createDate))["@date"];
-            return each;
-         });
-
-         return {
-            statusCode: 200,
-            body: JSON.stringify(newCashRefs),
-         };
-      })
+      .then((response) => {})
       .catch((error) => {
          console.log("error", error);
          return {

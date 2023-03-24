@@ -1,3 +1,6 @@
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState, useMemo } from "react";
 
 import CssBaseline from "@mui/material/CssBaseline";
@@ -100,12 +103,28 @@ function Cash() {
       <>
          <CssBaseline />
          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-            <AddNewCash open={open} setOpen={setOpen} handleClickOpen={handleClickOpen} handleClose={handleClose} handleSubmitNew={handleSubmitNew} handleSubmitEdit={handleSubmitEdit} editData={editData} />
+            <AddNewCash
+               open={open}
+               setOpen={setOpen}
+               handleClickOpen={handleClickOpen}
+               handleClose={handleClose}
+               handleSubmitNew={handleSubmitNew}
+               handleSubmitEdit={handleSubmitEdit}
+               editData={editData}
+            />
          </Box>
 
-         <CustomizedSnackbars open={openToast} setOpen={setOpenToast} labelText={toastText} />
+         <CustomizedSnackbars
+            open={openToast}
+            setOpen={setOpenToast}
+            labelText={toastText}
+         />
 
-         <DeleteModal delOpen={popup.show} setDelOpen={setPopup} handleClickConfirm={handleClickConfirm} />
+         <DeleteModal
+            delOpen={popup.show}
+            setDelOpen={setPopup}
+            handleClickConfirm={handleClickConfirm}
+         />
 
          {loading ? (
             <BackDrop open={loading} />
@@ -117,7 +136,13 @@ function Cash() {
                      Header: "Delete",
                      id: "delete",
                      accessor: (str) => "delete",
-                     Cell: (row) => <Chip label="Delete" onClick={() => handleClickDelete(row.row.original)} onDelete={() => handleClickDelete(row.row.original)} />,
+                     Cell: (row) => (
+                        <Chip
+                           label="Delete"
+                           onClick={() => handleClickDelete(row.row.original)}
+                           onDelete={() => handleClickDelete(row.row.original)}
+                        />
+                     ),
                      disableFilters: true,
                      disableSortBy: true,
                   },
@@ -125,7 +150,12 @@ function Cash() {
                      Header: "Edit",
                      id: "edit",
                      accessor: (str) => "Edit",
-                     Cell: (row) => <Chip label="Edit" onClick={() => handleClickEdit(row.row.original)} />,
+                     Cell: (row) => (
+                        <Chip
+                           label="Edit"
+                           onClick={() => handleClickEdit(row.row.original)}
+                        />
+                     ),
                      disableFilters: true,
                      disableSortBy: true,
                   },

@@ -1,3 +1,6 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from "react";
 import MaUTable from "@mui/material/Table";
@@ -154,7 +157,7 @@ export function ReactTable({ columns, data, mode, initialState }) {
       usePagination,
       useRowSelect,
       (hooks) => {
-         hooks.visibleColumns.push((columns) => [
+         hooks.visibleColumns.push((cols) => [
             // Let's make a column for selection
             {
                id: "selection",
@@ -177,7 +180,7 @@ export function ReactTable({ columns, data, mode, initialState }) {
                   </div>
                ),
             },
-            ...columns,
+            ...cols,
          ]);
       }
    );
@@ -292,7 +295,7 @@ export function ReactTable({ columns, data, mode, initialState }) {
                   </tr>
                </TableHead>
                <TableBody>
-                  {page.map((row, i) => {
+                  {page.map((row) => {
                      prepareRow(row);
                      return (
                         <TableRow

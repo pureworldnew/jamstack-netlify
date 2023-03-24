@@ -16,14 +16,34 @@ exports.handler = async (event, context) => {
 
    console.log("Function `cash-dashbaord-sum` invoked", data.dateMonth);
    const date = new Date();
-   const firstDay = new Date(date.getFullYear(), date.getMonth(), 1).toISOString().split("T")[0];
-   const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).toISOString().split("T")[0];
+   const firstDay = new Date(date.getFullYear(), date.getMonth(), 1)
+      .toISOString()
+      .split("T")[0];
+   const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0)
+      .toISOString()
+      .split("T")[0];
 
    console.log("firstDay", firstDay, lastDay);
 
    /* construct the fauna query */
    return client
-      .query(q.Sum(q.Map(q.Paginate(q.Range(q.Match(q.Index("all_cash_entries_by_date")), q.Date(firstDay), q.Date(lastDay))), q.Lambda(["createDate", "cashValue", "ref"], q.ToNumber(q.Var("cashValue"))))))
+      .query(
+         q.Sum(
+            q.Map(
+               q.Paginate(
+                  q.Range(
+                     q.Match(q.Index("all_cash_entries_by_date")),
+                     q.Date(firstDay),
+                     q.Date(lastDay)
+                  )
+               ),
+               q.Lambda(
+                  ["createDate", "cashValue", "ref"],
+                  q.ToNumber(q.Var("cashValue"))
+               )
+            )
+         )
+      )
       .then((response) => {
          console.log("cash_entries dashboard sum", response);
          /* Success! return the response with statusCode 200 */

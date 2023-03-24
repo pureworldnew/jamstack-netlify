@@ -13,10 +13,10 @@ exports.handler = async (event, context) => {
    });
    /* parse the string body into a useable JS object */
    const data = JSON.parse(event.body);
-   if (!data.hasOwnProperty("stressStartDate")) {
+   if (!Object.prototype.hasOwnProperty.call(data, "stressStartDate")) {
       data.stressStartDate = new Date().toLocaleDateString();
    }
-   if (!data.hasOwnProperty("stressEndDate")) {
+   if (!Object.prototype.hasOwnProperty.call(data, "stressEndDate")) {
       data.stressEndDate = new Date().toLocaleDateString();
    }
    console.log("Function `stress-create` invoked", data);

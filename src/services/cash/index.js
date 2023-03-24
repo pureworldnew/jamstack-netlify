@@ -1,58 +1,51 @@
 /* Api methods to call /functions */
 
-const create = async (data) => {
-  const response = await fetch("/.netlify/functions/cash-create", {
-    body: JSON.stringify(data),
-    method: "POST",
-  });
-  return await response.json();
+const create = (data) => {
+   fetch("/.netlify/functions/cash-create", {
+      body: JSON.stringify(data),
+      method: "POST",
+   });
 };
 
-const readAll = async () => {
-  const response = await fetch("/.netlify/functions/cash-read-all");
-  return await response.json();
+const readAll = () => {
+   fetch("/.netlify/functions/cash-read-all");
 };
 
-const update = async (cashId, data) => {
-  const response = await fetch(`/.netlify/functions/cash-update/${cashId}`, {
-    body: JSON.stringify(data),
-    method: "POST",
-  });
-  return await response.json();
+const update = (cashId, data) => {
+   fetch(`/.netlify/functions/cash-update/${cashId}`, {
+      body: JSON.stringify(data),
+      method: "POST",
+   });
 };
 
-const deleteCash = async (cashId) => {
-  const response = await fetch(`/.netlify/functions/cash-delete/${cashId}`, {
-    method: "POST",
-  });
-  return await response.json();
+const deleteCash = (cashId) => {
+   fetch(`/.netlify/functions/cash-delete/${cashId}`, {
+      method: "POST",
+   });
 };
 
-const batchDeleteCash = async (cashIds) => {
-  const response = await fetch(`/.netlify/functions/cash-delete-batch`, {
-    body: JSON.stringify({
-      ids: cashIds,
-    }),
-    method: "POST",
-  });
-  return await response.json();
+const batchDeleteCash = (cashIds) => {
+   fetch(`/.netlify/functions/cash-delete-batch`, {
+      body: JSON.stringify({
+         ids: cashIds,
+      }),
+      method: "POST",
+   });
 };
 
-const cashDashboardSum = async (dateMonth) => {
-  let response = await fetch("/.netlify/functions/cash-dashboard-sum", {
-    body: JSON.stringify({
-      dateMonth: dateMonth,
-    }),
-    method: "POST",
-  });
-  return response.json();
-};
+const cashDashboardSum = (dateMonth) =>
+   fetch("/.netlify/functions/cash-dashboard-sum", {
+      body: JSON.stringify({
+         dateMonth,
+      }),
+      method: "POST",
+   });
 
 export default {
-  create,
-  readAll,
-  update,
-  delete: deleteCash,
-  batchDelete: batchDeleteCash,
-  cashDashboardSum,
+   create,
+   readAll,
+   update,
+   delete: deleteCash,
+   batchDelete: batchDeleteCash,
+   cashDashboardSum,
 };

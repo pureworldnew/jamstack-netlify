@@ -13,9 +13,10 @@ exports.handler = async (event, context) => {
    });
    /* parse the string body into a useable JS object */
    const data = JSON.parse(event.body);
-   if (!data.hasOwnProperty("createDate")) {
+   if (!Object.prototype.hasOwnProperty.call(data, "createDate")) {
       data.createDate = new Date().toLocaleDateString();
    }
+
    console.log("Function `work-create` invoked", data);
    const workItem = {
       data,

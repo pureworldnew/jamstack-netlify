@@ -13,7 +13,9 @@ exports.handler = (event, context) => {
    });
    const data = JSON.parse(event.body);
    const id = getId(event.path);
-   console.log(`Function 'track-clockify-meta-update' invoked. update id: ${id}`);
+   console.log(
+      `Function 'track-clockify-meta-update' invoked. update id: ${id}`
+   );
    return client
       .query(q.Update(q.Ref(`classes/clockify_meta_entries/${id}`), { data }))
       .then((response) => {

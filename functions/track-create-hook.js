@@ -113,25 +113,35 @@ exports.handler = async (event, context) => {
    //   body: JSON.stringify(defaultLocalMode),
    // };
 
-   const startDateString = dayjs(inputEntry.timeInterval.start).utcOffset(-6).format("YYYY-MM-DD");
+   const startDateString = dayjs(inputEntry.timeInterval.start)
+      .utcOffset(-6)
+      .format("YYYY-MM-DD");
 
-   const endDateString = dayjs(inputEntry.timeInterval.end).utcOffset(-6).format("YYYY-MM-DD");
+   const endDateString = dayjs(inputEntry.timeInterval.end)
+      .utcOffset(-6)
+      .format("YYYY-MM-DD");
    const chartStatusData = [];
    if (startDateString === endDateString) {
       chartStatusData.push({
          trackCreateDate: startDateString,
-         duration: dayjs(inputEntry.timeInterval.end).diff(dayjs(inputEntry.timeInterval.start), "m", true).toFixed(2),
+         duration: dayjs(inputEntry.timeInterval.end)
+            .diff(dayjs(inputEntry.timeInterval.start), "m", true)
+            .toFixed(2),
          projectName: inputEntry.project.name,
       });
    } else {
       chartStatusData.push({
          trackCreateDate: startDateString,
-         duration: dayjs(dayjs(startDateString).add(1, "day")).diff(dayjs(inputEntry.timeInterval.start), "m", true).toFixed(2),
+         duration: dayjs(dayjs(startDateString).add(1, "day"))
+            .diff(dayjs(inputEntry.timeInterval.start), "m", true)
+            .toFixed(2),
          projectName: inputEntry.project.name,
       });
       chartStatusData.push({
          trackCreateDate: endDateString,
-         duration: dayjs(inputEntry.timeInterval.end).diff(dayjs(endDateString), "m", true).toFixed(2),
+         duration: dayjs(inputEntry.timeInterval.end)
+            .diff(dayjs(endDateString), "m", true)
+            .toFixed(2),
          projectName: inputEntry.project.name,
       });
    }
@@ -141,8 +151,14 @@ exports.handler = async (event, context) => {
          description: inputEntry.description,
          projectId: inputEntry.project.name,
          chartStatusData,
-         start: dayjs(inputEntry.timeInterval.start).utc().format("YYYY-MM-DDTHH:mm:ss[Z]").toString(),
-         end: dayjs(inputEntry.timeInterval.end).utc().format("YYYY-MM-DDTHH:mm:ss[Z]").toString(),
+         start: dayjs(inputEntry.timeInterval.start)
+            .utc()
+            .format("YYYY-MM-DDTHH:mm:ss[Z]")
+            .toString(),
+         end: dayjs(inputEntry.timeInterval.end)
+            .utc()
+            .format("YYYY-MM-DDTHH:mm:ss[Z]")
+            .toString(),
          duration: inputEntry.timeInterval.duration,
          tagIds: "",
          taskId: "",

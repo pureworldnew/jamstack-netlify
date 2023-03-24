@@ -13,10 +13,10 @@ exports.handler = async (event, context) => {
    });
    /* parse the string body into a useable JS object */
    const data = JSON.parse(event.body);
-   if (!data.hasOwnProperty("createDate")) {
+   if (!Object.prototype.hasOwnProperty.call(data, "createDate")) {
       data.createDate = new Date().toISOString();
    }
-   if (!data.hasOwnProperty("finishedDate")) {
+   if (!Object.prototype.hasOwnProperty.call(data, "finishedDate")) {
       data.finishedDate = new Date().toISOString();
    }
    console.log("Function `plan-create` invoked", data);

@@ -15,7 +15,9 @@ exports.handler = async (event, context) => {
    console.log("data", data);
    console.log("Function `track-delete-batch` invoked", data.ids);
    // construct batch query from IDs
-   const deleteAllCompletedTrackQuery = data.ids.map((id) => q.Delete(q.Ref(`classes/track_entries/${id}`)));
+   const deleteAllCompletedTrackQuery = data.ids.map((id) =>
+      q.Delete(q.Ref(`classes/track_entries/${id}`))
+   );
    // Hit fauna with the query to delete the completed items
    return client
       .query(deleteAllCompletedTrackQuery)

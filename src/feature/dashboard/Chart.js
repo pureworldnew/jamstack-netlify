@@ -1,10 +1,23 @@
+/* eslint-disable consistent-return */
 import React, { useEffect, useState } from "react";
 import trackApi from "services/track";
 import { BackDrop } from "components/backdrop";
 import useClockify from "hooks/useClockify";
 import * as dayjs from "dayjs";
 
-import { ResponsiveContainer, ComposedChart, Line, Area, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Scatter, Legend } from "recharts";
+import {
+   ResponsiveContainer,
+   ComposedChart,
+   Line,
+   Area,
+   Bar,
+   XAxis,
+   YAxis,
+   CartesianGrid,
+   Tooltip,
+   Scatter,
+   Legend,
+} from "recharts";
 
 function Chart() {
    const [loading, setLoading] = useState(false);
@@ -17,13 +30,15 @@ function Chart() {
          console.log("clockifyMeta ", clockifyMeta);
          if (clockifyMeta.length === 1) {
             const { workspaceId } = clockifyMeta[0].data;
-            return useClockify(`https://api.clockify.me/api/v1/workspaces/${workspaceId}/projects`, "GET")
+            return useClockify(
+               `https://api.clockify.me/api/v1/workspaces/${workspaceId}/projects`,
+               "GET"
+            )
                .then((response) => response.map((each) => each.name))
                .catch((err) => {
                   console.log(err);
                });
          }
-         alert("Please initialize clockify first");
       } catch (err) {
          console.log(err);
       }
@@ -102,7 +117,12 @@ function Chart() {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Area type="monotone" dataKey={projectName[3]} fill="#8884d8" stroke="#8884d8" />
+            <Area
+               type="monotone"
+               dataKey={projectName[3]}
+               fill="#8884d8"
+               stroke="#8884d8"
+            />
             <Bar dataKey={projectName[2]} barSize={20} fill="#413ea0" />
             <Line type="monotone" dataKey={projectName[1]} stroke="#ff7300" />
             <Scatter dataKey={projectName[0]} fill="red" />

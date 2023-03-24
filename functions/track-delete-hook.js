@@ -79,7 +79,14 @@ exports.handler = async (event, context) => {
    const inputEntry = JSON.parse(event.body);
 
    return client
-      .query(q.Map(q.Paginate(q.Match(q.Index("track_search_by_timeEntryId"), inputEntry.id)), q.Lambda("X", q.Delete(q.Var("X")))))
+      .query(
+         q.Map(
+            q.Paginate(
+               q.Match(q.Index("track_search_by_timeEntryId"), inputEntry.id)
+            ),
+            q.Lambda("X", q.Delete(q.Var("X")))
+         )
+      )
       .then((response) => {
          console.log("time entry successfully removed", response);
          //

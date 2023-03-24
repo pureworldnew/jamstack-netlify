@@ -130,14 +130,29 @@ export default function App() {
       <Routes>
          <Route path="/" element={<HomeLayout />}>
             <Route index element={<LoginComponentWithErrorBoundary />} />
-            <Route path="/signin" element={<LoginComponentWithErrorBoundary />} />
-            <Route path="/signup" element={<SignupComponentWithErrorBoundary />} />
+            <Route
+               path="/signin"
+               element={<LoginComponentWithErrorBoundary />}
+            />
+            <Route
+               path="/signup"
+               element={<SignupComponentWithErrorBoundary />}
+            />
          </Route>
          <Route path="/" element={<ProtectedLayout />}>
-            <Route path="/dashboard" element={<DashboardComponentWithErrorBoundary />} />
+            <Route
+               path="/dashboard"
+               element={<DashboardComponentWithErrorBoundary />}
+            />
             <Route path="/plan" element={<PlanComponentWithErrorBoundary />} />
-            <Route path="/track" element={<TrackComponentWithErrorBoundary />} />
-            <Route path="/stress" element={<StressComponentWithErrorBoundary />} />
+            <Route
+               path="/track"
+               element={<TrackComponentWithErrorBoundary />}
+            />
+            <Route
+               path="/stress"
+               element={<StressComponentWithErrorBoundary />}
+            />
             <Route path="/cash" element={<CashComponentWithErrorBoundary />} />
             <Route path="/work" element={<WorkComponentWithErrorBoundary />} />
          </Route>

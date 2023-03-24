@@ -140,25 +140,35 @@ exports.handler = async (event, context) => {
    console.log("Function `track-update-hook` invoked");
    const inputEntry = JSON.parse(event.body);
 
-   const startDateString = dayjs(inputEntry.timeInterval.start).utcOffset(-6).format("YYYY-MM-DD");
+   const startDateString = dayjs(inputEntry.timeInterval.start)
+      .utcOffset(-6)
+      .format("YYYY-MM-DD");
 
-   const endDateString = dayjs(inputEntry.timeInterval.end).utcOffset(-6).format("YYYY-MM-DD");
+   const endDateString = dayjs(inputEntry.timeInterval.end)
+      .utcOffset(-6)
+      .format("YYYY-MM-DD");
    const chartStatusData = [];
    if (startDateString === endDateString) {
       chartStatusData.push({
          trackCreateDate: startDateString,
-         duration: dayjs(inputEntry.timeInterval.end).diff(dayjs(inputEntry.timeInterval.start), "m", true).toFixed(2),
+         duration: dayjs(inputEntry.timeInterval.end)
+            .diff(dayjs(inputEntry.timeInterval.start), "m", true)
+            .toFixed(2),
          projectName: inputEntry.project.name,
       });
    } else {
       chartStatusData.push({
          trackCreateDate: startDateString,
-         duration: dayjs(dayjs(startDateString).add(1, "day")).diff(dayjs(inputEntry.timeInterval.start), "m", true).toFixed(2),
+         duration: dayjs(dayjs(startDateString).add(1, "day"))
+            .diff(dayjs(inputEntry.timeInterval.start), "m", true)
+            .toFixed(2),
          projectName: inputEntry.project.name,
       });
       chartStatusData.push({
          trackCreateDate: endDateString,
-         duration: dayjs(inputEntry.timeInterval.end).diff(dayjs(endDateString), "m", true).toFixed(2),
+         duration: dayjs(inputEntry.timeInterval.end)
+            .diff(dayjs(endDateString), "m", true)
+            .toFixed(2),
          projectName: inputEntry.project.name,
       });
    }
@@ -166,7 +176,9 @@ exports.handler = async (event, context) => {
    return client
       .query(
          q.Map(
-            q.Paginate(q.Match(q.Index("track_search_by_timeEntryId"), inputEntry.id)),
+            q.Paginate(
+               q.Match(q.Index("track_search_by_timeEntryId"), inputEntry.id)
+            ),
             q.Lambda(
                "X",
                q.Replace(q.Var("X"), {
@@ -175,8 +187,14 @@ exports.handler = async (event, context) => {
                      description: inputEntry.description,
                      projectId: inputEntry.project.name,
                      chartStatusData,
-                     start: dayjs(inputEntry.timeInterval.start).utc().format("YYYY-MM-DDTHH:mm:ss[Z]").toString(),
-                     end: dayjs(inputEntry.timeInterval.end).utc().format("YYYY-MM-DDTHH:mm:ss[Z]").toString(),
+                     start: dayjs(inputEntry.timeInterval.start)
+                        .utc()
+                        .format("YYYY-MM-DDTHH:mm:ss[Z]")
+                        .toString(),
+                     end: dayjs(inputEntry.timeInterval.end)
+                        .utc()
+                        .format("YYYY-MM-DDTHH:mm:ss[Z]")
+                        .toString(),
                      duration: inputEntry.timeInterval.duration,
                      tagIds: "",
                      taskId: "",

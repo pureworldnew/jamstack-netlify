@@ -13,7 +13,12 @@ exports.handler = (event, context) => {
       scheme: "https",
    });
    return client
-      .query(q.Map(q.Paginate(q.Match(q.Index("track_sort_by_end")), { size: 100000 }), q.Lambda(["endDateTime", "timeEntryId", "ref"], q.Get(q.Var("ref")))))
+      .query(
+         q.Map(
+            q.Paginate(q.Match(q.Index("track_sort_by_end")), { size: 100000 }),
+            q.Lambda(["endDateTime", "timeEntryId", "ref"], q.Get(q.Var("ref")))
+         )
+      )
       .then((response) => {
          const trackRefs = response.data;
          console.log(`${trackRefs.length} Tracks found`);

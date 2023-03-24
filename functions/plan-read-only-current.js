@@ -13,7 +13,14 @@ exports.handler = (event, context) => {
       scheme: "https",
    });
    return client
-      .query(q.Map(q.Paginate(q.Match(q.Index("all_plan_entries_by_planStatus"), "notFinished")), q.Lambda(["createDate", "ref"], q.Get(q.Var("ref")))))
+      .query(
+         q.Map(
+            q.Paginate(
+               q.Match(q.Index("all_plan_entries_by_planStatus"), "notFinished")
+            ),
+            q.Lambda(["createDate", "ref"], q.Get(q.Var("ref")))
+         )
+      )
       .then((response) => {
          const planRefs = response.data;
          console.log("plan refs", response);
