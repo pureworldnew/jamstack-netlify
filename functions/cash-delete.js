@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* Import faunaDB sdk */
 const faunadb = require("faunadb");
 const getId = require("./utils/getId");
