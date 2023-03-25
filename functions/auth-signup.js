@@ -4,7 +4,6 @@ const faunadb = require("faunadb");
 
 const q = faunadb.query;
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const getDBSecret = require("./utils/getDBSecret");
 
 /* export our lambda function as named "handler" export */

@@ -20,7 +20,7 @@ export function AuthProvider({ children, userData }) {
 
    const login = async (data) => {
       authService.signIn(data).then((res) => {
-         console.log(res);
+         console.log("signIn response is", res);
          // get token from response
          const { token } = res.data;
          // set JWT token to local
