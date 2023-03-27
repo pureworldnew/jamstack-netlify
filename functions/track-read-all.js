@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* Import faunaDB sdk */
 const faunadb = require("faunadb");
-// const verifyToken = require("./utils/verifyToken");
 
 const q = faunadb.query;
 const getDBSecret = require("./utils/getDBSecret");

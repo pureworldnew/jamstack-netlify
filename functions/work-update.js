@@ -17,10 +17,7 @@ exports.handler = (event, context) => {
    console.log(`Function 'work-update' invoked. update id: ${id}`);
    return client
       .query(q.Update(q.Ref(`classes/work_entries/${id}`), { data }))
-      .then((response) => ({
-         statusCode: 200,
-         body: JSON.stringify(response),
-      }))
+      .then((response) => ({ statusCode: 200, body: JSON.stringify(response) }))
       .catch((error) => {
          console.log("error", error);
          return {
