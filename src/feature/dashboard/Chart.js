@@ -27,9 +27,10 @@ function Chart() {
    const getProjectName = async () => {
       try {
          const clockifyMeta = await trackApi.readClockifyApiMeta();
-         console.log("clockifyMeta ", clockifyMeta);
-         if (clockifyMeta.length === 1) {
-            const { workspaceId } = clockifyMeta[0].data;
+         console.log("clockifyMeta ", clockifyMeta.data);
+
+         if (clockifyMeta.data.length === 1) {
+            const { workspaceId } = clockifyMeta.data[0].data;
             return useClockify(
                `https://api.clockify.me/api/v1/workspaces/${workspaceId}/projects`,
                "GET"
@@ -87,11 +88,14 @@ function Chart() {
          setLoading(true);
       }
       trackApi.readAll().then((res) => {
+         console.log("trackAPI readAll res", res);
          const entryArray = [];
-         res.forEach((each) => {
+         res.data.forEach((each) => {
             entryArray.push(each.data.chartStatusData);
          });
-         parseChartData(entryArray);
+         if (entryArray.length) {
+            parseChartData(entryArray);
+         }
       });
    };
    useEffect(() => {

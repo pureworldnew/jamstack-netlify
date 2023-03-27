@@ -43,7 +43,7 @@ export default function Track() {
       trackApi.readAll().then((res) => {
          const entryArray = [];
          console.log("res trackData", res);
-         res.forEach((each) => {
+         res.data.forEach((each) => {
             const { data, ref } = each;
             data.id = ref["@ref"].id;
             if (data.createDate !== undefined) {

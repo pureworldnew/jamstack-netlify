@@ -1,5 +1,7 @@
 /* Api methods to call /functions */
 
+import axios from "axios";
+
 const create = (data) => {
    console.log("plan is for testing", data);
    return fetch("/.netlify/functions/plan-create", {
@@ -8,10 +10,10 @@ const create = (data) => {
    });
 };
 
-const readAll = () => fetch("/.netlify/functions/plan-read-all");
+const readAll = () => axios.get("/.netlify/functions/plan-read-all");
 
 const readOnlyCurrent = () =>
-   fetch("/.netlify/functions/plan-read-only-current");
+   axios.get("/.netlify/functions/plan-read-only-current");
 
 const update = (planId, data) =>
    fetch(`/.netlify/functions/plan-update/${planId}`, {

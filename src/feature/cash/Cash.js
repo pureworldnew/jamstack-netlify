@@ -32,7 +32,7 @@ function Cash() {
    const getData = async () => {
       const res = await cashApi.readAll();
       const entryArray = [];
-      res.forEach((each) => {
+      res.data.forEach((each) => {
          const { data, ref } = each;
          data.id = ref["@ref"].id;
          entryArray.push(data);

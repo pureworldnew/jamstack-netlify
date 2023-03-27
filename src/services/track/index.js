@@ -1,5 +1,7 @@
 /* Api methods to call /functions */
 
+import axios from "axios";
+
 const create = (data) => {
    fetch("/.netlify/functions/track-create", {
       body: JSON.stringify(data),
@@ -14,14 +16,10 @@ const createClockifyApiMeta = (data) => {
    });
 };
 
-const readAll = () => {
-   fetch("/.netlify/functions/track-read-all");
-};
+const readAll = () => axios.get("/.netlify/functions/track-read-all");
 
-const readClockifyApiMeta = () => {
-   fetch("/.netlify/functions/track-clockify-meta-read");
-};
-
+const readClockifyApiMeta = () =>
+   axios.get("/.netlify/functions/track-clockify-meta-read");
 const udpateClockifyApiMeta = (clockifyMetaId, data) => {
    fetch(`/.netlify/functions/track-clockify-meta-update/${clockifyMetaId}`, {
       body: JSON.stringify(data),

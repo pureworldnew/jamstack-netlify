@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
 /* Import faunaDB sdk */
 const faunadb = require("faunadb");
+// const verifyToken = require("./utils/verifyToken");
 
 const q = faunadb.query;
 const getDBSecret = require("./utils/getDBSecret");
 
 exports.handler = (event, context) => {
-   console.log("Function `track-read-all` invoked");
+   console.log("Function `track-read-all` invoked", event);
    /* configure faunaDB Client with our secret */
    const client = new faunadb.Client({
       secret: getDBSecret(),

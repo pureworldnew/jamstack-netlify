@@ -1,4 +1,5 @@
 /* Api methods to call /functions */
+import axios from "axios";
 
 const create = (data) => {
    fetch("/.netlify/functions/cash-create", {
@@ -7,9 +8,7 @@ const create = (data) => {
    });
 };
 
-const readAll = () => {
-   fetch("/.netlify/functions/cash-read-all");
-};
+const readAll = () => axios.get("/.netlify/functions/cash-read-all");
 
 const update = (cashId, data) => {
    fetch(`/.netlify/functions/cash-update/${cashId}`, {
@@ -34,13 +33,9 @@ const batchDeleteCash = (cashIds) => {
 };
 
 const cashDashboardSum = (dateMonth) =>
-   fetch("/.netlify/functions/cash-dashboard-sum", {
-      body: JSON.stringify({
-         dateMonth,
-      }),
-      method: "POST",
+   axios.post("/.netlify/functions/cash-dashboard-sum", {
+      dateMonth,
    });
-
 export default {
    create,
    readAll,
