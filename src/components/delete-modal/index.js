@@ -1,1 +1,1 @@
-export * from "DeleteModal";
+export { default as DeleteModal } from "./DeleteModal";

@@ -4,9 +4,9 @@ const faunadb = require("faunadb");
 const q = faunadb.query;
 
 module.exports = function multiUpsert(arrData) {
-  console.log("arrData", arrData);
-  return q.Map(
-    arrData,
-    q.Lambda(["d"], q.Create(q.Collection("track_entries"), q.Var("d")))
-  );
+   console.log("arrData", arrData);
+   return q.Map(
+      arrData,
+      q.Lambda(["d"], q.Create(q.Collection("track_entries"), q.Var("d")))
+   );
 };

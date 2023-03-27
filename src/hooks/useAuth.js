@@ -1,37 +1,52 @@
-import { createContext, useContext, useMemo } from "react";
+import React, { createContext, useContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { useLocalStorage } from "./useLocalStorage";
 import authService from "services/auth";
+import axios from "axios";
+import { useLocalStorage } from "./useLocalStorage";
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({ children, userData }) => {
-  const [user, setUser] = useLocalStorage("user", userData);
-  const navigate = useNavigate();
+export function AuthProvider({ children, userData }) {
+   const [user, setUser] = useLocalStorage("user", userData);
+   const navigate = useNavigate();
 
-  const login = async (data) => {
-    setUser(data);
-    authService.signIn(data).then((res) => console.log(res));
-    navigate("/dashboard", { replace: true });
-  };
+   const setAuthToken = (token) => {
+      if (token) {
+         axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+      } else {
+         delete axios.defaults.headers.common.Authorization;
+      }
+   };
 
-  const logout = () => {
-    setUser(null);
-    navigate("/", { replace: true });
-  };
+   const login = async (data) => {
+      authService.signIn(data).then((res) => {
+         console.log("signIn response is", res);
+         // get token from response
+         const { token } = res.data;
+         // set JWT token to local
+         setUser(token);
+         // set token to axios common header
+         setAuthToken(token);
+         navigate("/dashboard", { replace: true });
+      });
+   };
 
-  const value = useMemo(
-    () => ({
-      user,
-      login,
-      logout,
-    }),
-    [user]
-  );
+   const logout = () => {
+      setUser(null);
+      navigate("/", { replace: true });
+   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
+   const value = useMemo(
+      () => ({
+         user,
+         login,
+         logout,
+         setAuthToken,
+      }),
+      [user]
+   );
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
+
+export const useAuth = () => useContext(AuthContext);

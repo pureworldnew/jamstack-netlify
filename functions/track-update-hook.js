@@ -1,9 +1,12 @@
+/* eslint-disable no-unused-vars */
 /* Import faunaDB sdk */
 const faunadb = require("faunadb");
+
 const q = faunadb.query;
-const getDBSecret = require("./utils/getDBSecret");
 const dayjs = require("dayjs");
-var utc = require("dayjs/plugin/utc");
+const utc = require("dayjs/plugin/utc");
+const getDBSecret = require("./utils/getDBSecret");
+
 dayjs.extend(utc);
 
 /**
@@ -129,92 +132,92 @@ dayjs.extend(utc);
  */
 
 exports.handler = async (event, context) => {
-  /* configure faunaDB Client with our secret */
-  const client = new faunadb.Client({
-    secret: getDBSecret(),
-    domain: "db.us.fauna.com",
-    scheme: "https",
-  });
-  console.log("Function `track-update-hook` invoked");
-  const inputEntry = JSON.parse(event.body);
+   /* configure faunaDB Client with our secret */
+   const client = new faunadb.Client({
+      secret: getDBSecret(),
+      domain: "db.us.fauna.com",
+      scheme: "https",
+   });
+   console.log("Function `track-update-hook` invoked");
+   const inputEntry = JSON.parse(event.body);
 
-  let startDateString = dayjs(inputEntry.timeInterval.start)
-    .utcOffset(-6)
-    .format("YYYY-MM-DD");
+   const startDateString = dayjs(inputEntry.timeInterval.start)
+      .utcOffset(-6)
+      .format("YYYY-MM-DD");
 
-  let endDateString = dayjs(inputEntry.timeInterval.end)
-    .utcOffset(-6)
-    .format("YYYY-MM-DD");
-  let chartStatusData = [];
-  if (startDateString === endDateString) {
-    chartStatusData.push({
-      trackCreateDate: startDateString,
-      duration: dayjs(inputEntry.timeInterval.end)
-        .diff(dayjs(inputEntry.timeInterval.start), "m", true)
-        .toFixed(2),
-      projectName: inputEntry.project.name,
-    });
-  } else {
-    chartStatusData.push({
-      trackCreateDate: startDateString,
-      duration: dayjs(dayjs(startDateString).add(1, "day"))
-        .diff(dayjs(inputEntry.timeInterval.start), "m", true)
-        .toFixed(2),
-      projectName: inputEntry.project.name,
-    });
-    chartStatusData.push({
-      trackCreateDate: endDateString,
-      duration: dayjs(inputEntry.timeInterval.end)
-        .diff(dayjs(endDateString), "m", true)
-        .toFixed(2),
-      projectName: inputEntry.project.name,
-    });
-  }
+   const endDateString = dayjs(inputEntry.timeInterval.end)
+      .utcOffset(-6)
+      .format("YYYY-MM-DD");
+   const chartStatusData = [];
+   if (startDateString === endDateString) {
+      chartStatusData.push({
+         trackCreateDate: startDateString,
+         duration: dayjs(inputEntry.timeInterval.end)
+            .diff(dayjs(inputEntry.timeInterval.start), "m", true)
+            .toFixed(2),
+         projectName: inputEntry.project.name,
+      });
+   } else {
+      chartStatusData.push({
+         trackCreateDate: startDateString,
+         duration: dayjs(dayjs(startDateString).add(1, "day"))
+            .diff(dayjs(inputEntry.timeInterval.start), "m", true)
+            .toFixed(2),
+         projectName: inputEntry.project.name,
+      });
+      chartStatusData.push({
+         trackCreateDate: endDateString,
+         duration: dayjs(inputEntry.timeInterval.end)
+            .diff(dayjs(endDateString), "m", true)
+            .toFixed(2),
+         projectName: inputEntry.project.name,
+      });
+   }
 
-  return client
-    .query(
-      q.Map(
-        q.Paginate(
-          q.Match(q.Index("track_search_by_timeEntryId"), inputEntry.id)
-        ),
-        q.Lambda(
-          "X",
-          q.Replace(q.Var("X"), {
-            data: {
-              timeEntryId: inputEntry.id,
-              description: inputEntry.description,
-              projectId: inputEntry.project.name,
-              chartStatusData,
-              start: dayjs(inputEntry.timeInterval.start)
-                .utc()
-                .format("YYYY-MM-DDTHH:mm:ss[Z]")
-                .toString(),
-              end: dayjs(inputEntry.timeInterval.end)
-                .utc()
-                .format("YYYY-MM-DDTHH:mm:ss[Z]")
-                .toString(),
-              duration: inputEntry.timeInterval.duration,
-              tagIds: "",
-              taskId: "",
-            },
-          })
-        )
+   return client
+      .query(
+         q.Map(
+            q.Paginate(
+               q.Match(q.Index("track_search_by_timeEntryId"), inputEntry.id)
+            ),
+            q.Lambda(
+               "X",
+               q.Replace(q.Var("X"), {
+                  data: {
+                     timeEntryId: inputEntry.id,
+                     description: inputEntry.description,
+                     projectId: inputEntry.project.name,
+                     chartStatusData,
+                     start: dayjs(inputEntry.timeInterval.start)
+                        .utc()
+                        .format("YYYY-MM-DDTHH:mm:ss[Z]")
+                        .toString(),
+                     end: dayjs(inputEntry.timeInterval.end)
+                        .utc()
+                        .format("YYYY-MM-DDTHH:mm:ss[Z]")
+                        .toString(),
+                     duration: inputEntry.timeInterval.duration,
+                     tagIds: "",
+                     taskId: "",
+                  },
+               })
+            )
+         )
       )
-    )
-    .then((response) => {
-      console.log("track_entries entry updated", response);
-      /* Success! return the response with statusCode 200 */
-      return {
-        statusCode: 200,
-        body: JSON.stringify(response),
-      };
-    })
-    .catch((error) => {
-      console.log("error", error);
-      /* Error! return the error with statusCode 400 */
-      return {
-        statusCode: 400,
-        body: JSON.stringify(error),
-      };
-    });
+      .then((response) => {
+         console.log("track_entries entry updated", response);
+         /* Success! return the response with statusCode 200 */
+         return {
+            statusCode: 200,
+            body: JSON.stringify(response),
+         };
+      })
+      .catch((error) => {
+         console.log("error", error);
+         /* Error! return the error with statusCode 400 */
+         return {
+            statusCode: 400,
+            body: JSON.stringify(error),
+         };
+      });
 };

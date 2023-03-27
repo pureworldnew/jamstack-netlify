@@ -1,6 +1,8 @@
+/* eslint-disable no-unused-vars */
 const faunadb = require("faunadb");
 const getId = require("./utils/getId");
 const getDBSecret = require("./utils/getDBSecret");
+
 const q = faunadb.query;
 
 exports.handler = (event, context) => {

@@ -1,54 +1,44 @@
 /* Api methods to call /functions */
 
-const create = async (data) => {
-  console.log("plan is for testing", data);
-  const response = await fetch("/.netlify/functions/plan-create", {
-    body: JSON.stringify(data),
-    method: "POST",
-  });
-  return await response.json();
+import axios from "axios";
+
+const create = (data) => {
+   console.log("plan is for testing", data);
+   return fetch("/.netlify/functions/plan-create", {
+      body: JSON.stringify(data),
+      method: "POST",
+   });
 };
 
-const readAll = async () => {
-  let response = await fetch("/.netlify/functions/plan-read-all");
-  return response.json();
-};
+const readAll = () => axios.get("/.netlify/functions/plan-read-all");
 
-const readOnlyCurrent = async () => {
-  const response = await fetch("/.netlify/functions/plan-read-only-current");
-  return await response.json();
-};
+const readOnlyCurrent = () =>
+   axios.get("/.netlify/functions/plan-read-only-current");
 
-const update = async (planId, data) => {
-  const response = await fetch(`/.netlify/functions/plan-update/${planId}`, {
-    body: JSON.stringify(data),
-    method: "POST",
-  });
-  return await response.json();
-};
+const update = (planId, data) =>
+   fetch(`/.netlify/functions/plan-update/${planId}`, {
+      body: JSON.stringify(data),
+      method: "POST",
+   });
 
-const deletePlan = async (planId) => {
-  const response = await fetch(`/.netlify/functions/plan-delete/${planId}`, {
-    method: "POST",
-  });
-  return await response.json();
-};
+const deletePlan = (planId) =>
+   fetch(`/.netlify/functions/plan-delete/${planId}`, {
+      method: "POST",
+   });
 
-const batchDeletePlan = async (planIds) => {
-  const response = await fetch(`/.netlify/functions/plan-delete-batch`, {
-    body: JSON.stringify({
-      ids: planIds,
-    }),
-    method: "POST",
-  });
-  return await response.json();
-};
+const batchDeletePlan = (planIds) =>
+   fetch(`/.netlify/functions/plan-delete-batch`, {
+      body: JSON.stringify({
+         ids: planIds,
+      }),
+      method: "POST",
+   });
 
 export default {
-  create,
-  readAll,
-  readOnlyCurrent,
-  update,
-  delete: deletePlan,
-  batchDelete: batchDeletePlan,
+   create,
+   readAll,
+   readOnlyCurrent,
+   update,
+   delete: deletePlan,
+   batchDelete: batchDeletePlan,
 };
