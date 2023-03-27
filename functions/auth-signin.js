@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* Import faunaDB sdk */
 const faunadb = require("faunadb");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const q = faunadb.query;
@@ -38,7 +38,10 @@ exports.handler = async (event, context) => {
          const user = response.data;
          const { ref, ts, data } = user[0];
          console.log("existing user is", ref.id);
-         if (user.length && (await bcrypt.compare(password, data.password))) {
+         if (
+            user.length &&
+            (await bcrypt.compareSync(password, data.password))
+         ) {
             // Create token
             const token = jwt.sign(
                { user_id: ref.id, email },

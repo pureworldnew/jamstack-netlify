@@ -3,7 +3,7 @@
 const faunadb = require("faunadb");
 
 const q = faunadb.query;
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const getDBSecret = require("./utils/getDBSecret");
 
 /* export our lambda function as named "handler" export */
@@ -47,7 +47,7 @@ exports.handler = async (event, context) => {
                   body: "User Already Exist. Please Login",
                };
             }
-            const salt = await bcrypt.genSalt();
+            const salt = await bcrypt.genSaltSync(10);
             const hashPassword = await bcrypt.hash(data.password, salt);
             const userItem = {
                data: { ...data, password: hashPassword },
