@@ -173,7 +173,7 @@ export default function Track() {
           })
           .catch((err) => console.log(err));
       } else {
-        alert("Please initialize clockify first");
+        // alert("Please initialize clockify first");
         setLoading(false);
       }
     } catch (err) {

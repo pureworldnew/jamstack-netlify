@@ -16,6 +16,7 @@ exports.handler = (event, context) => {
   return client
     .query(q.Update(q.Ref(`classes/work_entries/${id}`), { data }))
     .then((response) => {
+      console.log("success", response);
       return {
         statusCode: 200,
         body: JSON.stringify(response),

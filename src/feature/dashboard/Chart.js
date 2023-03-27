@@ -38,7 +38,7 @@ export default function Chart() {
             console.log(err);
           });
       } else {
-        alert("Please initialize clockify first");
+        // alert("Please initialize clockify first");
       }
     } catch (err) {
       console.log(err);
