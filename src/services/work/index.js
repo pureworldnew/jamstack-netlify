@@ -1,37 +1,25 @@
 /* Api methods to call /functions */
+import axios from "axios";
 
-const create = (data) => {
-   fetch("/.netlify/functions/work-create", {
-      body: JSON.stringify(data),
-      method: "POST",
+const create = (data) =>
+   axios.post("/.netlify/functions/work-create", {
+      ...data,
    });
-};
 
-const readAll = () => {
-   fetch("/.netlify/functions/work-read-all");
-};
+const readAll = () => axios.get("/.netlify/functions/work-read-all");
 
-const update = (workId, data) => {
-   fetch(`/.netlify/functions/work-update/${workId}`, {
-      body: JSON.stringify(data),
-      method: "POST",
+const update = (workId, data) =>
+   axios.post(`/.netlify/functions/work-update/${workId}`, {
+      ...data,
    });
-};
 
-const deleteWork = (workId) => {
-   fetch(`/.netlify/functions/work-delete/${workId}`, {
-      method: "POST",
-   });
-};
+const deleteWork = (workId) =>
+   axios.post(`/.netlify/functions/work-delete/${workId}`);
 
-const batchDeleteWork = (workIds) => {
-   fetch(`/.netlify/functions/work-delete-batch`, {
-      body: JSON.stringify({
-         ids: workIds,
-      }),
-      method: "POST",
+const batchDeleteWork = (workIds) =>
+   axios.post(`/.netlify/functions/work-delete-batch`, {
+      ids: workIds,
    });
-};
 
 export default {
    create,

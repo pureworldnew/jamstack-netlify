@@ -32,8 +32,9 @@ function Work() {
 
    const getData = async () => {
       const res = await workApi.readAll();
+      console.log("res", res);
       const entryArray = [];
-      res?.forEach((each) => {
+      res.data?.forEach((each) => {
          const { data, ref } = each;
          data.id = ref["@ref"].id;
          if (data.createDate !== undefined) {
