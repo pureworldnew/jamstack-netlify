@@ -23,7 +23,7 @@ exports.handler = async (event, context) => {
       .query(deleteAll())
       .then((response) => {
          console.log("success in deleting existing track_entires", response);
-         return client.query(multiUpsert(data)).then((res) =>
+         return client.query(multiUpsert(data.data)).then((res) =>
             /* Success! return the response with statusCode 200 */
             ({
                statusCode: 200,

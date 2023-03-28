@@ -2,52 +2,40 @@
 
 import axios from "axios";
 
-const create = (data) => {
-   fetch("/.netlify/functions/track-create", {
-      body: JSON.stringify(data),
-      method: "POST",
+const create = (data) =>
+   axios.post("/.netlify/functions/track-create", {
+      data,
    });
-};
 
-const createClockifyApiMeta = (data) => {
-   fetch("/.netlify/functions/track-clockify-meta-create", {
-      body: JSON.stringify(data),
-      method: "POST",
+const createClockifyApiMeta = (data) =>
+   axios.post("/.netlify/functions/track-clockify-meta-create", {
+      ...data,
    });
-};
 
 const readAll = () => axios.get("/.netlify/functions/track-read-all");
 
 const readClockifyApiMeta = () =>
    axios.get("/.netlify/functions/track-clockify-meta-read");
-const udpateClockifyApiMeta = (clockifyMetaId, data) => {
-   fetch(`/.netlify/functions/track-clockify-meta-update/${clockifyMetaId}`, {
-      body: JSON.stringify(data),
-      method: "POST",
-   });
-};
+const udpateClockifyApiMeta = (clockifyMetaId, data) =>
+   axios.post(
+      `/.netlify/functions/track-clockify-meta-update/${clockifyMetaId}`,
+      {
+         ...data,
+      }
+   );
 
-const update = (trackId, data) => {
-   fetch(`/.netlify/functions/track-update/${trackId}`, {
-      body: JSON.stringify(data),
-      method: "POST",
+const update = (trackId, data) =>
+   axios.post(`/.netlify/functions/track-update/${trackId}`, {
+      ...data,
    });
-};
 
-const deleteTrack = (trackId) => {
-   fetch(`/.netlify/functions/track-delete/${trackId}`, {
-      method: "POST",
-   });
-};
+const deleteTrack = (trackId) =>
+   axios.post(`/.netlify/functions/track-delete/${trackId}`);
 
-const batchDeleteTrack = (trackIds) => {
-   fetch(`/.netlify/functions/track-delete-batch`, {
-      body: JSON.stringify({
-         ids: trackIds,
-      }),
-      method: "POST",
+const batchDeleteTrack = (trackIds) =>
+   axios.post(`/.netlify/functions/track-delete-batch`, {
+      ids: trackIds,
    });
-};
 
 export default {
    create,

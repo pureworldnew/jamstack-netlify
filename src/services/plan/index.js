@@ -2,13 +2,10 @@
 
 import axios from "axios";
 
-const create = (data) => {
-   console.log("plan is for testing", data);
-   return fetch("/.netlify/functions/plan-create", {
-      body: JSON.stringify(data),
-      method: "POST",
+const create = (data) =>
+   axios.post("/.netlify/functions/plan-create", {
+      ...data,
    });
-};
 
 const readAll = () => axios.get("/.netlify/functions/plan-read-all");
 
@@ -16,24 +13,17 @@ const readOnlyCurrent = () =>
    axios.get("/.netlify/functions/plan-read-only-current");
 
 const update = (planId, data) =>
-   fetch(`/.netlify/functions/plan-update/${planId}`, {
-      body: JSON.stringify(data),
-      method: "POST",
+   axios.post(`/.netlify/functions/plan-update/${planId}`, {
+      ...data,
    });
 
 const deletePlan = (planId) =>
-   fetch(`/.netlify/functions/plan-delete/${planId}`, {
-      method: "POST",
-   });
+   axios.post(`/.netlify/functions/plan-delete/${planId}`);
 
 const batchDeletePlan = (planIds) =>
-   fetch(`/.netlify/functions/plan-delete-batch`, {
-      body: JSON.stringify({
-         ids: planIds,
-      }),
-      method: "POST",
+   axios.post(`/.netlify/functions/plan-delete-batch`, {
+      ids: planIds,
    });
-
 export default {
    create,
    readAll,

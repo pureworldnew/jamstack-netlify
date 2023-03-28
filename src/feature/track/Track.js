@@ -74,9 +74,9 @@ export default function Track() {
       setLoading(true);
       try {
          const clockifyMeta = await trackApi.readClockifyApiMeta();
-         console.log("clockifyMeta ", clockifyMeta);
-         if (clockifyMeta.length === 1) {
-            const { workspaceId, userId } = clockifyMeta[0].data;
+         console.log("clockifyMeta ", clockifyMeta.data);
+         if (clockifyMeta?.data?.length === 1) {
+            const { workspaceId, userId } = clockifyMeta.data[0].data;
             useClockify(
                `https://api.clockify.me/api/v1/workspaces/${workspaceId}/user/${userId}/time-entries`,
                "GET"
@@ -178,7 +178,7 @@ export default function Track() {
                })
                .catch((err) => console.log(err));
          } else {
-            // alert("Please initialize clockify first");
+            console.log("Please initialize clockify first");
             setLoading(false);
          }
       } catch (err) {
@@ -212,8 +212,8 @@ export default function Track() {
             try {
                const clockifyMeta = await trackApi.readClockifyApiMeta();
 
-               if (clockifyMeta.length === 1) {
-                  const clockifyMetaId = clockifyMeta[0].ref["@ref"].id;
+               if (clockifyMeta.data.length === 1) {
+                  const clockifyMetaId = clockifyMeta.data[0].ref["@ref"].id;
                   trackApi
                      .udpateClockifyApiMeta(clockifyMetaId, {
                         workspaceId,
@@ -260,7 +260,7 @@ export default function Track() {
          setLoading(true);
          try {
             const clockifyMeta = await trackApi.readClockifyApiMeta();
-            const { workspaceId } = clockifyMeta[0].data;
+            const { workspaceId } = clockifyMeta.data[0].data;
             const { timeEntryId } = popup.rowData;
             useClockify(
                `https://api.clockify.me/api/v1/workspaces/${workspaceId}/time-entries/${timeEntryId}`,

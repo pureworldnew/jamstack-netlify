@@ -1,37 +1,26 @@
 /* Api methods to call /functions */
 
-const create = (data) => {
-   fetch("/.netlify/functions/stress-create", {
-      body: JSON.stringify(data),
-      method: "POST",
-   });
-};
+import axios from "axios";
 
-const readAll = () => {
-   fetch("/.netlify/functions/stress-read-all");
-};
-
-const update = (stressId, data) => {
-   fetch(`/.netlify/functions/stress-update/${stressId}`, {
-      body: JSON.stringify(data),
-      method: "POST",
+const create = (data) =>
+   axios.post("/.netlify/functions/stress-create", {
+      ...data,
    });
-};
 
-const deleteStress = (stressId) => {
-   fetch(`/.netlify/functions/stress-delete/${stressId}`, {
-      method: "POST",
-   });
-};
+const readAll = () => axios.get("/.netlify/functions/stress-read-all");
 
-const batchDeleteStress = (stressIds) => {
-   fetch(`/.netlify/functions/stress-delete-batch`, {
-      body: JSON.stringify({
-         ids: stressIds,
-      }),
-      method: "POST",
+const update = (stressId, data) =>
+   axios.post(`/.netlify/functions/stress-update/${stressId}`, {
+      ...data,
    });
-};
+
+const deleteStress = (stressId) =>
+   axios.post(`/.netlify/functions/stress-delete/${stressId}`);
+
+const batchDeleteStress = (stressIds) =>
+   axios.post(`/.netlify/functions/stress-delete-batch`, {
+      ids: stressIds,
+   });
 
 export default {
    create,

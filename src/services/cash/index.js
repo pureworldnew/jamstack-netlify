@@ -1,36 +1,25 @@
 /* Api methods to call /functions */
 import axios from "axios";
 
-const create = (data) => {
-   fetch("/.netlify/functions/cash-create", {
-      body: JSON.stringify(data),
-      method: "POST",
+const create = (data) =>
+   axios.post("/.netlify/functions/cash-create", {
+      ...data,
    });
-};
 
 const readAll = () => axios.get("/.netlify/functions/cash-read-all");
 
-const update = (cashId, data) => {
-   fetch(`/.netlify/functions/cash-update/${cashId}`, {
-      body: JSON.stringify(data),
-      method: "POST",
+const update = (cashId, data) =>
+   axios.post(`/.netlify/functions/cash-update/${cashId}`, {
+      ...data,
    });
-};
 
-const deleteCash = (cashId) => {
-   fetch(`/.netlify/functions/cash-delete/${cashId}`, {
-      method: "POST",
-   });
-};
+const deleteCash = (cashId) =>
+   axios.post(`/.netlify/functions/cash-delete/${cashId}`);
 
-const batchDeleteCash = (cashIds) => {
-   fetch(`/.netlify/functions/cash-delete-batch`, {
-      body: JSON.stringify({
-         ids: cashIds,
-      }),
-      method: "POST",
+const batchDeleteCash = (cashIds) =>
+   axios.post(`/.netlify/functions/cash-delete-batch`, {
+      ids: cashIds,
    });
-};
 
 const cashDashboardSum = (dateMonth) =>
    axios.post("/.netlify/functions/cash-dashboard-sum", {
