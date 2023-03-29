@@ -18,18 +18,7 @@ export function AuthProvider({ children, userData }) {
       }
    };
 
-   const login = async (data) => {
-      authService.signIn(data).then((res) => {
-         console.log("signIn response is", res);
-         // get token from response
-         const { token } = res.data;
-         // set JWT token to local
-         setUser(token);
-         // set token to axios common header
-         setAuthToken(token);
-         navigate("/dashboard", { replace: true });
-      });
-   };
+   const login = (data) => authService.signIn(data);
 
    const logout = () => {
       setUser(null);
@@ -41,6 +30,7 @@ export function AuthProvider({ children, userData }) {
          user,
          login,
          logout,
+         setUser,
          setAuthToken,
       }),
       [user]

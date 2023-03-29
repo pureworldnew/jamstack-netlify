@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -16,6 +17,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import signInImage from "assets/difficult-roads.jpg";
 // eslint-disable-next-line import/no-unresolved
 import { Copyright } from "components/nav";
+import CustomizedSnackbars from "components/customized-snackbars/CustomizedSnackbars";
 // eslint-disable-next-line import/no-unresolved
 import { useAuth } from "hooks/useAuth";
 
@@ -32,19 +34,37 @@ const theme = createTheme({
 });
 
 function SignInSide() {
-   const { login } = useAuth();
+   const navigate = useNavigate();
 
-   const handleSubmit = (event) => {
+   const [openToast, setOpenToast] = React.useState(false);
+   const [toastText, setToastText] = React.useState("");
+   const { login, setUser, setAuthToken } = useAuth();
+
+   const handleSubmit = async (event) => {
       event.preventDefault();
       const data = new FormData(event.currentTarget);
       console.log({
          email: data.get("email"),
          password: data.get("password"),
       });
-      login({
-         email: data.get("email"),
-         password: data.get("password"),
-      });
+      try {
+         const res = await login({
+            email: data.get("email"),
+            password: data.get("password"),
+         });
+         console.log("signIn response is", res);
+         // get token from response
+         const { token } = res.data;
+         // set JWT token to local
+         setUser(token);
+         // set token to axios common header
+         setAuthToken(token);
+         navigate("/dashboard", { replace: true });
+      } catch (err) {
+         console.log("error is ", err);
+         setOpenToast(true);
+         setToastText("Invalid credentials!");
+      }
    };
 
    return (
@@ -145,6 +165,11 @@ function SignInSide() {
                   </Box>
                </Box>
             </Grid>
+            <CustomizedSnackbars
+               open={openToast}
+               setOpen={setOpenToast}
+               labelText={toastText}
+            />
          </Grid>
       </ThemeProvider>
    );
