@@ -6,15 +6,22 @@ const create = (data) =>
       ...data,
    });
 
-const readAll = () => axios.get("/.netlify/functions/work-read-all");
+const readAll = async () => {
+   const response = await axios.get("/.netlify/functions/work-read-all");
+   return response.data;
+};
 
-const update = (workId, data) =>
-   axios.post(`/.netlify/functions/work-update/${workId}`, {
+const update = (workId, data) => {
+   console.log("workid, data", workId, data);
+   return axios.post(`/.netlify/functions/work-update/${workId}`, {
       ...data,
    });
+};
 
-const deleteWork = (workId) =>
-   axios.post(`/.netlify/functions/work-delete/${workId}`);
+const deleteWork = (workId) => {
+   console.log("workId is", workId);
+   return axios.post(`/.netlify/functions/work-delete/${workId}`);
+};
 
 const batchDeleteWork = (workIds) =>
    axios.post(`/.netlify/functions/work-delete-batch`, {

@@ -87,10 +87,6 @@ export const WORK_COLUMNS = [
             Header: "Position",
             accessor: "position",
          },
-         {
-            Header: "Job Description",
-            accessor: "jobDescription",
-         },
       ],
    },
 ];

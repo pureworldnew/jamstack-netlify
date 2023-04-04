@@ -10,7 +10,12 @@ import Slide from "@mui/material/Slide";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
+import { toast, ToastContainer } from "react-toastify";
+import { LoadingButton } from "@mui/lab";
 import { useForm } from "react-hook-form";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import workApi from "services/work";
+
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 
@@ -32,13 +37,14 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function AddNewWork({
+   loadingUpdate,
    open,
    handleClickOpen,
-   handleSubmitNew,
    handleSubmitEdit,
    handleClose,
    editData,
 }) {
+   const queryClient = useQueryClient();
    const {
       control,
       handleSubmit,
@@ -63,15 +69,6 @@ export default function AddNewWork({
          setValue("position", editData.position);
       }
    }, [editData]);
-
-   const onSubmit = (data) => {
-      if (Object.keys(editData).length !== 0) {
-         handleSubmitEdit(editData.id, data);
-      } else {
-         handleSubmitNew(data);
-      }
-   };
-
    const handleCloseDialog = () => {
       reset({
          directCompany: "",
@@ -85,12 +82,45 @@ export default function AddNewWork({
       });
       handleClose();
    };
+   const { isLoading, mutate: createNewWorkEntry } = useMutation(
+      (workEntries) => workApi.create(workEntries),
+      {
+         onSuccess: () => {
+            queryClient.invalidateQueries(["get_work_entries"]);
+            toast.success("Work created successfully");
+            handleCloseDialog();
+         },
+         onError: (error) => {
+            handleCloseDialog();
+            if (Array.isArray(error.data.error)) {
+               error.data.error.forEach((el) => {
+                  toast.error(el.message, {
+                     position: "top-right",
+                  });
+               });
+            } else {
+               toast.error(error.data.message, {
+                  position: "top-right",
+               });
+            }
+         },
+      }
+   );
+
+   const onSubmit = (data) => {
+      if (Object.keys(editData).length !== 0) {
+         handleSubmitEdit({ id: editData.id, data });
+      } else {
+         createNewWorkEntry(data);
+      }
+   };
 
    return (
       <div>
          <Button variant="outlined" onClick={handleClickOpen}>
             Create New
          </Button>
+         <ToastContainer />
          <Dialog
             fullScreen
             open={open}
@@ -115,13 +145,13 @@ export default function AddNewWork({
                      >
                         Delete
                      </Typography>
-                     <Button
-                        autoFocus
+                     <LoadingButton
                         color="inherit"
+                        loading={isLoading || loadingUpdate}
                         onClick={handleSubmit(onSubmit)}
                      >
                         Save
-                     </Button>
+                     </LoadingButton>
                   </Toolbar>
                </AppBar>
                <Box

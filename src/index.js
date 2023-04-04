@@ -1,22 +1,32 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
 import { ThemeProvider } from "@mui/material/styles";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "hooks/useAuth";
 import theme from "./context/theme";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import "react-toastify/dist/ReactToastify.css";
+
+const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
    <React.StrictMode>
-      <BrowserRouter>
-         <AuthProvider>
-            <ThemeProvider theme={theme}>
-               <App />
-            </ThemeProvider>
-         </AuthProvider>
-      </BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+         <ReactQueryDevtools initialIsOpen={false} />
+         <BrowserRouter>
+            <AuthProvider>
+               <ThemeProvider theme={theme}>
+                  <App />
+               </ThemeProvider>
+            </AuthProvider>
+         </BrowserRouter>
+      </QueryClientProvider>
    </React.StrictMode>
 );
 

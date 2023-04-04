@@ -1,102 +1,117 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState, useMemo } from "react";
-
+import React, { useState, useMemo } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
-
 import { ReactTable } from "components/table";
 import { BackDrop } from "components/backdrop";
+import { toast, ToastContainer } from "react-toastify";
+
 import workApi from "services/work";
+
 import DeleteModal from "components/delete-modal/DeleteModal";
-import CustomizedSnackbars from "components/customized-snackbars/CustomizedSnackbars";
 import * as myConsts from "consts";
 import AddNewWork from "./AddNewWork";
 
 function Work() {
-   const [entry, setEntry] = useState([]);
-   const [loading, setLoading] = useState(false);
-   const [open, setOpen] = useState(false);
-   const [openToast, setOpenToast] = useState(false);
-   const [toastText, setToastText] = useState("");
-   const [refreshData, setRefreshData] = useState(false);
+   const queryClient = useQueryClient();
    const [popup, setPopup] = useState({
       show: false, // initial values set to false and null
       rowData: null,
    });
    const [editData, setEditData] = useState({});
+   const [open, setOpen] = useState(false);
+   const { isLoading, data: queryResults } = useQuery(
+      ["get_work_entries"],
+      () => workApi.readAll(),
+      {
+         select: (res) =>
+            res?.map((each) => {
+               const { data, ref } = each;
+               data.id = ref["@ref"].id;
+               if (data.createDate !== undefined) {
+                  data.createDate = new Date(
+                     data.createDate
+                  ).toLocaleDateString();
+               }
+               return data;
+            }),
+         onError: (error) => {
+            if (Array.isArray(error.data.error)) {
+               error.data.error.forEach((el) =>
+                  toast.error(el.message, {
+                     position: "top-right",
+                  })
+               );
+            } else {
+               toast.error(error.data.message, {
+                  position: "top-right",
+               });
+            }
+         },
+      }
+   );
 
-   const columns = useMemo(() => myConsts.WORK_COLUMNS, []);
-
-   const getData = async () => {
-      const res = await workApi.readAll();
-      console.log("res", res);
-      const entryArray = [];
-      res.data?.forEach((each) => {
-         const { data, ref } = each;
-         data.id = ref["@ref"].id;
-         if (data.createDate !== undefined) {
-            data.createDate = new Date(data.createDate).toLocaleDateString();
+   const { mutate: deleteWorkEntry } = useMutation((id) => workApi.delete(id), {
+      onSuccess(data) {
+         queryClient.invalidateQueries("get_work_entries");
+         toast.success("Work Entries deleted successfully!");
+         setPopup({ show: false, rowData: null });
+      },
+      onError(error) {
+         if (Array.isArray(error.data.error)) {
+            error.data.error.forEach((el) =>
+               toast.error(el.message, {
+                  position: "top-right",
+               })
+            );
+         } else {
+            toast.error(error.data.message, {
+               position: "top-right",
+            });
          }
-         entryArray.push(data);
-      });
-      setEntry(entryArray);
-      setLoading(false);
-   };
-   useEffect(() => {
-      setLoading(true);
-      getData();
-   }, []);
-
-   useEffect(() => {
-      getData();
-      setRefreshData(false);
-   }, [refreshData]);
-
-   const handleClickOpen = () => {
-      setOpen(true);
-   };
+      },
+   });
 
    const handleClose = () => {
       setEditData({});
       setOpen(false);
    };
 
+   const { isLoading: loadingUpdate, mutate: updateWorkEntry } = useMutation(
+      ({ id, data }) => workApi.update(id, data),
+      {
+         onSuccess: () => {
+            queryClient.invalidateQueries(["get_work_entries"]);
+            toast.success("Work Entry updated successfully");
+            handleClose();
+         },
+         onError: (error) => {
+            handleClose();
+            if (Array.isArray(error.data.error)) {
+               error.data.error.forEach((el) =>
+                  toast.error(el.message, {
+                     position: "top-right",
+                  })
+               );
+            } else {
+               toast.error(error.data.message, {
+                  position: "top-right",
+               });
+            }
+         },
+      }
+   );
+
+   const columns = useMemo(() => myConsts.WORK_COLUMNS, []);
+
    const handleClickDelete = (rowData) => {
       setPopup({
          show: true,
          rowData,
-      });
-   };
-
-   const handleClickConfirm = () => {
-      if (popup.show && popup.rowData) {
-         workApi.delete(popup.rowData.id).then((res) => {
-            setToastText("Deleted Successfully!");
-            setOpenToast(true);
-            setRefreshData(true);
-            setPopup({ show: false, rowData: null });
-         });
-      }
-   };
-
-   const handleSubmitNew = (data) => {
-      workApi.create(data).then((res) => {
-         setToastText("Inserted Successfully!");
-         setOpenToast(true);
-         setRefreshData(true);
-         handleClose();
-      });
-   };
-
-   const handleSubmitEdit = (id, data) => {
-      workApi.update(id, data).then((res) => {
-         setToastText("Updated Successfully!");
-         setOpenToast(true);
-         setRefreshData(true);
-         handleClose();
       });
    };
 
@@ -110,30 +125,28 @@ function Work() {
          <CssBaseline />
          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             <AddNewWork
+               loadingUpdate={loadingUpdate}
                open={open}
                setOpen={setOpen}
-               handleClickOpen={handleClickOpen}
+               handleClickOpen={() => setOpen(true)}
                handleClose={handleClose}
-               handleSubmitNew={handleSubmitNew}
-               handleSubmitEdit={handleSubmitEdit}
+               handleSubmitEdit={({ id, data }) => {
+                  updateWorkEntry({ id, data });
+               }}
                editData={editData}
             />
          </Box>
 
-         <CustomizedSnackbars
-            open={openToast}
-            setOpen={setOpenToast}
-            labelText={toastText}
-         />
+         <ToastContainer />
 
          <DeleteModal
             delOpen={popup.show}
             setDelOpen={setPopup}
-            handleClickConfirm={handleClickConfirm}
+            handleClickConfirm={() => deleteWorkEntry(popup.rowData?.id)}
          />
 
-         {loading ? (
-            <BackDrop open={loading} />
+         {isLoading ? (
+            <BackDrop open={isLoading} />
          ) : (
             <ReactTable
                columns={[
@@ -166,7 +179,7 @@ function Work() {
                      disableSortBy: true,
                   },
                ]}
-               data={entry}
+               data={queryResults}
                mode="workEntry"
             />
          )}
