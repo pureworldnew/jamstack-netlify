@@ -91,6 +91,26 @@ export const WORK_COLUMNS = [
    },
 ];
 
+export const ADMIN_COLUMNS = [
+   {
+      Header: "Profile Meta Information",
+      columns: [
+         {
+            Header: "Profile Name",
+            accessor: "profileName",
+         },
+         {
+            Header: "Profile Email",
+            accessor: "profileEmail",
+         },
+         {
+            Header: "Profile Linkedin",
+            accessor: "profileLinkedIn",
+         },
+      ],
+   },
+];
+
 export const STRESS_COLUMNS = [
    {
       Header: "Stress Information",

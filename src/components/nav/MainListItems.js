@@ -6,6 +6,7 @@ import ListItemText from "@mui/material/ListItemText";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import TimelineIcon from "@mui/icons-material/Timeline";
 import ErrorIcon from "@mui/icons-material/Error";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import HomeWorkIcon from "@mui/icons-material/HomeWork";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
@@ -47,6 +48,12 @@ const MainListItems = (
             <ErrorIcon />
          </ListItemIcon>
          <ListItemText primary="Stress" />
+      </ListItemButton>
+      <ListItemButton component={Link} to="/admin">
+         <ListItemIcon>
+            <AdminPanelSettingsIcon />
+         </ListItemIcon>
+         <ListItemText primary="Admin" />
       </ListItemButton>
    </>
 );

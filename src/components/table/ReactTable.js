@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable import/no-extraneous-dependencies */
@@ -29,6 +30,8 @@ import trackApi from "services/track";
 import planApi from "services/plan";
 import cashApi from "services/cash";
 import stressApi from "services/stress";
+import adminApi from "services/admin";
+
 import DeleteModal from "components/delete-modal/DeleteModal";
 
 const IndeterminateCheckbox = React.forwardRef(
@@ -195,7 +198,7 @@ export function ReactTable({ columns, data, mode, initialState }) {
    const handleClickRows = () => {
       if (popup.show && popup.rowData && popup.rowData.length) {
          console.log("here is ");
-         const ids = selectedFlatRows.map((each) => each.original.id);
+         const ids = selectedFlatRows.map((each) => each.original._id);
          switch (mode) {
             case "workEntry":
                workApi.batchDelete(ids).then((res) => console.log(res));
@@ -211,6 +214,9 @@ export function ReactTable({ columns, data, mode, initialState }) {
                break;
             case "stressEntry":
                stressApi.batchDelete(ids).then((res) => console.log(res));
+               break;
+            case "profileEntry":
+               adminApi.batchDelete(ids).then((res) => console.log(res));
                break;
             default:
                break;

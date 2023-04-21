@@ -86,6 +86,19 @@ const WorkComponentWithErrorBoundary = withErrorBoundary(
    }
 );
 
+const AdminComponentWithErrorBoundary = withErrorBoundary(
+   loadable(() => import("./feature/admin/Admin"), {
+      fallback: <Fallback />,
+   }),
+   {
+      FallbackComponent: ErrorFallback,
+      onError(error, info) {
+         // Do something with the error
+         // E.g. log to an error logging client here
+      },
+   }
+);
+
 const DashboardComponentWithErrorBoundary = withErrorBoundary(
    loadable(() => import("./feature/dashboard"), {
       fallback: <Fallback />,
@@ -152,6 +165,10 @@ export default function App() {
             <Route
                path="/stress"
                element={<StressComponentWithErrorBoundary />}
+            />
+            <Route
+               path="/admin"
+               element={<AdminComponentWithErrorBoundary />}
             />
             <Route path="/cash" element={<CashComponentWithErrorBoundary />} />
             <Route path="/work" element={<WorkComponentWithErrorBoundary />} />
