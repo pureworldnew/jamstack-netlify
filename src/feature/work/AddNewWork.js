@@ -56,11 +56,17 @@ export default function AddNewWork({
    });
 
    React.useEffect(() => {
+      setTimeout(() => {
+         setValue("status", myConsts.STATUS_OPTIONS[0].value);
+         setValue("account", myConsts.ACCOUNT_OPTIONS[0].value);
+         setValue("jobBoard", myConsts.JOB_BOARD_OPTIONS[0].value);
+      });
+   }, [setValue]);
+
+   React.useEffect(() => {
       if (Object.keys(editData).length !== 0) {
          console.log(editData);
          setValue("directCompany", editData.directCompany);
-         setValue("agencyCompany", editData.agencyCompany);
-         setValue("companyUrl", editData.companyUrl);
          setValue("status", editData.status);
          setValue("account", editData.account);
          setValue("jobBoard", editData.jobBoard);
@@ -72,11 +78,9 @@ export default function AddNewWork({
    const handleCloseDialog = () => {
       reset({
          directCompany: "",
-         agencyCompany: "",
-         companyUrl: "",
-         status: "",
-         account: "",
-         jobBoard: "",
+         status: myConsts.STATUS_OPTIONS[0].value,
+         account: myConsts.ACCOUNT_OPTIONS[0].value,
+         jobBoard: myConsts.JOB_BOARD_OPTIONS[0].value,
          jobDescription: "",
          position: "",
       });
@@ -164,7 +168,7 @@ export default function AddNewWork({
                >
                   <Divider>Company Information</Divider>
                   <Grid container spacing={2} alignItems="center">
-                     <Grid item md={3} xs={6}>
+                     <Grid item md={6} xs={6}>
                         <FormInputText
                            name="directCompany"
                            control={control}
@@ -176,19 +180,17 @@ export default function AddNewWork({
                            {errors.directCompany?.message}
                         </Typography>
                      </Grid>
-                     <Grid item md={3} xs={6}>
-                        <FormInputText
-                           name="agencyCompany"
-                           control={control}
-                           label="Agency Company"
-                        />
-                     </Grid>
                      <Grid item md={6} xs={6}>
                         <FormInputText
-                           name="companyUrl"
+                           name="position"
                            control={control}
-                           label="Company Url"
+                           label="Position"
+                           required
+                           error={!!errors.position}
                         />
+                        <Typography variant="inherit" color="textSecondary">
+                           {errors.position?.message}
+                        </Typography>
                      </Grid>
                   </Grid>
                   <Divider>Application Information</Divider>
@@ -201,6 +203,7 @@ export default function AddNewWork({
                            options={myConsts.STATUS_OPTIONS}
                            name="status"
                            control={control}
+                           defaultValue={myConsts.STATUS_OPTIONS[0].value}
                         />
                      </Grid>
 
@@ -234,18 +237,6 @@ export default function AddNewWork({
                   </Grid>
                   <Divider>Job Details</Divider>
                   <Grid container spacing={2} alignItems="center">
-                     <Grid item md={4} xs={6}>
-                        <FormInputText
-                           name="position"
-                           control={control}
-                           label="Position"
-                           required
-                           error={!!errors.position}
-                        />
-                        <Typography variant="inherit" color="textSecondary">
-                           {errors.position?.message}
-                        </Typography>
-                     </Grid>
                      <Grid item xs={12}>
                         <FormInputTextarea
                            name="jobDescription"

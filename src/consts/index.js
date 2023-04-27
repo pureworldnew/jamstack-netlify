@@ -29,14 +29,16 @@ export const PLAN_STATUS_OPTIONS = [
    { value: "holding", label: "Holding" },
 ];
 export const ACCOUNT_OPTIONS = [
-   { value: "dante_roland", label: "Dante Roland" },
-   { value: "travis_dalton", label: "Travis Dalton" },
+   { value: "jonathan_samayoa", label: "Jonathan Samayoa" },
+   { value: "james_larro", label: "James Larro" },
    { value: "ardavan_tari", label: "Ardavan Tari" },
 ];
 export const JOB_BOARD_OPTIONS = [
+   { value: "indeed", label: "Indeed" },
    { value: "linkedin", label: "Linkedin" },
    { value: "zip_recruiter", label: "ZipRecruiter" },
-   { value: "indeed", label: "Indeed" },
+   { value: "wellfound", label: "Wellfound" },
+   { value: "glassdoor", label: "Glassdoor" },
    { value: "dice", label: "Dice" },
    { value: "company_website", label: "Company website" },
 ];
@@ -49,13 +51,14 @@ export const WORK_COLUMNS = [
             Header: "Direct Company",
             accessor: "directCompany",
          },
+      ],
+   },
+   {
+      Header: "Job Details",
+      columns: [
          {
-            Header: "Agency Company",
-            accessor: "agencyCompany",
-         },
-         {
-            Header: "Company Website",
-            accessor: "companyUrl",
+            Header: "Position",
+            accessor: "position",
          },
       ],
    },
@@ -77,15 +80,6 @@ export const WORK_COLUMNS = [
          {
             Header: "Date",
             accessor: "createDate",
-         },
-      ],
-   },
-   {
-      Header: "Job Details",
-      columns: [
-         {
-            Header: "Position",
-            accessor: "position",
          },
       ],
    },
