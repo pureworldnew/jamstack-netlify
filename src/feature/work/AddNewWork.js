@@ -168,7 +168,17 @@ export default function AddNewWork({
                >
                   <Divider>Company Information</Divider>
                   <Grid container spacing={2} alignItems="center">
-                     <Grid item md={6} xs={6}>
+                     <Grid item md={2} xs={6}>
+                        <FormInputDropdown
+                           id="account"
+                           labelId="account-label"
+                           labelText="Account"
+                           options={myConsts.ACCOUNT_OPTIONS}
+                           name="account"
+                           control={control}
+                        />
+                     </Grid>
+                     <Grid item md={5} xs={6}>
                         <FormInputText
                            name="directCompany"
                            control={control}
@@ -180,7 +190,8 @@ export default function AddNewWork({
                            {errors.directCompany?.message}
                         </Typography>
                      </Grid>
-                     <Grid item md={6} xs={6}>
+
+                     <Grid item md={5} xs={6}>
                         <FormInputText
                            name="position"
                            control={control}
@@ -195,7 +206,17 @@ export default function AddNewWork({
                   </Grid>
                   <Divider>Application Information</Divider>
                   <Grid container spacing={2} alignItems="center">
-                     <Grid item xs={6} md={3}>
+                     <Grid item xs={6} md={4}>
+                        <FormInputDropdown
+                           id="job-board"
+                           labelId="job-board-label"
+                           labelText="Job Board"
+                           options={myConsts.JOB_BOARD_OPTIONS}
+                           name="jobBoard"
+                           control={control}
+                        />
+                     </Grid>
+                     <Grid item xs={6} md={4}>
                         <FormInputDropdown
                            id="status"
                            labelId="status-label"
@@ -206,29 +227,7 @@ export default function AddNewWork({
                            defaultValue={myConsts.STATUS_OPTIONS[0].value}
                         />
                      </Grid>
-
-                     <Grid item xs={6} md={3}>
-                        <FormInputDropdown
-                           id="account"
-                           labelId="account-label"
-                           labelText="Account"
-                           options={myConsts.ACCOUNT_OPTIONS}
-                           name="account"
-                           control={control}
-                        />
-                     </Grid>
-
-                     <Grid item xs={6} md={3}>
-                        <FormInputDropdown
-                           id="job-board"
-                           labelId="job-board-label"
-                           labelText="Job Board"
-                           options={myConsts.JOB_BOARD_OPTIONS}
-                           name="jobBoard"
-                           control={control}
-                        />
-                     </Grid>
-                     <Grid item xs={6} md={3}>
+                     <Grid item xs={6} md={4}>
                         <FormInputDatePicker
                            name="createDate"
                            control={control}
