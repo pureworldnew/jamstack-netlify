@@ -17,7 +17,7 @@ exports.handler = async (event, context) => {
    const data = JSON.parse(event.body);
    console.log("data origin param", data);
    if (!Object.prototype.hasOwnProperty.call(data, "createDate")) {
-      data.createDate = formatDate(new Date());
+      data.createDate = formatDate(new Date(new Date().toLocaleString()));
    } else {
       data.createDate = formatDate(new Date(data.createDate));
    }
