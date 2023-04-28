@@ -9,6 +9,7 @@ import Chip from "@mui/material/Chip";
 import { ReactTable } from "components/table";
 import { BackDrop } from "components/backdrop";
 import { toast, ToastContainer } from "react-toastify";
+import { formatDate } from "utils/formatDate";
 
 import workApi from "services/work";
 
@@ -31,13 +32,13 @@ function Work() {
       {
          select: (res) =>
             res?.map((each) => {
+               // const dateValue = new Date(each.data.createDate);
+               // console.log(formatDate(dateValue));
                const { data, ref } = each;
                data.id = ref["@ref"].id;
-               if (data.createDate !== undefined) {
-                  data.createDate = new Date(
-                     data.createDate
-                  ).toLocaleDateString();
-               }
+               // if (data.createDate !== undefined) {
+               //    data.createDate = formatDate(new Date(data.createDate));
+               // }
                return data;
             }),
          onError: (error) => {

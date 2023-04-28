@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* Import faunaDB sdk */
 const faunadb = require("faunadb");
+const formatDate = require("./utils/formatDate");
 
 const q = faunadb.query;
 const getDBSecret = require("./utils/getDBSecret");
@@ -14,8 +15,11 @@ exports.handler = async (event, context) => {
    });
    /* parse the string body into a useable JS object */
    const data = JSON.parse(event.body);
+   console.log("data origin param", data);
    if (!Object.prototype.hasOwnProperty.call(data, "createDate")) {
-      data.createDate = new Date().toLocaleDateString();
+      data.createDate = formatDate(new Date());
+   } else {
+      data.createDate = formatDate(new Date(data.createDate));
    }
    data.directCompany = data.directCompany.trim();
    console.log("Function `work-create` invoked", data);

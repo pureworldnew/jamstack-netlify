@@ -55,15 +55,29 @@ function createFaunaDB(key) {
       );
    const workEntryPromise = client
       .query(q.CreateCollection({ name: "work_entries" }))
-      .then(() =>
-         client.query(
+      .then(() => {
+         const allWorkEntriesPromise = client.query(
             q.CreateIndex({
                name: "all_work_entries",
                source: q.Collection("work_entries"),
                terms: [{ field: ["data", "directCompany"] }],
             })
-         )
-      );
+         );
+         const workEntriesSoryByCreateDate = client.query(
+            q.CreateIndex({
+               name: "work_entries_sort_by_create_desc",
+               source: q.Collection("work_entries"),
+               values: [
+                  { field: ["data", "createDate"], reverse: true },
+                  { field: ["ref"] },
+               ],
+            })
+         );
+         return Promise.all([
+            allWorkEntriesPromise,
+            workEntriesSoryByCreateDate,
+         ]);
+      });
    const cashEntryPromise = client
       .query(q.CreateCollection({ name: "cash_entries" }))
       .then(() => {
