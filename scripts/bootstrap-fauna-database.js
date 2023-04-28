@@ -60,7 +60,7 @@ function createFaunaDB(key) {
             q.CreateIndex({
                name: "all_work_entries",
                source: q.Collection("work_entries"),
-               values: [{ field: ["data", "directCompany"] }],
+               terms: [{ field: ["data", "directCompany"] }],
             })
          )
       );

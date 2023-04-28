@@ -17,7 +17,7 @@ exports.handler = async (event, context) => {
    if (!Object.prototype.hasOwnProperty.call(data, "createDate")) {
       data.createDate = new Date().toLocaleDateString();
    }
-
+   data.directCompany = data.directCompany.trim();
    console.log("Function `work-create` invoked", data);
    const workItem = {
       data,

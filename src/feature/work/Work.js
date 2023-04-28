@@ -23,6 +23,7 @@ function Work() {
       rowData: null,
    });
    const [editData, setEditData] = useState({});
+   const [duplicated, setDuplicated] = useState([]);
    const [open, setOpen] = useState(false);
    const { isLoading, data: queryResults } = useQuery(
       ["get_work_entries"],
@@ -120,15 +121,22 @@ function Work() {
       setOpen(true);
    };
 
+   const checkCompanyDup = async (val, name) => {
+      const res = await workApi.checkDupCompany(val, name);
+      setDuplicated(res);
+   };
+
    return (
       <>
          <CssBaseline />
          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             <AddNewWork
+               duplicated={duplicated}
                loadingUpdate={loadingUpdate}
                open={open}
                setOpen={setOpen}
                handleClickOpen={() => setOpen(true)}
+               checkCompanyDup={checkCompanyDup}
                handleClose={handleClose}
                handleSubmitEdit={({ id, data }) => {
                   updateWorkEntry({ id, data });

@@ -11,17 +11,21 @@ const readAll = async () => {
    return response.data;
 };
 
-const update = (workId, data) => {
-   console.log("workid, data", workId, data);
-   return axios.post(`/.netlify/functions/work-update/${workId}`, {
-      ...data,
-   });
+const checkDupCompany = async (companyName) => {
+   console.log("companyName is", companyName);
+   const response = await axios.post(
+      `/.netlify/functions/work-check-dup-company/${companyName}`
+   );
+   return response.data;
 };
 
-const deleteWork = (workId) => {
-   console.log("workId is", workId);
-   return axios.post(`/.netlify/functions/work-delete/${workId}`);
-};
+const update = (workId, data) =>
+   axios.post(`/.netlify/functions/work-update/${workId}`, {
+      ...data,
+   });
+
+const deleteWork = (workId) =>
+   axios.post(`/.netlify/functions/work-delete/${workId}`);
 
 const batchDeleteWork = (workIds) =>
    axios.post(`/.netlify/functions/work-delete-batch`, {
@@ -31,6 +35,7 @@ const batchDeleteWork = (workIds) =>
 export default {
    create,
    readAll,
+   checkDupCompany,
    update,
    delete: deleteWork,
    batchDelete: batchDeleteWork,

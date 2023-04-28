@@ -15,7 +15,7 @@ import { LoadingButton } from "@mui/lab";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import workApi from "services/work";
-
+import debounce from "lodash.debounce";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 
@@ -26,6 +26,7 @@ import {
    FormInputDatePicker,
    FormInputTextarea,
 } from "components/form";
+import { useEffect } from "react";
 
 const Transition = React.forwardRef((props, ref) => (
    <Slide direction="up" ref={ref} {...props} />
@@ -41,8 +42,10 @@ export default function AddNewWork({
    open,
    handleClickOpen,
    handleSubmitEdit,
+   checkCompanyDup,
    handleClose,
    editData,
+   duplicated,
 }) {
    const queryClient = useQueryClient();
    const {
@@ -75,6 +78,7 @@ export default function AddNewWork({
          setValue("position", editData.position);
       }
    }, [editData]);
+
    const handleCloseDialog = () => {
       reset({
          directCompany: "",
@@ -119,6 +123,22 @@ export default function AddNewWork({
       }
    };
 
+   const checkCompanyDuplicates = (name) => {
+      checkCompanyDup(name);
+   };
+
+   const debouncedResults = React.useMemo(
+      () => debounce(checkCompanyDuplicates, 300),
+      []
+   );
+
+   useEffect(
+      () => () => {
+         debouncedResults.cancel();
+      },
+      []
+   );
+   console.log(duplicated);
    return (
       <div>
          <Button variant="outlined" onClick={handleClickOpen}>
@@ -180,6 +200,7 @@ export default function AddNewWork({
                      </Grid>
                      <Grid item md={5} xs={6}>
                         <FormInputText
+                           changeHandler={debouncedResults}
                            name="directCompany"
                            control={control}
                            label="Direct Company"
@@ -203,6 +224,33 @@ export default function AddNewWork({
                            {errors.position?.message}
                         </Typography>
                      </Grid>
+                  </Grid>
+                  <Grid>
+                     {duplicated
+                        ? duplicated.map((each) => (
+                             <Grid
+                                container
+                                spacing={2}
+                                key={each.ref["@ref"].id}
+                             >
+                                <Grid item xs>
+                                   {each.data.account}
+                                </Grid>
+                                <Grid item xs>
+                                   {each.data.directCompany}
+                                </Grid>
+                                <Grid item xs>
+                                   {each.data.jobBoard}
+                                </Grid>
+                                <Grid item xs>
+                                   {each.data.position}
+                                </Grid>
+                                <Grid item xs>
+                                   {each.data.status}
+                                </Grid>
+                             </Grid>
+                          ))
+                        : ""}
                   </Grid>
                   <Divider>Application Information</Divider>
                   <Grid container spacing={2} alignItems="center">
