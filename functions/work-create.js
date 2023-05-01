@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* Import faunaDB sdk */
 const faunadb = require("faunadb");
-const formatDate = require("./utils/formatDate");
 
 const q = faunadb.query;
 const getDBSecret = require("./utils/getDBSecret");
@@ -17,9 +16,9 @@ exports.handler = async (event, context) => {
    const data = JSON.parse(event.body);
    console.log("data origin param", data);
    if (!Object.prototype.hasOwnProperty.call(data, "createDate")) {
-      data.createDate = formatDate(new Date(new Date().toLocaleString()));
+      data.createDate = new Date().toISOString();
    } else {
-      data.createDate = formatDate(new Date(data.createDate));
+      data.createDate = new Date(data.createDate).toISOString();
    }
    data.directCompany = data.directCompany.trim();
    console.log("Function `work-create` invoked", data);

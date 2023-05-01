@@ -37,9 +37,9 @@ function Work() {
                // console.log(formatDate(dateValue));
                const { data, ref } = each;
                data.id = ref["@ref"].id;
-               // if (data.createDate !== undefined) {
-               //    data.createDate = formatDate(new Date(data.createDate));
-               // }
+               if (data.createDate !== undefined) {
+                  data.createDate = new Date(data.createDate).toLocaleString();
+               }
                return data;
             }),
          onError: (error) => {
