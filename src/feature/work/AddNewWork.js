@@ -68,7 +68,6 @@ export default function AddNewWork({
 
    React.useEffect(() => {
       if (Object.keys(editData).length !== 0) {
-         console.log(editData);
          setValue("directCompany", editData.directCompany);
          setValue("status", editData.status);
          setValue("account", editData.account);
@@ -76,6 +75,14 @@ export default function AddNewWork({
          setValue("createDate", new Date(editData.createDate));
          setValue("jobDescription", editData.jobDescription);
          setValue("position", editData.position);
+      } else {
+         setValue("directCompany", "");
+         setValue("status", myConsts.STATUS_OPTIONS[0].value);
+         setValue("account", myConsts.ACCOUNT_OPTIONS[0].value);
+         setValue("jobBoard", myConsts.JOB_BOARD_OPTIONS[0].value);
+         setValue("createDate", new Date());
+         setValue("jobDescription", "");
+         setValue("position", "");
       }
    }, [editData]);
 
