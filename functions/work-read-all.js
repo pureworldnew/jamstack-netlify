@@ -16,7 +16,9 @@ exports.handler = (event, context) => {
    return client
       .query(
          q.Map(
-            q.Paginate(q.Match(q.Index("work_entries_sort_by_create_desc"))),
+            q.Paginate(q.Match(q.Index("work_entries_sort_by_create_desc")), {
+               size: 100000,
+            }),
             q.Lambda(["createDate", "ref"], q.Get(q.Var("ref")))
          )
       )
