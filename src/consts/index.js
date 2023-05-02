@@ -31,7 +31,7 @@ export const PLAN_STATUS_OPTIONS = [
 export const ACCOUNT_OPTIONS = [
    { value: "jonathan_samayoa", label: "Jonathan Samayoa" },
    { value: "james_larro", label: "James Larro" },
-   { value: "ardavan_tari", label: "Ardavan Tari" },
+   { value: "cleve_ambrose", label: "Cleve Ambrose" },
 ];
 export const JOB_BOARD_OPTIONS = [
    { value: "indeed", label: "Indeed" },
