@@ -189,6 +189,7 @@ export function ReactTable({ columns, data, mode, initialState }) {
    );
 
    const handleClickDelete = () => {
+      console.log("selectedFlatRows", selectedFlatRows);
       setPopup({
          show: true,
          rowData: selectedFlatRows,
@@ -197,8 +198,8 @@ export function ReactTable({ columns, data, mode, initialState }) {
 
    const handleClickRows = () => {
       if (popup.show && popup.rowData && popup.rowData.length) {
-         console.log("here is ");
-         const ids = selectedFlatRows.map((each) => each.original._id);
+         console.log("here is ", selectedFlatRows);
+         const ids = selectedFlatRows.map((each) => each.original.id);
          switch (mode) {
             case "workEntry":
                workApi.batchDelete(ids).then((res) => console.log(res));

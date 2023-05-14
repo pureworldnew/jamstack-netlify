@@ -46,8 +46,6 @@ function Chart() {
    };
 
    const parseChartData = async (entryArray) => {
-      console.log("EntryArray", entryArray);
-      if (!entryArray.length) return;
       const chartDataArr = new Array(7);
       const projectNameArr = await getProjectName();
       setProjectName(projectNameArr);
@@ -61,7 +59,7 @@ function Chart() {
             chartDataArr[i][projName] = 0;
          });
 
-         entryArray.forEach((each) => {
+         entryArray?.forEach((each) => {
             if (!each?.length) return;
             for (let j = 0; j < each.length; j += 1) {
                const recordObj = each[j];
@@ -93,9 +91,7 @@ function Chart() {
          res.data.forEach((each) => {
             entryArray.push(each.data.chartStatusData);
          });
-         if (entryArray.length) {
-            parseChartData(entryArray);
-         }
+         parseChartData(entryArray);
       });
    };
    useEffect(() => {
