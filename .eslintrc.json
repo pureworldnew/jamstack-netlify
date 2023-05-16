@@ -9,6 +9,16 @@
         "prettier"
     ],
     "overrides": [
+        {
+            "files": [
+              "**/*.spec.js",
+              "**/*.spec.jsx",
+              "**/*.test.js"
+            ],
+            "env": {
+              "jest": true
+            }
+        }
     ],
     "parserOptions": {
         "ecmaVersion": "latest",
