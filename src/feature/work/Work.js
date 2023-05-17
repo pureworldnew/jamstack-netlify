@@ -147,12 +147,6 @@ function Work() {
             />
          </Box>
 
-         {/* <ToastContainer
-            autoClose={500}
-            pauseOnFocusLoss={false}
-            pauseOnHover={false}
-         /> */}
-
          <DeleteModal
             delOpen={popup.show}
             setDelOpen={setPopup}
