@@ -37,6 +37,7 @@ function SignInSide() {
    const navigate = useNavigate();
 
    const [openToast, setOpenToast] = React.useState(false);
+   const [rememberMe, setRememberMe] = React.useState(false);
    const [toastText, setToastText] = React.useState("");
    const { login, setUser, setAuthToken } = useAuth();
 
@@ -76,6 +77,7 @@ function SignInSide() {
                xs={false}
                sm={4}
                md={7}
+               data-testid="signInBackgroundImage"
                sx={{
                   backgroundImage: `url(${signInImage})`,
                   backgroundRepeat: "no-repeat",
@@ -108,11 +110,7 @@ function SignInSide() {
                   <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
                      <LockOutlinedIcon />
                   </Avatar>
-                  <Typography
-                     component="h1"
-                     variant="h5"
-                     data-testid="signinLabel"
-                  >
+                  <Typography component="h1" variant="h5">
                      Sign in
                   </Typography>
                   <Box
@@ -140,9 +138,17 @@ function SignInSide() {
                         type="password"
                         id="password"
                         autoComplete="current-password"
+                        inputProps={{ "data-testid": "password" }}
                      />
                      <FormControlLabel
-                        control={<Checkbox value="remember" color="primary" />}
+                        control={
+                           <Checkbox
+                              value="remember"
+                              color="primary"
+                              name="remeber-me"
+                              onChange={() => setRememberMe(!rememberMe)}
+                           />
+                        }
                         label="Remember me"
                      />
                      <Button
@@ -150,6 +156,7 @@ function SignInSide() {
                         fullWidth
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
+                        data-testid="submitBtn"
                      >
                         Sign In
                      </Button>
