@@ -102,7 +102,12 @@ export default function AddNewWork({
       {
          onSuccess: () => {
             queryClient.invalidateQueries(["get_work_entries"]);
-            toast.success("Work created successfully");
+            toast.success("Work created successfully", {
+               autoClose: 1000,
+               closeOnClick: true,
+               pauseOnHover: false,
+               pauseOnFocusLoss: false,
+            });
             handleCloseDialog();
          },
          onError: (error) => {
