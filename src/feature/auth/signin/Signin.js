@@ -156,7 +156,6 @@ function SignInSide() {
                         fullWidth
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
-                        data-testid="submitBtn"
                      >
                         Sign In
                      </Button>

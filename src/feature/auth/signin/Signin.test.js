@@ -2,15 +2,16 @@ import React from "react";
 import { render, screen } from "CustomRender";
 import userEvent from "@testing-library/user-event";
 import signInImage from "assets/difficult-roads.jpg";
+
 import Signin from "./Signin";
 
-const mockNavigate = jest.fn();
-jest.mock("react-router-dom", () => ({
-   ...jest.requireActual("react-router-dom"),
-   useNavigate: () => mockNavigate,
-}));
-
 describe("Signin Page rendering", () => {
+   const mockNavigate = jest.fn();
+   jest.mock("react-router-dom", () => ({
+      ...jest.requireActual("react-router-dom"),
+      useNavigate: () => mockNavigate,
+   }));
+
    it("renders default state", () => {
       render(<Signin />);
       const emailAddress = screen.getByRole("textbox", { name: /email/i });
@@ -48,6 +49,35 @@ describe("Signin Page rendering", () => {
       const dontSignUpLink = screen.getByRole("link", {
          name: "Don't have an account? Sign Up",
       });
-      userEvent.click(dontSignUpLink);
+      expect(dontSignUpLink).toHaveAttribute("href", "/signup");
+
+      const forgotPasswordLink = screen.getByRole("link", {
+         name: "Forgot password?",
+      });
+      expect(forgotPasswordLink).toHaveAttribute("href", "/");
+
+      const yourWebsiteLink = screen.getByRole("link", {
+         name: "Your Website",
+      });
+      expect(yourWebsiteLink).toHaveAttribute(
+         "href",
+         "https://jamstack.netlify.app/"
+      );
+   });
+   it("submitting form with email and password", () => {
+      const mockLoginFn = jest.fn();
+
+      jest.mock("hooks/useAuth", () =>
+         jest.fn(() => ({
+            login: mockLoginFn,
+         }))
+      );
+      render(<Signin />);
+      const emailAddress = screen.getByRole("textbox", { name: /email/i });
+      const password = screen.getByTestId("password");
+      const signInBtn = screen.getByRole("button", { name: /Sign In/i });
+      userEvent.type(emailAddress, "email@gmail.com");
+      userEvent.type(password, "12345");
+      userEvent.click(signInBtn);
    });
 });
