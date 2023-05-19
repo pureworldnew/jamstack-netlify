@@ -6,11 +6,6 @@ jobs:
       - image: cimg/node:16.13.2
     steps:
       - checkout
-      - run:
-          name: Set NODE_ENV to development
-          command: echo "Setting NODE_ENV to development"
-          environment:
-            NODE_ENV: development
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
@@ -33,13 +28,11 @@ jobs:
           name: Install netlify cli 
           command: sudo npm install netlify-cli -g
       - run:
+          name: Show missing dependencies
+          command: npm ls
+      - run:
           name: Check if netlify cli is working
           command: netlify --version
-      - run:
-          name: Set NODE_ENV to production
-          command: echo "Setting NODE_ENV to production"
-          environment:
-            NODE_ENV: production
       - run:
           name: Build React App
           command: npm run build
