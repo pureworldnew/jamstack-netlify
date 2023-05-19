@@ -33,21 +33,6 @@ jobs:
           name: Install netlify cli 
           command: sudo npm install netlify-cli -g
       - run:
-          name: Install install-peerdeps globally
-          command: sudo npm install -g install-peerdeps
-      - run:
-          name: Install eslint-config-airbnb
-          command: install-peerdeps --dev eslint-config-airbnb
-      - run:
-          name: Install eslint-config-airbnb-base
-          command: install-peerdeps --dev eslint-config-airbnb-base
-      - run:
-          name: Show missing dependencies
-          command: npm ls
-      - run:
-          name: Install packages necessary for eslint-config-airbnb manully 
-          command: npm install --save-dev eslint eslint-plugin-import eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y eslint-plugin-compat eslint-plugin-testing-library
-      - run:
           name: Check if netlify cli is working
           command: netlify --version
       - run:
