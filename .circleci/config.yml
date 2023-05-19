@@ -40,12 +40,6 @@ jobs:
           name: Check if netlify cli is working
           command: netlify --version
       - run:
-          name: Netlify Link
-          command: netlify link
-      - run:
-          name: Netlify Status
-          command: netlify status
-      - run:
           name: Build React App
           command: npm run build
       - save_cache:
