@@ -37,9 +37,6 @@ jobs:
           name: Install eslint-config-airbnb-base
           command: install-peerdeps --dev eslint-config-airbnb-base
       - run:
-          name: Install eslint-config-airbnb package separately
-          command: npm install --save eslint-config-airbnb
-      - run:
           name: Show missing dependencies
           command: npm ls
       - run:
