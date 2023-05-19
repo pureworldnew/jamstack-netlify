@@ -4,15 +4,13 @@ jobs:
     working_directory: ~/repo
     docker:
       - image: cimg/node:16.13.2
-    environment:
-      - NODE_ENV: development
     steps:
       - checkout
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
           name: Update NPM
-          command: "sudo npm install -g npm"
+          command: sudo npm install -g npm 
       - run:
           name: Install Dependencies
           command: npm install
