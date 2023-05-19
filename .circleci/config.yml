@@ -25,6 +25,9 @@ jobs:
               rm -r "./.netlify"
             fi
       - run:
+          name: Check if netlify cli is working
+          command: netlify --version
+      - run:
           name: Build React App
           command: npm run build
       - save_cache:
