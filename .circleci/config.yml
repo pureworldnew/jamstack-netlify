@@ -19,6 +19,12 @@ jobs:
           paths:
             - ./node_modules
       - run:
+          name: Remove .netlify if exists
+          command: |
+            if [ -d "./.netlify" ]; then
+              rm -r "./.netlify"
+            fi
+      - run:
           name: Build React App
           command: npm run build
       - save_cache:
