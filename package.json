@@ -54,7 +54,11 @@
     "start": "netlify dev",
     "prebuild": "echo 'setup faunaDB' && npm run bootstrap",
     "build": "react-scripts build",
-    "test": "react-scripts test"
+    "test": "react-scripts test",
+    "cy:open": "cypress open",
+    "cy:run": "cross-env CYPRESS_baseUrl=http://localhost:9000 cypress run",
+    "lint": "eslint . --ignore-path .gitignore --ext .ts,.tsx,.js",
+    "lint:fix": "yarn lint --fix"
   },
   "devDependencies": {
     "@testing-library/cypress": "^9.0.0",

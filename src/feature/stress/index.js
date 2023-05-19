@@ -1,1 +1,1 @@
-export * from "./Stress";
+export { default as Stress } from "./Stress";
