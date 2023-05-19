@@ -4,6 +4,8 @@ jobs:
     working_directory: ~/repo
     docker:
       - image: cimg/node:16.13.2
+    environment:
+      - NODE_ENV: development
     steps:
       - checkout
       - restore_cache:
