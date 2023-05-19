@@ -46,6 +46,9 @@ jobs:
           name: Check if netlify cli is working
           command: netlify --version
       - run:
+          name: Check NODE_ENV
+          command: echo $NODE_ENV
+      - run:
           name: Build React App
           command: npm run build
       - save_cache:
