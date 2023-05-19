@@ -40,9 +40,6 @@ jobs:
           name: Show missing dependencies
           command: npm ls
       - run:
-          name: Check if eslint-config-airbnb is installed
-          command: npm ls eslint-config-airbnb
-      - run:
           name: Install packages necessary for eslint-config-airbnb manully 
           command: npm install --save-dev eslint eslint-plugin-import eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y eslint-plugin-compat eslint-plugin-testing-library
       - run:
