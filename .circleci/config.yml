@@ -26,7 +26,7 @@ jobs:
             fi
       - run: 
           name: Install netlify cli 
-          command: npm install netlify-cli
+          command: npm install netlify-cli -g
       - run:
           name: Check if netlify cli is working
           command: netlify --version
