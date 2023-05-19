@@ -24,6 +24,12 @@ jobs:
             if [ -d "./.netlify" ]; then
               rm -r "./.netlify"
             fi
+      - run:
+          name: Remove build if exists
+          command: |
+            if [ -d "./build" ]; then
+              rm -r "./build"
+            fi
       - run: 
           name: Install netlify cli 
           command: sudo npm install netlify-cli -g
