@@ -7,5 +7,5 @@ module.exports = function getDBSecret() {
    if (process.env.NODE_ENV === "production") {
       return process.env.FAUNADB_SERVER_SECRET_ONLINE;
    }
-   return 0;
+   return process.env.FAUNADB_SERVER_SECRET;
 };
