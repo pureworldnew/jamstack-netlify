@@ -23,10 +23,11 @@ exports.handler = (event, context) => {
       .then((response) => {
          const cashRefs = response.data;
          const newCashRefs = cashRefs.map((each) => {
-            each.data.createDate = JSON.parse(
+            const modifiedEach = { ...each };
+            modifiedEach.data.createDate = JSON.parse(
                JSON.stringify(each.data.createDate)
             )["@date"];
-            return each;
+            return modifiedEach;
          });
 
          return {

@@ -49,6 +49,12 @@ const MainListItems = (
          </ListItemIcon>
          <ListItemText primary="Stress" />
       </ListItemButton>
+      <ListItemButton component={Link} to="/resume">
+         <ListItemIcon>
+            <AdminPanelSettingsIcon />
+         </ListItemIcon>
+         <ListItemText primary="Resume" />
+      </ListItemButton>
       <ListItemButton component={Link} to="/admin">
          <ListItemIcon>
             <AdminPanelSettingsIcon />
