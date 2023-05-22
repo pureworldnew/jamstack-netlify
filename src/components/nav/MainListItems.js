@@ -7,6 +7,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import TimelineIcon from "@mui/icons-material/Timeline";
 import ErrorIcon from "@mui/icons-material/Error";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import HomeWorkIcon from "@mui/icons-material/HomeWork";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
@@ -51,7 +52,7 @@ const MainListItems = (
       </ListItemButton>
       <ListItemButton component={Link} to="/resume">
          <ListItemIcon>
-            <AdminPanelSettingsIcon />
+            <PersonSearchIcon />
          </ListItemIcon>
          <ListItemText primary="Resume" />
       </ListItemButton>
