@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import React from "react";
 import ReactDOM from "react-dom/client";
 
@@ -8,7 +9,9 @@ import { ThemeProvider } from "@mui/material/styles";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "hooks/useAuth";
 import theme from "context/theme";
+import { Provider } from "react-redux";
 import App from "./App";
+import store from "./store";
 import reportWebVitals from "./reportWebVitals";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -17,16 +20,18 @@ const queryClient = new QueryClient();
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
    <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
-         <ReactQueryDevtools initialIsOpen={false} />
-         <BrowserRouter>
-            <AuthProvider>
-               <ThemeProvider theme={theme}>
-                  <App />
-               </ThemeProvider>
-            </AuthProvider>
-         </BrowserRouter>
-      </QueryClientProvider>
+      <Provider store={store}>
+         <QueryClientProvider client={queryClient}>
+            <ReactQueryDevtools initialIsOpen={false} />
+            <BrowserRouter>
+               <AuthProvider>
+                  <ThemeProvider theme={theme}>
+                     <App />
+                  </ThemeProvider>
+               </AuthProvider>
+            </BrowserRouter>
+         </QueryClientProvider>
+      </Provider>
    </React.StrictMode>
 );
 

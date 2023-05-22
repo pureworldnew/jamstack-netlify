@@ -1,32 +1,36 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/no-array-index-key */
 import * as React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
-import { toast } from "react-toastify";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { LoadingButton } from "@mui/lab";
 import { useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
 import TextField from "@mui/material/TextField";
-import workApi from "services/work";
+import { useNavigate } from "react-router-dom";
+
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-
 import { FormInputText } from "components/form";
+import { fetchResumeData } from "actions";
 
 const validationSchema = Yup.object().shape({
    fullName: Yup.string().required("Full Name is required"),
    currentPosition: Yup.string().required("Position is required"),
-   howLong: Yup.string().required("How long is required"),
-   techUsed: Yup.string().required("Technology used is required"),
-   companyName: Yup.string().required("Company Name is required"),
-   positionHeld: Yup.string().required("Position Held is required"),
+   currentLength: Yup.string().required("How long is required"),
+   currentTechnologies: Yup.string().required("Technology used is required"),
 });
 
 export default function Resume() {
+   const navigate = useNavigate();
+   const resumeData = useSelector((state) => state.resume.resumeData);
+   console.log("Resume resumeData", resumeData);
+   const resumeLoading = useSelector((state) => state.resume.resumeLoading);
+   const dispatch = useDispatch();
    const [companyInfo, setCompanyInfo] = React.useState([
       { name: "", position: "" },
    ]);
@@ -43,8 +47,10 @@ export default function Resume() {
    // 👇🏻 updates an item within the list
    const handleUpdateCompany = (e, index) => {
       const { name, value } = e.target;
+      console.log("name", name, "value", value);
       const list = [...companyInfo];
       list[index][name] = value;
+      console.log("companyInfo", list);
       setCompanyInfo(list);
    };
    const {
@@ -55,39 +61,17 @@ export default function Resume() {
       resolver: yupResolver(validationSchema),
    });
 
-   const { isLoading, mutate: createNewWorkEntry } = useMutation(
-      (workEntries) => workApi.create(workEntries),
-      {
-         onSuccess: () => {
-            toast.success("API fetched successfully", {
-               autoClose: 1000,
-               closeOnClick: true,
-               pauseOnHover: false,
-               pauseOnFocusLoss: false,
-            });
-         },
-         onError: (error) => {
-            if (Array.isArray(error.data.error)) {
-               error.data.error.forEach((el) => {
-                  toast.error(el.message, {
-                     position: "top-right",
-                  });
-               });
-            } else {
-               toast.error(error.data.message, {
-                  position: "top-right",
-               });
-            }
-         },
+   const createApiResume = (resumeEntries) => {
+      dispatch(fetchResumeData(resumeEntries));
+      if (!resumeLoading) {
+         navigate("/resume-print");
       }
-   );
+   };
 
    const onSubmit = (data) => {
-      console.log("errors", errors);
-      console.log("data", data);
       const formData = { ...data, workHistory: JSON.stringify(companyInfo) };
       console.log("formdata", formData);
-      createNewWorkEntry(data);
+      createApiResume(formData);
    };
 
    return (
@@ -130,27 +114,27 @@ export default function Resume() {
                </Grid>
                <Grid item md={2} xs={6}>
                   <FormInputText
-                     name="howLong"
+                     name="currentLength"
                      control={control}
                      label="For how long?(year)"
                      required
-                     error={!!errors.howLong}
+                     error={!!errors.currentLength}
                   />
                   <Typography variant="inherit" color="textSecondary">
-                     {errors.howLong?.message}
+                     {errors.currentLength?.message}
                   </Typography>
                </Grid>
 
                <Grid item md={8} xs={6}>
                   <FormInputText
-                     name="techUsed"
+                     name="currentTechnologies"
                      control={control}
                      label="Technologies used"
                      required
-                     error={!!errors.techUsed}
+                     error={!!errors.currentTechnologies}
                   />
                   <Typography variant="inherit" color="textSecondary">
-                     {errors.techUsed?.message}
+                     {errors.currentTechnologies?.message}
                   </Typography>
                </Grid>
             </Grid>
@@ -159,32 +143,23 @@ export default function Resume() {
                <Grid container spacing={2} alignItems="center" key={index}>
                   <Grid item xs={6} md={5}>
                      <TextField
-                        name="companyName"
+                        name="name"
+                        control={control}
                         onChange={(e) => handleUpdateCompany(e, index)}
                         label="Company Name"
                         fullWidth
                         required
-                        error={
-                           (errors.companyName && company.name === "") || false
-                        }
                      />
-                     <Typography variant="inherit" color="textSecondary">
-                        {errors.companyName && company.name === ""}
-                     </Typography>
                   </Grid>
                   <Grid item xs={6} md={5}>
                      <TextField
-                        name="positionHeld"
+                        name="position"
                         control={control}
                         onChange={(e) => handleUpdateCompany(e, index)}
                         label="Position Held"
                         fullWidth
                         required
-                        error={errors.positionHeld || false}
                      />
-                     <Typography variant="inherit" color="textSecondary">
-                        {errors.positionHeld?.message}
-                     </Typography>
                   </Grid>
                   <Grid item xs={6} md={2}>
                      <ButtonGroup
@@ -205,13 +180,11 @@ export default function Resume() {
                </Grid>
             ))}
          </Box>
-         <LoadingButton
-            color="inherit"
-            loading={isLoading}
-            onClick={handleSubmit(onSubmit)}
-         >
-            Save
-         </LoadingButton>
+         <Box textAlign="center">
+            <LoadingButton variant="contained" onClick={handleSubmit(onSubmit)}>
+               Save
+            </LoadingButton>
+         </Box>
       </form>
    );
 }
