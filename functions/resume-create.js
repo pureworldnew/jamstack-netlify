@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 /* Import faunaDB sdk */
-const faunadb = require("faunadb");
 const { Configuration, OpenAIApi } = require("openai");
 const { v4: uuidv4 } = require("uuid");
 
@@ -28,8 +27,6 @@ const GPTFunction = async (text) => {
    return response.data.choices[0].text;
 };
 
-const q = faunadb.query;
-const getDBSecret = require("./utils/getDBSecret");
 /* export our lambda function as named "handler" export */
 exports.handler = async (event, context) => {
    /* configure faunaDB Client with our secret */

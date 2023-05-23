@@ -50,7 +50,6 @@ export default function Resume() {
       console.log("name", name, "value", value);
       const list = [...companyInfo];
       list[index][name] = value;
-      console.log("companyInfo", list);
       setCompanyInfo(list);
    };
    const {
