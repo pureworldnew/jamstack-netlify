@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* Import faunaDB sdk */
+
 const { v4: uuidv4 } = require("uuid");
 const GPTFunction = require("./utils/gptFunction");
 
@@ -8,7 +9,7 @@ exports.handler = async (event, context) => {
    /* configure faunaDB Client with our secret */
    /* parse the string body into a useable JS object */
    const data = JSON.parse(event.body);
-   console.log("Function `Resume-create` invoked", data);
+   console.log("Function `Resume-create1` invoked", data);
    const {
       prompt,
       fullName,

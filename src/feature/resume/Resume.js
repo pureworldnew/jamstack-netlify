@@ -15,11 +15,12 @@ import { useNavigate } from "react-router-dom";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { FormInputText } from "components/form";
+import { FormInputText, FormInputDropdown } from "components/form";
 import { fetchResumeData } from "actions";
+import * as myConsts from "consts";
 
 const validationSchema = Yup.object().shape({
-   fullName: Yup.string().required("Full Name is required"),
+   email: Yup.string().required("Email is required"),
    currentPosition: Yup.string().required("Position is required"),
    currentLength: Yup.string().required("How long is required"),
    currentTechnologies: Yup.string().required("Technology used is required"),
@@ -55,10 +56,43 @@ export default function Resume() {
    const {
       control,
       handleSubmit,
+      setValue,
       formState: { errors },
    } = useForm({
       resolver: yupResolver(validationSchema),
+      defaultValues: {
+         email: myConsts.ACCOUNT_DETAILS.jonathan_samayoa.email,
+         phone: myConsts.ACCOUNT_DETAILS.jonathan_samayoa.phone,
+         address: myConsts.ACCOUNT_DETAILS.jonathan_samayoa.address,
+         linkedin: myConsts.ACCOUNT_DETAILS.jonathan_samayoa.linkedin,
+         currentPosition:
+            myConsts.ACCOUNT_DETAILS.jonathan_samayoa.currentPosition,
+         currentLength: myConsts.ACCOUNT_DETAILS.jonathan_samayoa.currentLength,
+         currentTechnologies:
+            myConsts.ACCOUNT_DETAILS.jonathan_samayoa.currentTechnologies,
+      },
    });
+
+   const handleAccountChange = (e) => {
+      console.log(e.target.value);
+      setValue("account", e.target.value);
+      setValue("email", myConsts.ACCOUNT_DETAILS[e.target.value].email);
+      setValue("phone", myConsts.ACCOUNT_DETAILS[e.target.value].phone);
+      setValue("address", myConsts.ACCOUNT_DETAILS[e.target.value].address);
+      setValue("linkedin", myConsts.ACCOUNT_DETAILS[e.target.value].linkedin);
+      setValue(
+         "currentPosition",
+         myConsts.ACCOUNT_DETAILS[e.target.value].currentPosition
+      );
+      setValue(
+         "currentLength",
+         myConsts.ACCOUNT_DETAILS[e.target.value].currentLength
+      );
+      setValue(
+         "currentTechnologies",
+         myConsts.ACCOUNT_DETAILS[e.target.value].currentTechnologies
+      );
+   };
 
    const createApiResume = (resumeEntries) => {
       dispatch(fetchResumeData(resumeEntries));
@@ -68,7 +102,19 @@ export default function Resume() {
    };
 
    const onSubmit = (data) => {
-      const formData = { ...data, workHistory: JSON.stringify(companyInfo) };
+      console.log("data", data);
+      const formData = {
+         ...data,
+         fullName:
+            data.account !== undefined
+               ? myConsts.ACCOUNT_OPTIONS.find(
+                    (each) => each.value === data.account
+                 ).label
+               : myConsts.ACCOUNT_OPTIONS.find(
+                    (each) => each.value === "jonathan_samayoa"
+                 ).label,
+         workHistory: JSON.stringify(companyInfo),
+      };
       console.log("formdata", formData);
       createApiResume(formData);
    };
@@ -85,17 +131,52 @@ export default function Resume() {
          >
             <Divider>Company Information</Divider>
             <Grid container spacing={2} alignItems="center">
-               <Grid item xs={6} md={12}>
-                  <FormInputText
-                     name="fullName"
+               <Grid item xs={6} md={2}>
+                  <FormInputDropdown
+                     id="account"
+                     labelId="account-label"
+                     labelText="Account"
+                     options={myConsts.ACCOUNT_OPTIONS}
+                     defaultValues={myConsts.ACCOUNT_OPTIONS[0].value}
+                     name="account"
                      control={control}
-                     label="Full Name"
+                     onChangeCustom={handleAccountChange}
+                  />
+               </Grid>
+               <Grid item xs={6} md={2}>
+                  <FormInputText
+                     name="email"
+                     control={control}
+                     label="Email"
                      required
-                     error={!!errors.fullName}
                   />
                   <Typography variant="inherit" color="textSecondary">
-                     {errors.fullName?.message}
+                     {errors.email?.message}
                   </Typography>
+               </Grid>
+               <Grid item xs={6} md={2}>
+                  <FormInputText
+                     name="phone"
+                     control={control}
+                     label="Phone"
+                     required
+                  />
+               </Grid>
+               <Grid item xs={6} md={3}>
+                  <FormInputText
+                     name="address"
+                     control={control}
+                     label="Address"
+                     required
+                  />
+               </Grid>
+               <Grid item xs={6} md={3}>
+                  <FormInputText
+                     name="linkedin"
+                     control={control}
+                     label="LinkedIn"
+                     required
+                  />
                </Grid>
             </Grid>
             <Grid container spacing={2} alignItems="center">

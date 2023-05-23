@@ -95,18 +95,24 @@ function Resume(props) {
       currentPosition,
       currentLength,
       currentTechnologies,
+      email,
+      address,
+      phone,
+      linkedin,
       workHistory,
       objective,
       keypoints,
       jobResponsibilities,
    } = props;
-   console.log(workHistory, keypoints, jobResponsibilities);
    return (
       <Page {...props} style={styles.page}>
          <Header
+            address={address}
+            phone={phone}
+            linkedin={linkedin}
             name={fullName}
-            subTitle={`${currentPosition}${currentTechnologies}`}
-            email="test@gmail.com"
+            subTitle={`${currentPosition} : ${currentTechnologies}`}
+            email={email}
             currentLength={currentLength}
          />
          <Text style={styles.objective}>{parse(objective)}</Text>

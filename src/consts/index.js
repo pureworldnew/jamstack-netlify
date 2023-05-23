@@ -34,6 +34,26 @@ export const ACCOUNT_OPTIONS = [
    { value: "cleve_ambrose", label: "Cleve Ambrose" },
    { value: "richard_correa", label: "Richard Correa" },
 ];
+export const ACCOUNT_DETAILS = {
+   jonathan_samayoa: {
+      address: "Amarillo, TX",
+      email: "jonathandreamdev@gmail.com",
+      phone: "+1 806 576 1063",
+      linkedin: "https://www.linkedin.com/in/jonathan-samayoa/",
+      currentPosition: "With-meetwithanyone.com",
+      currentLength: "5",
+      currentTechnologies: "React, Node, Javascript, AWS",
+   },
+   james_larro: {
+      address: "Orlando, FL",
+      email: "jamescrmlarro@gmail.com",
+      phone: "+1 407 815 2419",
+      linkedin: "https://www.linkedin.com/in/james-larro/",
+      currentPosition: "Mend",
+      currentLength: "5",
+      currentTechnologies: "Node.js, Express, AWS",
+   },
+};
 export const JOB_BOARD_OPTIONS = [
    { value: "indeed", label: "Indeed" },
    { value: "linkedin", label: "Linkedin" },

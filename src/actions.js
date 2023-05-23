@@ -31,19 +31,35 @@ export const fetchResumeData = (resumeEntries) => (dispatch) => {
    const prompt1Promise = ResumeApi.create(ResumePromise);
    promiseArr.push(retryPromise(() => prompt1Promise, 3, 1000));
    ResumePromise.prompt = "prompt2";
-   const prompt2Promise = ResumeApi.create(ResumePromise);
+   const prompt2Promise = ResumeApi.create1(ResumePromise);
    promiseArr.push(retryPromise(() => prompt2Promise, 3, 1000));
    ResumePromise.prompt = "prompt3";
-   const prompt3Promise = ResumeApi.create(ResumePromise);
+   const prompt3Promise = ResumeApi.create2(ResumePromise);
    promiseArr.push(retryPromise(() => prompt3Promise, 3, 1000));
 
-   return Promise.all(promiseArr)
+   return Promise.allSettled(promiseArr)
       .then((res) => {
-         const resumeResultData = {
-            ...res[0].data,
-            ...res[1].data,
-            ...res[2].data,
-         };
+         console.log("allsettled response", res);
+
+         const fulfilled = res
+            .filter((result) => result.status === "fulfilled")
+            .map((result) => result.value);
+         console.log("fulfilled", fulfilled); // [{name: "John Doe", dateAccountCreated: "05-23-2018"}]
+         const rejected = res
+            .filter((result) => result.status === "rejected")
+            .map((result) => result.reason);
+         let resumeResultData = {};
+         if (!rejected.length) {
+            // all fullfilled
+            resumeResultData = {
+               ...fulfilled[0].data,
+               ...fulfilled[1].data,
+               ...fulfilled[2].data,
+            };
+         } else {
+            console.log("rejected", rejected); // ['failed to fetch']
+         }
+
          console.log("resumeResultData", resumeResultData);
          dispatch(fetchResumeSuccess(resumeResultData));
       })

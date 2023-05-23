@@ -9,30 +9,32 @@ import PrintPdf from "./PrintPdf";
 import ErrorPage from "./ErrorPage";
 
 export default function ResumePrint() {
-   // const result = useSelector((state) => state.resume.resumeData);
+   const result = useSelector((state) => state.resume.resumeData);
    const resumeLoading = useSelector((state) => state.resume.resumeLoading);
-   // console.log("resumeData", result);
-   const result = {
-      id: "8d710359-92cb-4df4-8c2b-7422749d580e",
-      fullName: "Jonathan Samayoa",
-      currentPosition: "With",
-      currentLength: "10",
-      currentTechnologies: "react, node, javascript, aws",
-      workHistory: [
-         {
-            name: "sky republic inc",
-            position: "react developer",
-         },
-      ],
-      objective:
-         "\n\nMy name is Jonathan Samayoa and I am a technology professional with 10 years of experience. My expertise lies in developing web applications using React, Node.js, JavaScript and AWS technologies. During my career, I have worked on multiple projects involving all aspects of software development life cycle from design to deployment. My strong technical skills combined with excellent communication abilities make me an asset to any team or organization looking for someone who can deliver results quickly and efficiently. With my ability to think outside the box while paying attention to details, I'm confident that any project given to me will be completed successfully and exceed expectations.",
-      keypoints:
-         " \n\n1. Proven track record of 10+ years in developing software applications using React, Node, JavaScript and AWS technologies. \n2. Experienced in implementing full-stack web development solutions that are scalable and secure. \n3. Expertise in designing user interfaces with intuitive navigation for maximum usability and accessibility across all devices.  \n4. Skilled at troubleshooting complex technical issues to ensure smooth operation of projects from inception to completion. \n5. Adept at managing multiple tasks simultaneously while meeting tight deadlines within budget constraints. \n6. Ability to work independently or as part of a team to effectively collaborate on project objectives and deliverables efficiently .   \n7 . Excellent communication skills with the ability to communicate clearly with stakeholders, end users, and colleagues alike for successful outcomes .  \n8 . Possess an up-to-date knowledge of industry trends and developments related to web technologies such as React, Node, JavaScript & AWS Cloud Services",
-      jobResponsibilities:
-         "\n\n1. At Sky Republic Inc., I worked as a React Developer for 10 years. My main responsibilities included developing user-friendly web applications and creating innovative solutions to complex problems. During my tenure, I helped improve the company’s performance by utilizing cutting-edge technologies and tools such as ReactJS, Redux, NodeJS and AWS Lambda. Additionally, I also collaborated with other developers to ensure that our products met the highest standards of quality and efficiency. \n2. Over the course of my time at Sky Republic Inc., I gained invaluable experience in software engineering principles like object-oriented programming (OOP) and design patterns such as Model View Controller (MVC). With this knowledge, I was able to create robust web applications which could scale easily with changing business requirements. Moreover, by leveraging modern frameworks like AngularJS or Vuejs; I enabled faster development cycles without compromising on code quality or security measures taken throughout the process. \n3. As part of my role at Sky Republic Inc., I was responsible for debugging existing systems while ensuring high availability across all platforms we supported - from mobile devices to desktop computers running Windows & Mac OS X operating systems respectively . Furthermore ,I also implemented various performance optimization techniques which further enhanced",
-   };
-   // 👇🏻 function that replaces the new line with a break tag
-
+   console.log("resumeData", result);
+   // const result = {
+   //    id: "6d833dae-b64f-4b43-8973-01aadb3d1bda",
+   //    fullName: "James Larro",
+   //    currentPosition: "special",
+   //    currentLength: "10",
+   //    currentTechnologies: "react, node, javascript, ES6",
+   //    email: "jonathandreamdev@gmail.com",
+   //    address: "Amarillo, TX",
+   //    phone: "+1 806 576 1063",
+   //    linkedin: "https://www.linkedin.com/in/jonathan-samayoa/",
+   //    workHistory: [
+   //       {
+   //          name: "sky republic inc",
+   //          position: "software developer",
+   //       },
+   //    ],
+   //    objective:
+   //       "\n\nI am an experienced special with 10 years of experience in the technology industry. I specialize in React, Node.js, JavaScript, and ES6 development. My expertise lies in developing efficient solutions that are tailored to meet customer requirements while maintaining a high level of quality and reliability. I have worked on projects for both large corporations as well as small startups, giving me a broad range of experiences to draw from when creating new systems or updating existing ones. With my knowledge of the latest technologies, I can quickly understand complex problems and develop innovative solutions that satisfy customer needs while staying within budget constraints.",
+   //    keypoints:
+   //       "\n\n1. Proven ability to develop and deploy React, Node, JavaScript and ES6 applications in a professional environment for 10 years. \n2. Experienced in creating user-friendly interfaces with modern web technologies that meet the highest standards of quality and performance. \n3. Skilled at troubleshooting complex issues quickly to ensure minimal downtime on projects. \n4. Adept at working collaboratively with other developers to design efficient solutions for challenging tasks or problems. \n5. Proficient in utilizing version control systems such as Git and SVN to manage code changes across multiple environments efficiently and effectively  \n6. Ability to stay up-to-date with the latest trends and best practices in web development technology through self learning initiatives and attending conferences/workshops regularly  \n7 .Excellent communication skills enabling effective collaboration within teams while leading successful implementation of projects from start to finish \n8 .Highly organized individual capable of managing multiple tasks simultaneously while adhering strictly to deadlines",
+   //    jobResponsibilities:
+   //       "\n\n1. I began my career at Sky Republic Inc as a software developer 10 years ago and have grown in the role ever since. During this time, I acquired an extensive knowledge of both front-end and back-end development technologies, such as JavaScript, HTML5 and CSS3. Additionally, I developed valuable problem solving skills to quickly debug complex issues while ensuring exceptional customer service. \n2. Over the course of my tenure with Sky Republic Inc., I increased efficiency by streamlining processes and automating manual tasks using scripting languages like Python and Bash shell scripts. My achievements also include designing innovative solutions for challenging problems that resulted in improved user experience across multiple platforms including desktop, mobile web and native applications on iOS & Android devices. \n3. In addition to improving operational performance, I was responsible for maintaining high standards of quality assurance throughout product lifecycles which included writing unit tests to ensure reliability before releasing products into production environments. Furthermore, I collaborated closely with other teams within the organization to enhance cross-functional collaboration between departments resulting in better outcomes overall.",
+   // };
    // 👇🏻 returns an error page if the result object is empty
    if (JSON.stringify(result) === "{}") {
       return <ErrorPage />;
@@ -43,15 +45,9 @@ export default function ResumePrint() {
    }
    return (
       <Box>
-         {/* <Button onClick={handlePrintPdf}>Print Page</Button> */}
-         {/* Start of the document */}
-         <PDFViewer width="100%" height={window.innerHeight}>
-            <PrintPdf {...result} />
-         </PDFViewer>
-
          <PDFDownloadLink
             document={<PrintPdf {...result} />}
-            fileName="movielist.pdf"
+            fileName={`${result.fullName} resume.pdf`}
             style={{
                textDecoration: "none",
                padding: "10px",
@@ -64,64 +60,10 @@ export default function ResumePrint() {
                loading ? "Loading document..." : "Download Pdf"
             }
          </PDFDownloadLink>
-         {/* <main className="container" ref={componentRef}>
-            <header className="header">
-               <div>
-                  <h1>{result.fullName}</h1>
-                  <p className="resumeTitle headerTitle">
-                     {result.currentPosition} ({result.currentTechnologies})
-                  </p>
-                  <p className="resumeTitle">
-                     {result.currentLength}year(s) work experience
-                  </p>
-               </div>
-               <div>
-                   <img
-                     src={result.image_url}
-                     alt={result.fullName}
-                     className="resumeImage"
-                  /> 
-               </div>
-            </header>
-            <div className="resumeBody">
-               <div>
-                  <h2 className="resumeBodyTitle">PROFILE SUMMARY</h2>
-                  <p
-                     dangerouslySetInnerHTML={{
-                        __html: replaceWithBr(result.objective),
-                     }}
-                     className="resumeBodyContent"
-                  />
-               </div>
-               <div>
-                  <h2 className="resumeBodyTitle">WORK HISTORY</h2>
-                  {result.workHistory.map((work) => (
-                     <p className="resumeBodyContent" key={work.name}>
-                        <span style={{ fontWeight: "bold" }}>{work.name}</span>{" "}
-                        - {work.position}
-                     </p>
-                  ))}
-               </div>
-               <div>
-                  <h2 className="resumeBodyTitle">JOB PROFILE</h2>
-                  <p
-                     dangerouslySetInnerHTML={{
-                        __html: replaceWithBr(result.jobResponsibilities),
-                     }}
-                     className="resumeBodyContent"
-                  />
-               </div>
-               <div>
-                  <h2 className="resumeBodyTitle">JOB RESPONSIBILITIES</h2>
-                  <p
-                     dangerouslySetInnerHTML={{
-                        __html: replaceWithBr(result.keypoints),
-                     }}
-                     className="resumeBodyContent"
-                  />
-               </div>
-            </div>
-         </main> */}
+         {/* Start of the document */}
+         <PDFViewer width="100%" height={window.innerHeight}>
+            <PrintPdf {...result} />
+         </PDFViewer>
       </Box>
    );
 }

@@ -38,22 +38,53 @@ const styles = StyleSheet.create({
       alignSelf: "flex-end",
       justifySelf: "flex-end",
    },
+   subHeaderContainer: {
+      flexDirection: "column",
+   },
+   descContainer: {
+      flexDirection: "row",
+      textTransform: "none",
+      alignSelf: "flex-end",
+      justifySelf: "flex-end",
+   },
+   descHeader: {
+      fontSize: 10,
+      fontFamily: "Lato",
+      padding: "5px",
+      textDecoration: "none",
+      color: "black",
+   },
 });
 
-export default function Header({ name, subTitle, currentLength, email }) {
+export default function Header({
+   name,
+   address,
+   phone,
+   linkedin,
+   subTitle,
+   currentLength,
+   email,
+}) {
    return (
       <View style={styles.container}>
          <View style={styles.detailColumn}>
-            <Text style={styles.name}>{name}</Text>
-            <Text style={styles.subtitle}>{subTitle}</Text>
-            <Text style={styles.subtitle}>
-               {currentLength}year(s) work experience
-            </Text>
-         </View>
-         <View style={styles.linkColumn}>
-            <Link href="mailto:luke@theforce.com" style={styles.link}>
-               {email}
-            </Link>
+            <View style={styles.subHeaderContainer}>
+               <Text style={styles.name}>{`${name}`}</Text>
+               <View style={styles.descContainer}>
+                  <Text style={styles.subtitle}>{`${subTitle} :`}</Text>
+                  <Text style={styles.subtitle}>
+                     {currentLength}year(s) work experience
+                  </Text>
+               </View>
+            </View>
+            <View style={styles.descContainer}>
+               <Text style={styles.descHeader}>{address}</Text>
+               <Text style={styles.descHeader}>{phone}</Text>
+               <Text style={styles.descHeader}>{linkedin}</Text>
+               <Link href="mailto:luke@theforce.com" style={styles.descHeader}>
+                  {email}
+               </Link>
+            </View>
          </View>
       </View>
    );
