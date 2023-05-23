@@ -21,12 +21,17 @@ const styles = StyleSheet.create({
    },
 });
 
-export default function Education() {
+export default function Education({
+   collegeName,
+   collegeDegree,
+   collegeMajor,
+}) {
    return (
       <View style={styles.container}>
          <Title>Education</Title>
-         <Text style={styles.school}>Jedi Academy</Text>
-         <Text style={styles.degree}>Jedi Master</Text>
+         <Text style={styles.school}>{collegeName}</Text>
+         <Text style={styles.degree}>{`${collegeDegree}`}</Text>
+         <Text style={styles.degree}>{`${collegeMajor}`}</Text>
          <Text style={styles.candidate}>A long, long time ago</Text>
       </View>
    );

@@ -70,6 +70,9 @@ export default function Resume() {
          currentLength: myConsts.ACCOUNT_DETAILS.jonathan_samayoa.currentLength,
          currentTechnologies:
             myConsts.ACCOUNT_DETAILS.jonathan_samayoa.currentTechnologies,
+         collegeName: myConsts.ACCOUNT_DETAILS.jonathan_samayoa.collegeName,
+         collegeDegree: myConsts.ACCOUNT_DETAILS.jonathan_samayoa.collegeDegree,
+         collegeMajor: myConsts.ACCOUNT_DETAILS.jonathan_samayoa.collegeMajor,
       },
    });
 
@@ -91,6 +94,18 @@ export default function Resume() {
       setValue(
          "currentTechnologies",
          myConsts.ACCOUNT_DETAILS[e.target.value].currentTechnologies
+      );
+      setValue(
+         "collegeName",
+         myConsts.ACCOUNT_DETAILS[e.target.value].collegeName
+      );
+      setValue(
+         "collegeDegree",
+         myConsts.ACCOUNT_DETAILS[e.target.value].collegeDegree
+      );
+      setValue(
+         "collegeMajor",
+         myConsts.ACCOUNT_DETAILS[e.target.value].collegeMajor
       );
    };
 
@@ -204,8 +219,45 @@ export default function Resume() {
                      {errors.currentLength?.message}
                   </Typography>
                </Grid>
-
-               <Grid item md={8} xs={6}>
+               <Grid item md={4} xs={6}>
+                  <FormInputText
+                     name="collegeName"
+                     control={control}
+                     label="University"
+                     required
+                     error={!!errors.collegeName}
+                  />
+                  <Typography variant="inherit" color="textSecondary">
+                     {errors.collegeName?.message}
+                  </Typography>
+               </Grid>
+               <Grid item md={2} xs={6}>
+                  <FormInputText
+                     name="collegeDegree"
+                     control={control}
+                     label="Degree"
+                     required
+                     error={!!errors.collegeDegree}
+                  />
+                  <Typography variant="inherit" color="textSecondary">
+                     {errors.collegeDegree?.message}
+                  </Typography>
+               </Grid>
+               <Grid item md={2} xs={6}>
+                  <FormInputText
+                     name="collegeMajor"
+                     control={control}
+                     label="Major"
+                     required
+                     error={!!errors.collegeMajor}
+                  />
+                  <Typography variant="inherit" color="textSecondary">
+                     {errors.collegeMajor?.message}
+                  </Typography>
+               </Grid>
+            </Grid>
+            <Grid container spacing={2} alignItems="center">
+               <Grid item md={12} xs={12}>
                   <FormInputText
                      name="currentTechnologies"
                      control={control}

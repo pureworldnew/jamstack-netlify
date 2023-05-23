@@ -102,6 +102,9 @@ function Resume(props) {
       workHistory,
       objective,
       keypoints,
+      collegeName,
+      collegeDegree,
+      collegeMajor,
       jobResponsibilities,
    } = props;
    return (
@@ -118,7 +121,11 @@ function Resume(props) {
          <Text style={styles.objective}>{parse(objective)}</Text>
          <View style={styles.container}>
             <View style={styles.leftColumn}>
-               <Education />
+               <Education
+                  collegeName={collegeName}
+                  collegeDegree={collegeDegree}
+                  collegeMajor={collegeMajor}
+               />
                <Skills />
             </View>
             <View style={styles.container}>

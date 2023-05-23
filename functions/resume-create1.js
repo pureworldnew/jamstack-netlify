@@ -16,10 +16,6 @@ exports.handler = async (event, context) => {
       currentPosition,
       currentLength,
       currentTechnologies,
-      email,
-      address,
-      phone,
-      linkedin,
       workHistory, // JSON format
    } = data;
 
@@ -32,10 +28,6 @@ exports.handler = async (event, context) => {
       currentPosition,
       currentLength,
       currentTechnologies,
-      email,
-      address,
-      phone,
-      linkedin,
       workHistory: workArray,
    };
 

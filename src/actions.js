@@ -25,16 +25,29 @@ export const fetchResumeFailure = (error) => ({
 export const fetchResumeData = (resumeEntries) => (dispatch) => {
    dispatch(fetchResumeRequest(resumeEntries));
 
-   const ResumePromise = JSON.parse(JSON.stringify(resumeEntries));
+   const {
+      id,
+      email,
+      address,
+      phone,
+      linkedin,
+      collegeName,
+      collegeDegree,
+      collegeMajor,
+      ...resumeParamObj
+   } = resumeEntries;
+
+   const resumeParam = JSON.parse(JSON.stringify(resumeParamObj));
+   console.log("real param", resumeParam);
    const promiseArr = [];
-   ResumePromise.prompt = "prompt1";
-   const prompt1Promise = ResumeApi.create(ResumePromise);
+   resumeParam.prompt = "prompt1";
+   const prompt1Promise = ResumeApi.create(resumeParam);
    promiseArr.push(retryPromise(() => prompt1Promise, 3, 1000));
-   ResumePromise.prompt = "prompt2";
-   const prompt2Promise = ResumeApi.create1(ResumePromise);
+   resumeParam.prompt = "prompt2";
+   const prompt2Promise = ResumeApi.create1(resumeParam);
    promiseArr.push(retryPromise(() => prompt2Promise, 3, 1000));
-   ResumePromise.prompt = "prompt3";
-   const prompt3Promise = ResumeApi.create2(ResumePromise);
+   resumeParam.prompt = "prompt3";
+   const prompt3Promise = ResumeApi.create2(resumeParam);
    promiseArr.push(retryPromise(() => prompt3Promise, 3, 1000));
 
    return Promise.allSettled(promiseArr)
@@ -52,12 +65,13 @@ export const fetchResumeData = (resumeEntries) => (dispatch) => {
          if (!rejected.length) {
             // all fullfilled
             resumeResultData = {
+               ...resumeEntries,
                ...fulfilled[0].data,
                ...fulfilled[1].data,
                ...fulfilled[2].data,
             };
          } else {
-            console.log("rejected", rejected); // ['failed to fetch']
+            console.log("rejected", rejected.config.url); // ['failed to fetch']
          }
 
          console.log("resumeResultData", resumeResultData);
