@@ -40,16 +40,19 @@ const styles = StyleSheet.create({
    },
 });
 
-export default function Header() {
+export default function Header({ name, subTitle, currentLength, email }) {
    return (
       <View style={styles.container}>
          <View style={styles.detailColumn}>
-            <Text style={styles.name}>Luke Skywalker</Text>
-            <Text style={styles.subtitle}>Jedi Master</Text>
+            <Text style={styles.name}>{name}</Text>
+            <Text style={styles.subtitle}>{subTitle}</Text>
+            <Text style={styles.subtitle}>
+               {currentLength}year(s) work experience
+            </Text>
          </View>
          <View style={styles.linkColumn}>
             <Link href="mailto:luke@theforce.com" style={styles.link}>
-               luke@theforce.com
+               {email}
             </Link>
          </View>
       </View>

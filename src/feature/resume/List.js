@@ -28,4 +28,12 @@ export function Item({ children }) {
    );
 }
 
+export function Summary({ children }) {
+   return (
+      <View style={styles.item}>
+         <Text style={styles.itemContent}>{children}</Text>
+      </View>
+   );
+}
+
 export default List;

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import React from "react";
 import {
    Document,
@@ -7,12 +8,13 @@ import {
    StyleSheet,
    Font,
 } from "@react-pdf/renderer";
-// import replaceWithBr from "utils/replaceWithBr";
+import parse from "html-react-parser";
 
 import Header from "./Header";
 import Skills from "./Skills";
 import Education from "./Education";
-import Experience from "./Experience";
+// import Experience from "./Experience";
+import WorkHistory from "./WorkHistory";
 
 const styles = StyleSheet.create({
    page: {
@@ -21,6 +23,13 @@ const styles = StyleSheet.create({
    container: {
       flex: 1,
       flexDirection: "row",
+      "@media max-width: 400": {
+         flexDirection: "column",
+      },
+   },
+   columnContainer: {
+      flex: 1,
+      flexDirection: "column",
       "@media max-width: 400": {
          flexDirection: "column",
       },
@@ -40,6 +49,10 @@ const styles = StyleSheet.create({
       "@media orientation: landscape": {
          width: 200,
       },
+   },
+   objective: {
+      fontSize: 10,
+      fontFamily: "Lato",
    },
    footer: {
       fontSize: 12,
@@ -77,45 +90,44 @@ Font.register({
 });
 // Create styles
 function Resume(props) {
+   const {
+      fullName,
+      currentPosition,
+      currentLength,
+      currentTechnologies,
+      workHistory,
+      objective,
+      keypoints,
+      jobResponsibilities,
+   } = props;
+   console.log(workHistory, keypoints, jobResponsibilities);
    return (
       <Page {...props} style={styles.page}>
-         <Header />
+         <Header
+            name={fullName}
+            subTitle={`${currentPosition}${currentTechnologies}`}
+            email="test@gmail.com"
+            currentLength={currentLength}
+         />
+         <Text style={styles.objective}>{parse(objective)}</Text>
          <View style={styles.container}>
             <View style={styles.leftColumn}>
                <Education />
                <Skills />
             </View>
-            <Experience />
+            <View style={styles.container}>
+               <WorkHistory
+                  workHistory={workHistory}
+                  jobResponsibilities={jobResponsibilities}
+                  keypoints={keypoints}
+               />
+            </View>
          </View>
-         <Text style={styles.footer}>
-            This IS the candidate you are looking for
-         </Text>
       </Page>
    );
 }
 
 export default function PrintPdf(result) {
-   console.log("printable result", result);
-   // replaceWithBr(result.objective);
-   // const result1 = {
-   //    id: "8d710359-92cb-4df4-8c2b-7422749d580e",
-   //    fullName: "Jonathan Samayoa",
-   //    currentPosition: "With",
-   //    currentLength: "10",
-   //    currentTechnologies: "react, node, javascript, aws",
-   //    workHistory: [
-   //       {
-   //          name: "sky republic inc",
-   //          position: "react developer",
-   //       },
-   //    ],
-   //    objective:
-   //       "\n\nMy name is Jonathan Samayoa and I am a technology professional with 10 years of experience. My expertise lies in developing web applications using React, Node.js, JavaScript and AWS technologies. During my career, I have worked on multiple projects involving all aspects of software development life cycle from design to deployment. My strong technical skills combined with excellent communication abilities make me an asset to any team or organization looking for someone who can deliver results quickly and efficiently. With my ability to think outside the box while paying attention to details, I'm confident that any project given to me will be completed successfully and exceed expectations.",
-   //    keypoints:
-   //       " \n\n1. Proven track record of 10+ years in developing software applications using React, Node, JavaScript and AWS technologies. \n2. Experienced in implementing full-stack web development solutions that are scalable and secure. \n3. Expertise in designing user interfaces with intuitive navigation for maximum usability and accessibility across all devices.  \n4. Skilled at troubleshooting complex technical issues to ensure smooth operation of projects from inception to completion. \n5. Adept at managing multiple tasks simultaneously while meeting tight deadlines within budget constraints. \n6. Ability to work independently or as part of a team to effectively collaborate on project objectives and deliverables efficiently .   \n7 . Excellent communication skills with the ability to communicate clearly with stakeholders, end users, and colleagues alike for successful outcomes .  \n8 . Possess an up-to-date knowledge of industry trends and developments related to web technologies such as React, Node, JavaScript & AWS Cloud Services",
-   //    jobResponsibilities:
-   //       "\n\n1. At Sky Republic Inc., I worked as a React Developer for 10 years. My main responsibilities included developing user-friendly web applications and creating innovative solutions to complex problems. During my tenure, I helped improve the company’s performance by utilizing cutting-edge technologies and tools such as ReactJS, Redux, NodeJS and AWS Lambda. Additionally, I also collaborated with other developers to ensure that our products met the highest standards of quality and efficiency. \n2. Over the course of my time at Sky Republic Inc., I gained invaluable experience in software engineering principles like object-oriented programming (OOP) and design patterns such as Model View Controller (MVC). With this knowledge, I was able to create robust web applications which could scale easily with changing business requirements. Moreover, by leveraging modern frameworks like AngularJS or Vuejs; I enabled faster development cycles without compromising on code quality or security measures taken throughout the process. \n3. As part of my role at Sky Republic Inc., I was responsible for debugging existing systems while ensuring high availability across all platforms we supported - from mobile devices to desktop computers running Windows & Mac OS X operating systems respectively . Furthermore ,I also implemented various performance optimization techniques which further enhanced",
-   // };
    const { fullName } = result;
    return (
       <Document
