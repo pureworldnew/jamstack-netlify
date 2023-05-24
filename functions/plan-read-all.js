@@ -24,17 +24,13 @@ exports.handler = (event, context) => {
       )
       .then((response) => {
          const planRefs = response.data;
-         console.log("plan refs", response);
          return {
             statusCode: 200,
             body: JSON.stringify(planRefs),
          };
       })
-      .catch((error) => {
-         console.log("error", error);
-         return {
-            statusCode: 400,
-            body: JSON.stringify(error),
-         };
-      });
+      .catch((error) => ({
+         statusCode: 400,
+         body: JSON.stringify(error),
+      }));
 };

@@ -42,7 +42,6 @@ export default function Track() {
       }
       trackApi.readAll().then((res) => {
          const entryArray = [];
-         console.log("res trackData", res);
          res.data.forEach((each) => {
             const { data, ref } = each;
             data.id = ref["@ref"].id;
@@ -74,7 +73,6 @@ export default function Track() {
       setLoading(true);
       try {
          const clockifyMeta = await trackApi.readClockifyApiMeta();
-         console.log("clockifyMeta ", clockifyMeta.data);
          if (clockifyMeta?.data?.length === 1) {
             const { workspaceId, userId } = clockifyMeta.data[0].data;
             useClockify(
@@ -82,7 +80,6 @@ export default function Track() {
                "GET"
             )
                .then(async (response) => {
-                  console.log("response from api", response);
                   const paramArray = [];
                   for (const each of response) {
                      const { projectId } = each;
@@ -125,7 +122,6 @@ export default function Track() {
                      const endDateString = dayjs(each.timeInterval.end).format(
                         "YYYY-MM-DD"
                      );
-                     console.log("endDateString", endDateString);
                      const chartStatusData = [];
                      if (startDateString === endDateString) {
                         chartStatusData.push({
@@ -166,7 +162,6 @@ export default function Track() {
                         },
                      });
                   }
-                  console.log("paramArray", paramArray);
                   trackApi
                      .create(paramArray)
                      .then((res) => {
@@ -178,11 +173,9 @@ export default function Track() {
                })
                .catch((err) => console.log(err));
          } else {
-            console.log("Please initialize clockify first");
             setLoading(false);
          }
       } catch (err) {
-         console.log(err);
          setLoading(false);
       }
    };
@@ -220,10 +213,6 @@ export default function Track() {
                         userId,
                      })
                      .then((res) => {
-                        console.log(
-                           "clockify api key updated successfully",
-                           res
-                        );
                         setToastText("clockify api key updated successfully");
                         setOpenToast(true);
                         setLoading(false);
@@ -234,10 +223,6 @@ export default function Track() {
                      .then((res) => {
                         setToastText("clockify api key created successfully");
                         setOpenToast(true);
-                        console.log(
-                           "clockify api key created successfully",
-                           res
-                        );
                         setLoading(false);
                      });
                }

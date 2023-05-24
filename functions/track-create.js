@@ -21,22 +21,20 @@ exports.handler = async (event, context) => {
    /* construct the fauna query */
    return client
       .query(deleteAll())
-      .then((response) => {
-         console.log("success in deleting existing track_entires", response);
-         return client.query(multiUpsert(data.data)).then((res) =>
+      .then((response) =>
+         client.query(multiUpsert(data.data)).then((res) =>
             /* Success! return the response with statusCode 200 */
             ({
                statusCode: 200,
                body: JSON.stringify(res),
             })
-         );
-      })
-      .catch((error) => {
-         console.log("error", error);
+         )
+      )
+      .catch((error) =>
          /* Error! return the error with statusCode 400 */
-         return {
+         ({
             statusCode: 400,
             body: JSON.stringify(error),
-         };
-      });
+         })
+      );
 };

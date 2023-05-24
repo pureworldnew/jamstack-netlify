@@ -44,7 +44,6 @@ function AddNewCash({
 
    React.useEffect(() => {
       if (Object.keys(editData).length !== 0) {
-         console.log(editData);
          setValue("cashTitle", editData.cashTitle);
          setValue("cashValue", editData.cashValue);
          setValue("cashForWhom", editData.cashForWhom);

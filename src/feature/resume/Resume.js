@@ -15,7 +15,11 @@ import { useNavigate } from "react-router-dom";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { FormInputText, FormInputDropdown } from "components/form";
+import {
+   FormInputText,
+   FormInputDropdown,
+   FormInputTextarea,
+} from "components/form";
 import { fetchResumeData } from "actions";
 import * as myConsts from "consts";
 
@@ -29,33 +33,11 @@ const validationSchema = Yup.object().shape({
 export default function Resume() {
    const navigate = useNavigate();
    const resumeData = useSelector((state) => state.resume.resumeData);
+   const resumeError = useSelector((state) => state.resume.resumeError);
+   console.log("resumeError", resumeError);
    console.log("Resume resumeData", resumeData);
    const resumeLoading = useSelector((state) => state.resume.resumeLoading);
    const dispatch = useDispatch();
-   const [companyInfo, setCompanyInfo] = React.useState([
-      { name: "", position: "", fromWhenTo: "" },
-   ]);
-   // 👇🏻 updates the state with user's input
-   const handleAddCompany = () =>
-      setCompanyInfo([
-         ...companyInfo,
-         { name: "", position: "", fromWhenTo: "" },
-      ]);
-
-   // 👇🏻 removes a selected item from the list
-   const handleRemoveCompany = (index) => {
-      const list = [...companyInfo];
-      list.splice(index, 1);
-      setCompanyInfo(list);
-   };
-   // 👇🏻 updates an item within the list
-   const handleUpdateCompany = (e, index) => {
-      const { name, value } = e.target;
-      console.log("name", name, "value", value);
-      const list = [...companyInfo];
-      list[index][name] = value;
-      setCompanyInfo(list);
-   };
    const {
       control,
       handleSubmit,
@@ -79,6 +61,36 @@ export default function Resume() {
          collegePeriod: myConsts.ACCOUNT_DETAILS.jonathan_samayoa.collegePeriod,
       },
    });
+
+   React.useEffect(() => {
+      setValue("parsedObjective", resumeData.objective);
+      setValue("parsedKeypoints", resumeData.keypoints);
+      setValue("parsedJobResp", resumeData.jobResponsibilities);
+   }, [resumeData]);
+   const [companyInfo, setCompanyInfo] = React.useState([
+      { name: "", position: "", fromWhenTo: "" },
+   ]);
+
+   // 👇🏻 updates the state with user's input
+   const handleAddCompany = () =>
+      setCompanyInfo([
+         ...companyInfo,
+         { name: "", position: "", fromWhenTo: "" },
+      ]);
+
+   // 👇🏻 removes a selected item from the list
+   const handleRemoveCompany = (index) => {
+      const list = [...companyInfo];
+      list.splice(index, 1);
+      setCompanyInfo(list);
+   };
+   // 👇🏻 updates an item within the list
+   const handleUpdateCompany = (e, index) => {
+      const { name, value } = e.target;
+      const list = [...companyInfo];
+      list[index][name] = value;
+      setCompanyInfo(list);
+   };
 
    const handleAccountChange = (e) => {
       console.log(e.target.value);
@@ -119,13 +131,15 @@ export default function Resume() {
 
    const createApiResume = (resumeEntries) => {
       dispatch(fetchResumeData(resumeEntries));
+   };
+
+   const printResumePdf = () => {
       if (!resumeLoading) {
          navigate("/resume-print");
       }
    };
 
    const onSubmit = (data) => {
-      console.log("data", data);
       const formData = {
          ...data,
          fullName:
@@ -138,7 +152,6 @@ export default function Resume() {
                  ).label,
          workHistory: JSON.stringify(companyInfo),
       };
-      console.log("formdata", formData);
       createApiResume(formData);
    };
 
@@ -219,7 +232,7 @@ export default function Resume() {
                   <FormInputText
                      name="currentLength"
                      control={control}
-                     label="For how long?(year)"
+                     label="For how long"
                      required
                      error={!!errors.currentLength}
                   />
@@ -341,12 +354,51 @@ export default function Resume() {
                   </Grid>
                </Grid>
             ))}
+            <Divider>Parsed Data</Divider>
+            {/* objective:
+          "\n\nMy name is Jonathan Samayoa and I am an experienced software engineer with 5 years of experience in developing web applications using React, Node, JavaScript and AWS technologies. In my role at With-meetwithanyone.com I have been responsible for building new features from the ground up as well as maintaining existing codebase to ensure high performance standards are met. My knowledge of cutting edge technologies has enabled me to create innovative solutions that add value to our products while also providing a great user experience. I take pride in my work and strive for excellence in all areas related to software development.",
+       keypoints:
+          "\n\n1. Expert in developing web applications using React, Node, JavaScript and AWS technologies. \n2. Experienced in creating efficient and maintainable code with a focus on scalability and performance optimization. \n3. Demonstrated ability to develop creative solutions to complex problems while adhering to best practices of software engineering principles. \n4. Extensive knowledge of modern web development tools such as Git/GitHub for version control, npm for package management, etc.. \n5. Skilled at debugging issues quickly and efficiently by leveraging advanced troubleshooting techniques .  \n6. Proven track record of producing high-quality work within tight deadlines while maintaining excellent customer satisfaction ratings .  \n7. 5+ years experience working professionally with-meetwithanyone website platform delivering successful projects under demanding time constraints .   \n8. Self-motivated team player who can effectively collaborate with colleagues from diverse backgrounds to achieve common goals",
+       jobResponsibilities: */}
+            {Object.keys(resumeData).length !== 0 && (
+               <Grid container spacing={2} alignItems="center">
+                  <Grid item md={12} xs={12}>
+                     <FormInputTextarea
+                        name="parsedObjective"
+                        control={control}
+                        label="Objective"
+                     />
+                  </Grid>
+                  <Grid item md={12} xs={12}>
+                     <FormInputTextarea
+                        name="parsedKeypoints"
+                        control={control}
+                        label="Keypoints"
+                     />
+                  </Grid>
+                  <Grid item md={12} xs={12}>
+                     <FormInputTextarea
+                        name="parsedJobResp"
+                        control={control}
+                        label="Job Responsibilities"
+                     />
+                  </Grid>
+               </Grid>
+            )}
          </Box>
-         <Box textAlign="center">
+         <Grid
+            container
+            spacing={2}
+            alignItems="center"
+            justifyContent="space-evenly"
+         >
             <LoadingButton variant="contained" onClick={handleSubmit(onSubmit)}>
-               Save
+               Parse
             </LoadingButton>
-         </Box>
+            <LoadingButton variant="contained" onClick={printResumePdf}>
+               Print
+            </LoadingButton>
+         </Grid>
       </form>
    );
 }

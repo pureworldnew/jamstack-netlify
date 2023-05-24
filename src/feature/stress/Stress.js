@@ -33,7 +33,6 @@ function Stress() {
 
    const getData = async () => {
       const res = await stressApi.readAll();
-      console.log("res stress", res);
       const entryArray = [];
       res?.data?.forEach((each) => {
          const { data, ref } = each;

@@ -44,16 +44,11 @@ function SignInSide() {
    const handleSubmit = async (event) => {
       event.preventDefault();
       const data = new FormData(event.currentTarget);
-      console.log({
-         email: data.get("email"),
-         password: data.get("password"),
-      });
       try {
          const res = await login({
             email: data.get("email"),
             password: data.get("password"),
          });
-         console.log("signIn response is", res);
          // get token from response
          const { token } = res.data;
          // set JWT token to local
@@ -62,7 +57,6 @@ function SignInSide() {
          setAuthToken(token);
          navigate("/dashboard", { replace: true });
       } catch (err) {
-         console.log("error is ", err);
          setOpenToast(true);
          setToastText("Invalid credentials!");
       }

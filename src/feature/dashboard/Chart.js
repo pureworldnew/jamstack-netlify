@@ -86,7 +86,6 @@ function Chart() {
          setLoading(true);
       }
       trackApi.readAll().then((res) => {
-         console.log("trackAPI readAll res", res);
          const entryArray = [];
          res.data.forEach((each) => {
             entryArray.push(each.data.chartStatusData);

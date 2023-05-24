@@ -22,19 +22,12 @@ exports.handler = (event, context) => {
             q.Lambda(["createDate", "ref"], q.Get(q.Var("ref")))
          )
       )
-      .then((response) => {
-         const planRefs = response.data;
-         console.log("plan refs", response);
-         return {
-            statusCode: 200,
-            body: JSON.stringify(planRefs),
-         };
-      })
-      .catch((error) => {
-         console.log("error", error);
-         return {
-            statusCode: 400,
-            body: JSON.stringify(error),
-         };
-      });
+      .then((response) => ({
+         statusCode: 200,
+         body: JSON.stringify(response.data),
+      }))
+      .catch((error) => ({
+         statusCode: 400,
+         body: JSON.stringify(error),
+      }));
 };

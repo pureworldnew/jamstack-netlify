@@ -5,7 +5,6 @@ const getMongoDBSecret = require("./utils/getMongoDBSecret");
 
 exports.handler = async (event, context) => {
    const id = getId(event.path);
-   console.log("typeofId", typeof id);
    console.log("Function `profile-delete` invoked", id);
 
    const client = new MongoClient(getMongoDBSecret());

@@ -51,7 +51,6 @@ export default function AddNewAdmin({
 
    React.useEffect(() => {
       if (Object.keys(editData).length !== 0) {
-         console.log(editData);
          setValue("profileName", editData.profileName);
          setValue("profileEmail", editData.profileEmail);
          setValue("profileLinkedIn", editData.profileLinkedIn);

@@ -17,18 +17,12 @@ exports.handler = async (event, context) => {
    console.log(`Function 'track-delete' invoked. delete id: ${id}`);
    return client
       .query(q.Delete(q.Ref(`classes/track_entries/${id}`)))
-      .then((response) => {
-         console.log("success", response);
-         return {
-            statusCode: 200,
-            body: JSON.stringify(response),
-         };
-      })
-      .catch((error) => {
-         console.log("error", error);
-         return {
-            statusCode: 400,
-            body: JSON.stringify(error),
-         };
-      });
+      .then((response) => ({
+         statusCode: 200,
+         body: JSON.stringify(response),
+      }))
+      .catch((error) => ({
+         statusCode: 400,
+         body: JSON.stringify(error),
+      }));
 };

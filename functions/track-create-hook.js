@@ -102,18 +102,6 @@ exports.handler = async (event, context) => {
    console.log("Function `track-create-hook` invoked");
    const inputEntry = JSON.parse(event.body);
 
-   // inputEntryTestTime = "2022-11-30T03:44:00Z";
-
-   // const defaultLocalMode = dayjs(inputEntryTestTime)
-   //   .utcOffset(-6)
-   //   .format("YYYY-MM-DDTHH:mm:ss[Z]")
-   //   .toString();
-
-   // return {
-   //   statusCode: 200,
-   //   body: JSON.stringify(defaultLocalMode),
-   // };
-
    const startDateString = dayjs(inputEntry.timeInterval.start)
       .utcOffset(-6)
       .format("YYYY-MM-DD");
@@ -168,20 +156,18 @@ exports.handler = async (event, context) => {
 
    return client
       .query(q.Create(q.Collection("track_entries"), newTimeEntry))
-      .then((response) => {
-         console.log("track_entries new entry inserted", response);
+      .then((response) =>
          /* Success! return the response with statusCode 200 */
-         return {
+         ({
             statusCode: 200,
             body: JSON.stringify(response),
-         };
-      })
-      .catch((error) => {
-         console.log("error", error);
+         })
+      )
+      .catch((error) =>
          /* Error! return the error with statusCode 400 */
-         return {
+         ({
             statusCode: 400,
             body: JSON.stringify(error),
-         };
-      });
+         })
+      );
 };

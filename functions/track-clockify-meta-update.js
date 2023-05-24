@@ -19,18 +19,12 @@ exports.handler = (event, context) => {
    );
    return client
       .query(q.Update(q.Ref(`classes/clockify_meta_entries/${id}`), { data }))
-      .then((response) => {
-         console.log("success", response);
-         return {
-            statusCode: 200,
-            body: JSON.stringify(response),
-         };
-      })
-      .catch((error) => {
-         console.log("error", error);
-         return {
-            statusCode: 400,
-            body: JSON.stringify(error),
-         };
-      });
+      .then((response) => ({
+         statusCode: 200,
+         body: JSON.stringify(response),
+      }))
+      .catch((error) => ({
+         statusCode: 400,
+         body: JSON.stringify(error),
+      }));
 };

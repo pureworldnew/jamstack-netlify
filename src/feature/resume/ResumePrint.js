@@ -11,7 +11,6 @@ import ErrorPage from "./ErrorPage";
 export default function ResumePrint() {
    const result = useSelector((state) => state.resume.resumeData);
    const resumeLoading = useSelector((state) => state.resume.resumeLoading);
-   console.log("resumeData", result);
    // const result = {
    //    email: "jonathandreamdev@gmail.com",
    //    phone: "+1-806-576-1063",

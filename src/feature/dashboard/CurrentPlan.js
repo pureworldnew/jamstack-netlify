@@ -34,7 +34,6 @@ function CurrentPlan() {
 
    const getData = async () => {
       const res = await planApi.readOnlyCurrent();
-      console.log("currentonly is", res);
       const entryArray = [];
       res.data.forEach((each) => {
          const { data, ref } = each;
@@ -88,9 +87,7 @@ function CurrentPlan() {
    };
 
    const handleSubmitNew = (data) => {
-      console.log("data on handleSubmitNew", data);
       const localData = JSON.parse(JSON.stringify(data));
-      console.log("localData", localData);
       if (localData.planStatus === undefined || localData.planStatus === "") {
          localData.planStatus = "notFinished";
       }

@@ -13,7 +13,6 @@ exports.handler = async (event, context) => {
       scheme: "https",
    });
    const data = JSON.parse(event.body);
-   console.log("data", data);
    console.log("Function `plan-delete-batch` invoked", data.ids);
    // construct batch query from IDs
    const deleteAllCompletedPlanQuery = data.ids.map((id) =>
@@ -22,18 +21,12 @@ exports.handler = async (event, context) => {
    // Hit fauna with the query to delete the completed items
    return client
       .query(deleteAllCompletedPlanQuery)
-      .then((response) => {
-         console.log("success", response);
-         return {
-            statusCode: 200,
-            body: JSON.stringify(response),
-         };
-      })
-      .catch((error) => {
-         console.log("error", error);
-         return {
-            statusCode: 400,
-            body: JSON.stringify(error),
-         };
-      });
+      .then((response) => ({
+         statusCode: 200,
+         body: JSON.stringify(response),
+      }))
+      .catch((error) => ({
+         statusCode: 400,
+         body: JSON.stringify(error),
+      }));
 };

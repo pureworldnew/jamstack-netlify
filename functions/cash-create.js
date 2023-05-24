@@ -24,24 +24,21 @@ exports.handler = async (event, context) => {
    const cashItem = {
       data,
    };
-   console.log("cashItem is ", cashItem);
    /* construct the fauna query */
    return client
       .query(q.Create(q.Collection("cash_entries"), cashItem))
-      .then((response) => {
-         console.log("cash_entries insertsuccess", response);
+      .then((response) =>
          /* Success! return the response with statusCode 200 */
-         return {
+         ({
             statusCode: 200,
             body: JSON.stringify(response),
-         };
-      })
-      .catch((error) => {
-         console.log("error", error);
+         })
+      )
+      .catch((error) =>
          /* Error! return the error with statusCode 400 */
-         return {
+         ({
             statusCode: 400,
             body: JSON.stringify(error),
-         };
-      });
+         })
+      );
 };

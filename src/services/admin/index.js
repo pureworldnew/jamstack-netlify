@@ -11,17 +11,13 @@ const readAll = async () => {
    return response.data;
 };
 
-const update = (profileId, data) => {
-   console.log("profileid, data", profileId, data);
-   return axios.post(`/.netlify/functions/profile-update/${profileId}`, {
+const update = (profileId, data) =>
+   axios.post(`/.netlify/functions/profile-update/${profileId}`, {
       ...data,
    });
-};
 
-const deleteprofile = (profileId) => {
-   console.log("profileId is", profileId);
-   return axios.post(`/.netlify/functions/profile-delete/${profileId}`);
-};
+const deleteprofile = (profileId) =>
+   axios.post(`/.netlify/functions/profile-delete/${profileId}`);
 
 const batchDeleteprofile = (profileIds) =>
    axios.post(`/.netlify/functions/profile-delete-batch`, {

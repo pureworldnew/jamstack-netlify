@@ -13,7 +13,6 @@ exports.handler = async (event, context) => {
       const profilesCollection = database.collection("profiles");
 
       const profiles = await profilesCollection.find({}).toArray();
-      console.log(profiles);
 
       // print a message if no documents were found
       if ((await profilesCollection.countDocuments({})) === 0) {

@@ -35,11 +35,8 @@ exports.handler = (event, context) => {
             body: JSON.stringify(newCashRefs),
          };
       })
-      .catch((error) => {
-         console.log("error", error);
-         return {
-            statusCode: 400,
-            body: JSON.stringify(error),
-         };
-      });
+      .catch((error) => ({
+         statusCode: 400,
+         body: JSON.stringify(error),
+      }));
 };

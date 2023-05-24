@@ -162,7 +162,6 @@ export default function AddNewWork({
       },
       []
    );
-   console.log(duplicated);
    return (
       <div>
          <Button variant="outlined" onClick={handleClickOpen}>

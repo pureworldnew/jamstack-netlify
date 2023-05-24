@@ -32,9 +32,6 @@ function Work() {
       {
          select: (res) =>
             res?.map((each) => {
-               console.log(each);
-               // const dateValue = new Date(each.data.createDate);
-               // console.log(formatDate(dateValue));
                const { data, ref } = each;
                data.id = ref["@ref"].id;
                if (data.createDate !== undefined) {

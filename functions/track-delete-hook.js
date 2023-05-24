@@ -88,21 +88,19 @@ exports.handler = async (event, context) => {
             q.Lambda("X", q.Delete(q.Var("X")))
          )
       )
-      .then((response) => {
-         console.log("time entry successfully removed", response);
+      .then((response) =>
          //
          /* Success! return the response with statusCode 200 */
-         return {
+         ({
             statusCode: 200,
             body: JSON.stringify(response),
-         };
-      })
-      .catch((error) => {
-         console.log("error", error);
+         })
+      )
+      .catch((error) =>
          /* Error! return the error with statusCode 400 */
-         return {
+         ({
             statusCode: 400,
             body: JSON.stringify(error),
-         };
-      });
+         })
+      );
 };

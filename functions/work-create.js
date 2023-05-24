@@ -14,34 +14,32 @@ exports.handler = async (event, context) => {
    });
    /* parse the string body into a useable JS object */
    const data = JSON.parse(event.body);
-   console.log("data origin param", data);
+   console.log("Function `work-create` invoked", data);
+
    if (!Object.prototype.hasOwnProperty.call(data, "createDate")) {
       data.createDate = new Date().toISOString();
    } else {
       data.createDate = new Date(data.createDate).toISOString();
    }
    data.directCompany = data.directCompany.trim();
-   console.log("Function `work-create` invoked", data);
    const workItem = {
       data,
    };
    /* construct the fauna query */
    return client
       .query(q.Create(q.Collection("work_entries"), workItem))
-      .then((response) => {
-         console.log("work_entries insertsuccess", response);
+      .then((response) =>
          /* Success! return the response with statusCode 200 */
-         return {
+         ({
             statusCode: 200,
             body: JSON.stringify(response),
-         };
-      })
-      .catch((error) => {
-         console.log("error", error);
+         })
+      )
+      .catch((error) =>
          /* Error! return the error with statusCode 400 */
-         return {
+         ({
             statusCode: 400,
             body: JSON.stringify(error),
-         };
-      });
+         })
+      );
 };

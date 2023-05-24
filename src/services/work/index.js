@@ -12,7 +12,6 @@ const readAll = async () => {
 };
 
 const checkDupCompany = async (companyName) => {
-   console.log("companyName is", companyName);
    const response = await axios.post(
       `/.netlify/functions/work-check-dup-company/${companyName}`
    );

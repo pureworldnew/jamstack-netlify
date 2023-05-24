@@ -1,6 +1,5 @@
 import ResumeApi from "services/resume";
-import retryPromise from "utils/retryPromise";
-
+import retryRequest from "utils/retryRequest";
 // Action types
 export const FETCH_RESUME_REQUEST = "FETCH_RESUME_REQUEST";
 export const FETCH_RESUME_SUCCESS = "FETCH_RESUME_SUCCESS";
@@ -35,48 +34,70 @@ export const fetchResumeData = (resumeEntries) => (dispatch) => {
       collegeDegree,
       collegeMajor,
       collegePeriod,
+      parsedJobResp,
+      parsedKeypoints,
+      parsedObjective,
       ...resumeParamObj
    } = resumeEntries;
 
    const resumeParam = JSON.parse(JSON.stringify(resumeParamObj));
-   console.log("real param", resumeParam);
    const promiseArr = [];
    resumeParam.prompt = "prompt1";
    const prompt1Promise = ResumeApi.create(resumeParam);
-   promiseArr.push(retryPromise(() => prompt1Promise, 3, 1000));
+   promiseArr.push(prompt1Promise);
    resumeParam.prompt = "prompt2";
    const prompt2Promise = ResumeApi.create1(resumeParam);
-   promiseArr.push(retryPromise(() => prompt2Promise, 3, 1000));
+   promiseArr.push(prompt2Promise);
    resumeParam.prompt = "prompt3";
    const prompt3Promise = ResumeApi.create2(resumeParam);
-   promiseArr.push(retryPromise(() => prompt3Promise, 3, 1000));
+   promiseArr.push(prompt3Promise);
 
    return Promise.allSettled(promiseArr)
-      .then((res) => {
-         console.log("allsettled response", res);
+      .then((results) => {
+         const successfulResponses = [];
+         const retryRequests = [];
 
-         const fulfilled = res
-            .filter((result) => result.status === "fulfilled")
-            .map((result) => result.value);
-         console.log("fulfilled", fulfilled); // [{name: "John Doe", dateAccountCreated: "05-23-2018"}]
-         const rejected = res
-            .filter((result) => result.status === "rejected")
-            .map((result) => result.reason);
-         let resumeResultData = {};
-         if (!rejected.length) {
-            // all fullfilled
-            resumeResultData = {
-               ...resumeEntries,
-               ...fulfilled[0].data,
-               ...fulfilled[1].data,
-               ...fulfilled[2].data,
-            };
-         } else {
-            console.log("rejected", rejected.config.url); // ['failed to fetch']
-         }
+         results.forEach((result) => {
+            if (result.status === "fulfilled") {
+               successfulResponses.push(result.value.data);
+            } else {
+               retryRequests.push(result.reason.config);
+            }
+         });
+         console.log("successfulResponses", successfulResponses);
+         // Retry failed requests
+         const retryPromises = retryRequests.map(retryRequest);
+         // Execute the retry promises
+         return Promise.allSettled(retryPromises).then((retryResults) => {
+            const secondTryRequests = [];
+            retryResults.forEach((result) => {
+               if (result.status === "fulfilled") {
+                  successfulResponses.push(result.value.data);
+               } else {
+                  secondTryRequests.push(result.reason.config);
+               }
+            });
 
-         console.log("resumeResultData", resumeResultData);
-         dispatch(fetchResumeSuccess(resumeResultData));
+            const secondRetryPromises = secondTryRequests.map(retryRequest);
+            return Promise.allSettled(secondRetryPromises).then(
+               (secondRetryResults) => {
+                  secondRetryResults.forEach((result) => {
+                     if (result.status === "fulfilled") {
+                        successfulResponses.push(result.value.data);
+                     }
+                  });
+                  let resumeResultData = {};
+                  resumeResultData = {
+                     ...resumeEntries,
+                     ...successfulResponses[0],
+                     ...successfulResponses[1],
+                     ...successfulResponses[2],
+                  };
+                  console.log("resumeResultData", resumeResultData);
+                  dispatch(fetchResumeSuccess(resumeResultData));
+               }
+            );
+         });
       })
       .catch((err) => dispatch(fetchResumeFailure(err.message)));
 };

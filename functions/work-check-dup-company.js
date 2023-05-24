@@ -23,19 +23,12 @@ exports.handler = (event, context) => {
             q.Lambda("res", q.Get(q.Var("res")))
          )
       )
-      .then((response) => {
-         const refs = response.data;
-         console.log(`${refs.length} works found`);
-         return {
-            statusCode: 200,
-            body: JSON.stringify(refs),
-         };
-      })
-      .catch((error) => {
-         console.log("error", error);
-         return {
-            statusCode: 400,
-            body: JSON.stringify(error),
-         };
-      });
+      .then((response) => ({
+         statusCode: 200,
+         body: JSON.stringify(response.data),
+      }))
+      .catch((error) => ({
+         statusCode: 400,
+         body: JSON.stringify(error),
+      }));
 };

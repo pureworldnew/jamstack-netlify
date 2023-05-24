@@ -4,9 +4,8 @@ const { MongoClient } = require("mongodb");
 const getMongoDBSecret = require("./utils/getMongoDBSecret");
 
 exports.handler = async (event, context) => {
-   console.log("Function `profile-create-all` invoked");
    const data = JSON.parse(event.body);
-   console.log("data", data);
+   console.log("Function `profile-create-all` invoked", data);
    const client = new MongoClient(getMongoDBSecret());
    try {
       const database = client.db("selftrain");

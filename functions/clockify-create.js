@@ -22,20 +22,18 @@ exports.handler = async (event, context) => {
    /* construct the fauna query */
    return client
       .query(q.Create(q.Collection("clockify"), todoItem))
-      .then((response) => {
-         console.log("success", response);
+      .then((response) =>
          /* Success! return the response with statusCode 200 */
-         return {
+         ({
             statusCode: 200,
             body: JSON.stringify(response),
-         };
-      })
-      .catch((error) => {
-         console.log("error", error);
+         })
+      )
+      .catch((error) =>
          /* Error! return the error with statusCode 400 */
-         return {
+         ({
             statusCode: 400,
             body: JSON.stringify(error),
-         };
-      });
+         })
+      );
 };

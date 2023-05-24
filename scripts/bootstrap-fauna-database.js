@@ -18,11 +18,6 @@ const getDBSecret = require("../functions/utils/getDBSecret");
 console.log("env db secret", getDBSecret());
 // 1. Check for required enviroment variables
 if (!getDBSecret()) {
-   //  console.log(
-   //     chalk.yellow(
-   //        "Required FAUNADB_SERVER_SECRET enviroment variable not found."
-   //     )
-   //  );
    console.log(
       `Make sure you have created your Fauna databse with "netlify addons:create fauna"`
    );

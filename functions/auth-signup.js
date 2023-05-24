@@ -39,7 +39,6 @@ exports.handler = async (event, context) => {
             )
          )
          .then(async (response) => {
-            console.log("response", response.data);
             const oldUser = response.data;
             if (oldUser.length) {
                return {
@@ -53,18 +52,16 @@ exports.handler = async (event, context) => {
                data: { ...data, password: hashPassword },
             };
 
-            console.log("hashPassword", hashPassword);
             /* construct the fauna query */
             return client
                .query(q.Create(q.Collection("user_entries"), userItem))
-               .then((res) => {
-                  console.log("user_entries insertsuccess", res);
+               .then((res) =>
                   /* Success! return the res with statusCode 200 */
-                  return {
+                  ({
                      statusCode: 201,
                      body: JSON.stringify(res),
-                  };
-               })
+                  })
+               )
                .catch((error) => {
                   console.log("error", error);
                   /* Error! return the error with statusCode 400 */

@@ -24,8 +24,6 @@ exports.handler = async (event, context) => {
       .toISOString()
       .split("T")[0];
 
-   console.log("firstDay", firstDay, lastDay);
-
    /* construct the fauna query */
    return client
       .query(
@@ -45,14 +43,13 @@ exports.handler = async (event, context) => {
             )
          )
       )
-      .then((response) => {
-         console.log("cash_entries dashboard sum", response);
+      .then((response) =>
          /* Success! return the response with statusCode 200 */
-         return {
+         ({
             statusCode: 200,
             body: JSON.stringify(response),
-         };
-      })
+         })
+      )
       .catch((error) => {
          console.log("error", error);
          /* Error! return the error with statusCode 400 */
