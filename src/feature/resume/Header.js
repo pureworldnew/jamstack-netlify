@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
    name: {
       fontSize: 24,
       fontFamily: "Lato Bold",
+      alignSelf: "center",
    },
    subtitle: {
       fontSize: 10,
@@ -40,12 +41,18 @@ const styles = StyleSheet.create({
    },
    subHeaderContainer: {
       flexDirection: "column",
+      alignContent: "center",
+      justifyContent: "center",
    },
    descContainer: {
       flexDirection: "row",
       textTransform: "none",
-      alignSelf: "flex-end",
-      justifySelf: "flex-end",
+      justifyContent: "space-between",
+   },
+   descContainer1: {
+      flexDirection: "row",
+      textTransform: "none",
+      justifyContent: "space-evenly",
    },
    descHeader: {
       fontSize: 10,
@@ -62,7 +69,6 @@ export default function Header({
    phone,
    linkedin,
    subTitle,
-   currentLength,
    email,
 }) {
    return (
@@ -70,11 +76,8 @@ export default function Header({
          <View style={styles.detailColumn}>
             <View style={styles.subHeaderContainer}>
                <Text style={styles.name}>{`${name}`}</Text>
-               <View style={styles.descContainer}>
-                  <Text style={styles.subtitle}>{`${subTitle} :`}</Text>
-                  <Text style={styles.subtitle}>
-                     {currentLength}year(s) work experience
-                  </Text>
+               <View style={styles.descContainer1}>
+                  <Text style={styles.subtitle}>{`${subTitle}`}</Text>
                </View>
             </View>
             <View style={styles.descContainer}>

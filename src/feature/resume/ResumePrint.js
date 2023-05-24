@@ -13,30 +13,32 @@ export default function ResumePrint() {
    const resumeLoading = useSelector((state) => state.resume.resumeLoading);
    // console.log("resumeData", result);
    const result = {
-      id: "6d833dae-b64f-4b43-8973-01aadb3d1bda",
-      fullName: "James Larro",
-      currentPosition: "special",
-      currentLength: "10",
-      currentTechnologies: "react, node, javascript, ES6",
       email: "jonathandreamdev@gmail.com",
+      phone: "+1-806-576-1063",
       address: "Amarillo, TX",
-      phone: "+1 806 576 1063",
-      linkedin: "https://www.linkedin.com/in/jonathan-samayoa/",
+      linkedin: "linkedin.com/in/jonathan-samayoa/",
+      currentPosition: "With-meetwithanyone.com",
+      currentLength: "5",
+      currentTechnologies: "React, Node, Javascript, AWS",
+      collegeName: "University of Texas at Dallas, Richardson, TX",
       collegeDegree: "Bachelor of Science",
       collegeMajor: "Computer Science",
-      collegeName: "University of Texas at Dallas, Richardson, TX",
+      collegePeriod: "2010-2014",
+      fullName: "Jonathan Samayoa",
       workHistory: [
          {
-            name: "sky republic inc",
-            position: "software developer",
+            name: "sky",
+            position: "react developer",
+            fromWhenTo: "05.2018 ~ 05.2023",
          },
       ],
+      id: "7100aaa4-b191-4cc8-adb8-1698f2042c6c",
       objective:
-         "\n\nI am an experienced special with 10 years of experience in the technology industry. I specialize in React, Node.js, JavaScript, and ES6 development. My expertise lies in developing efficient solutions that are tailored to meet customer requirements while maintaining a high level of quality and reliability. I have worked on projects for both large corporations as well as small startups, giving me a broad range of experiences to draw from when creating new systems or updating existing ones. With my knowledge of the latest technologies, I can quickly understand complex problems and develop innovative solutions that satisfy customer needs while staying within budget constraints.",
+         "\n\nMy name is Jonathan Samayoa and I am an experienced software engineer with 5 years of experience in developing web applications using React, Node, JavaScript and AWS technologies. In my role at With-meetwithanyone.com I have been responsible for building new features from the ground up as well as maintaining existing codebase to ensure high performance standards are met. My knowledge of cutting edge technologies has enabled me to create innovative solutions that add value to our products while also providing a great user experience. I take pride in my work and strive for excellence in all areas related to software development.",
       keypoints:
-         "\n\n1. Proven ability to develop and deploy React, Node, JavaScript and ES6 applications in a professional environment for 10 years. \n2. Experienced in creating user-friendly interfaces with modern web technologies that meet the highest standards of quality and performance. \n3. Skilled at troubleshooting complex issues quickly to ensure minimal downtime on projects. \n4. Adept at working collaboratively with other developers to design efficient solutions for challenging tasks or problems. \n5. Proficient in utilizing version control systems such as Git and SVN to manage code changes across multiple environments efficiently and effectively  \n6. Ability to stay up-to-date with the latest trends and best practices in web development technology through self learning initiatives and attending conferences/workshops regularly  \n7 .Excellent communication skills enabling effective collaboration within teams while leading successful implementation of projects from start to finish \n8 .Highly organized individual capable of managing multiple tasks simultaneously while adhering strictly to deadlines",
+         "\n\n1. Expert in developing web applications using React, Node, JavaScript and AWS technologies. \n2. Experienced in creating efficient and maintainable code with a focus on scalability and performance optimization. \n3. Demonstrated ability to develop creative solutions to complex problems while adhering to best practices of software engineering principles. \n4. Extensive knowledge of modern web development tools such as Git/GitHub for version control, npm for package management, etc.. \n5. Skilled at debugging issues quickly and efficiently by leveraging advanced troubleshooting techniques .  \n6. Proven track record of producing high-quality work within tight deadlines while maintaining excellent customer satisfaction ratings .  \n7. 5+ years experience working professionally with-meetwithanyone website platform delivering successful projects under demanding time constraints .   \n8. Self-motivated team player who can effectively collaborate with colleagues from diverse backgrounds to achieve common goals",
       jobResponsibilities:
-         "\n\n1. I began my career at Sky Republic Inc as a software developer 10 years ago and have grown in the role ever since. During this time, I acquired an extensive knowledge of both front-end and back-end development technologies, such as JavaScript, HTML5 and CSS3. Additionally, I developed valuable problem solving skills to quickly debug complex issues while ensuring exceptional customer service. \n2. Over the course of my tenure with Sky Republic Inc., I increased efficiency by streamlining processes and automating manual tasks using scripting languages like Python and Bash shell scripts. My achievements also include designing innovative solutions for challenging problems that resulted in improved user experience across multiple platforms including desktop, mobile web and native applications on iOS & Android devices. \n3. In addition to improving operational performance, I was responsible for maintaining high standards of quality assurance throughout product lifecycles which included writing unit tests to ensure reliability before releasing products into production environments. Furthermore, I collaborated closely with other teams within the organization to enhance cross-functional collaboration between departments resulting in better outcomes overall.",
+         "\n\n1. At With-meetwithanyone.com, I worked for 5 years as a React Developer. During that time, I was able to develop and maintain several web applications by using the latest technologies in JavaScript and HTML/CSS coding. Additionally, I provided technical support to customers while troubleshooting their issues with the software. My experience at this company enabled me to grow both technically and professionally which helped me become an efficient problem solver and leader within any team environment. \n2. Working at Sky gave me the opportunity to work on a wide range of projects such as developing mobile applications for iOS & Android platforms, creating websites from scratch utilizing modern front end frameworks like ReactJS & VueJS as well as building backend services using NodeJS & ExpressJS among other technologies . My role also involved being part of cross functional teams responsible for developing new features or fixing bugs in existing products while ensuring that they were delivered on time with high quality standards . By working here , I have gained invaluable knowledge about product development life cycle which has allowed me to take ownership over my own tasks and be proactive when it comes to finding solutions for complex problems .",
    };
    // 👇🏻 returns an error page if the result object is empty
    if (JSON.stringify(result) === "{}") {

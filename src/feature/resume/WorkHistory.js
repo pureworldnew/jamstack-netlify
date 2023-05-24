@@ -68,7 +68,7 @@ function WorkHistory({ workHistory, jobResponsibilities, keypoints }) {
             <View style={styles.headerContainer} key={index}>
                <View style={styles.leftColumn}>
                   <Text style={styles.title}>
-                     {work.name} - {work.position}
+                     {work.name} - {work.position} - {work.fromWhenTo}
                   </Text>
                </View>
             </View>

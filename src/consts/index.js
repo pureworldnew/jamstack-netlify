@@ -46,6 +46,7 @@ export const ACCOUNT_DETAILS = {
       collegeName: "University of Texas at Dallas, Richardson, TX",
       collegeDegree: "Bachelor of Science",
       collegeMajor: "Computer Science",
+      collegePeriod: "2010-2014",
    },
    james_larro: {
       address: "Orlando, FL",
@@ -58,6 +59,7 @@ export const ACCOUNT_DETAILS = {
       collegeName: "University of Central Florida",
       collegeDegree: "Bachelor of Science",
       collegeMajor: "Computer Science",
+      collegePeriod: "2010-2014",
    },
    cleve_ambrose: {
       address: "Baltimore, MD",
@@ -70,6 +72,7 @@ export const ACCOUNT_DETAILS = {
       collegeName: "University of Central Florida",
       collegeDegree: "Bachelor of Science",
       collegeMajor: "Computer Science",
+      collegePeriod: "2010-2014",
    },
 };
 export const JOB_BOARD_OPTIONS = [

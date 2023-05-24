@@ -33,11 +33,14 @@ export default function Resume() {
    const resumeLoading = useSelector((state) => state.resume.resumeLoading);
    const dispatch = useDispatch();
    const [companyInfo, setCompanyInfo] = React.useState([
-      { name: "", position: "" },
+      { name: "", position: "", fromWhenTo: "" },
    ]);
    // 👇🏻 updates the state with user's input
    const handleAddCompany = () =>
-      setCompanyInfo([...companyInfo, { name: "", position: "" }]);
+      setCompanyInfo([
+         ...companyInfo,
+         { name: "", position: "", fromWhenTo: "" },
+      ]);
 
    // 👇🏻 removes a selected item from the list
    const handleRemoveCompany = (index) => {
@@ -73,6 +76,7 @@ export default function Resume() {
          collegeName: myConsts.ACCOUNT_DETAILS.jonathan_samayoa.collegeName,
          collegeDegree: myConsts.ACCOUNT_DETAILS.jonathan_samayoa.collegeDegree,
          collegeMajor: myConsts.ACCOUNT_DETAILS.jonathan_samayoa.collegeMajor,
+         collegePeriod: myConsts.ACCOUNT_DETAILS.jonathan_samayoa.collegePeriod,
       },
    });
 
@@ -106,6 +110,10 @@ export default function Resume() {
       setValue(
          "collegeMajor",
          myConsts.ACCOUNT_DETAILS[e.target.value].collegeMajor
+      );
+      setValue(
+         "collegePeriod",
+         myConsts.ACCOUNT_DETAILS[e.target.value].collegePeriod
       );
    };
 
@@ -207,7 +215,7 @@ export default function Resume() {
                      {errors.currentPosition?.message}
                   </Typography>
                </Grid>
-               <Grid item md={2} xs={6}>
+               <Grid item md={1} xs={6}>
                   <FormInputText
                      name="currentLength"
                      control={control}
@@ -219,7 +227,19 @@ export default function Resume() {
                      {errors.currentLength?.message}
                   </Typography>
                </Grid>
-               <Grid item md={4} xs={6}>
+               <Grid item md={2} xs={6}>
+                  <FormInputText
+                     name="collegePeriod"
+                     control={control}
+                     label="From ~ To"
+                     required
+                     error={!!errors.collegePeriod}
+                  />
+                  <Typography variant="inherit" color="textSecondary">
+                     {errors.collegePeriod?.message}
+                  </Typography>
+               </Grid>
+               <Grid item md={3} xs={6}>
                   <FormInputText
                      name="collegeName"
                      control={control}
@@ -273,7 +293,7 @@ export default function Resume() {
             <Divider>Work history</Divider>
             {companyInfo.map((company, index) => (
                <Grid container spacing={2} alignItems="center" key={index}>
-                  <Grid item xs={6} md={5}>
+                  <Grid item xs={6} md={4}>
                      <TextField
                         name="name"
                         control={control}
@@ -283,12 +303,22 @@ export default function Resume() {
                         required
                      />
                   </Grid>
-                  <Grid item xs={6} md={5}>
+                  <Grid item xs={6} md={4}>
                      <TextField
                         name="position"
                         control={control}
                         onChange={(e) => handleUpdateCompany(e, index)}
                         label="Position Held"
+                        fullWidth
+                        required
+                     />
+                  </Grid>
+                  <Grid item xs={6} md={2}>
+                     <TextField
+                        name="fromWhenTo"
+                        control={control}
+                        onChange={(e) => handleUpdateCompany(e, index)}
+                        label="from ~ To"
                         fullWidth
                         required
                      />
