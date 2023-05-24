@@ -262,6 +262,21 @@ export default function Resume() {
                   </Typography>
                </Grid>
             </Grid>
+            <Divider>Prompt Section</Divider>
+            <Grid container spacing={2} alignItems="center">
+               <Grid item md={12} xs={12}>
+                  <FormInputText
+                     name="currentTechnologies"
+                     control={control}
+                     label="Technologies used"
+                     required
+                     error={!!errors.currentTechnologies}
+                  />
+                  <Typography variant="inherit" color="textSecondary">
+                     {errors.currentTechnologies?.message}
+                  </Typography>
+               </Grid>
+            </Grid>
             <Divider>Work history</Divider>
             {companyInfo.map((company, index) => (
                <Grid container spacing={2} alignItems="center" key={index}>

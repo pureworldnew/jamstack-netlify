@@ -51,53 +51,35 @@ export const fetchResumeData = (resumeEntries) => (dispatch) => {
    resumeParam.prompt = "prompt3";
    const prompt3Promise = ResumeApi.create2(resumeParam);
    promiseArr.push(prompt3Promise);
-
-   return Promise.allSettled(promiseArr)
-      .then((results) => {
-         const successfulResponses = [];
-         const retryRequests = [];
-
-         results.forEach((result) => {
-            if (result.status === "fulfilled") {
-               successfulResponses.push(result.value.data);
-            } else {
-               retryRequests.push(result.reason.config);
-            }
-         });
-         console.log("successfulResponses", successfulResponses);
-         // Retry failed requests
-         const retryPromises = retryRequests.map(retryRequest);
-         // Execute the retry promises
-         return Promise.allSettled(retryPromises).then((retryResults) => {
-            const secondTryRequests = [];
-            retryResults.forEach((result) => {
+   const successfulResponses = [];
+   function getFulfilled(promises) {
+      Promise.allSettled(promises)
+         .then((results) => {
+            const retryRequests = [];
+            results.forEach((result) => {
                if (result.status === "fulfilled") {
                   successfulResponses.push(result.value.data);
                } else {
-                  secondTryRequests.push(result.reason.config);
+                  retryRequests.push(result.reason.config);
                }
             });
+            if (retryRequests.length === 0) {
+               let resumeResultData = {};
+               resumeResultData = {
+                  ...resumeEntries,
+                  ...successfulResponses[0],
+                  ...successfulResponses[1],
+                  ...successfulResponses[2],
+               };
+               console.log("resumeResultData", resumeResultData);
+               dispatch(fetchResumeSuccess(resumeResultData));
+            } else {
+               const retryPromises = retryRequests.map(retryRequest);
+               getFulfilled(retryPromises);
+            }
+         })
+         .catch((err) => dispatch(fetchResumeFailure(err.message)));
+   }
 
-            const secondRetryPromises = secondTryRequests.map(retryRequest);
-            return Promise.allSettled(secondRetryPromises).then(
-               (secondRetryResults) => {
-                  secondRetryResults.forEach((result) => {
-                     if (result.status === "fulfilled") {
-                        successfulResponses.push(result.value.data);
-                     }
-                  });
-                  let resumeResultData = {};
-                  resumeResultData = {
-                     ...resumeEntries,
-                     ...successfulResponses[0],
-                     ...successfulResponses[1],
-                     ...successfulResponses[2],
-                  };
-                  console.log("resumeResultData", resumeResultData);
-                  dispatch(fetchResumeSuccess(resumeResultData));
-               }
-            );
-         });
-      })
-      .catch((err) => dispatch(fetchResumeFailure(err.message)));
+   getFulfilled(promiseArr);
 };
