@@ -22,6 +22,7 @@ import {
 } from "components/form";
 import { fetchResumeData } from "actions";
 import * as myConsts from "consts";
+import { BackDrop } from "components/backdrop";
 
 const validationSchema = Yup.object().shape({
    email: Yup.string().required("Email is required"),
@@ -34,9 +35,10 @@ export default function Resume() {
    const navigate = useNavigate();
    const resumeData = useSelector((state) => state.resume.resumeData);
    const resumeError = useSelector((state) => state.resume.resumeError);
+   const resumeLoading = useSelector((state) => state.resume.resumeLoading);
+
    console.log("resumeError", resumeError);
    console.log("Resume resumeData", resumeData);
-   const resumeLoading = useSelector((state) => state.resume.resumeLoading);
    const dispatch = useDispatch();
    const {
       control,
@@ -45,21 +47,7 @@ export default function Resume() {
       formState: { errors },
    } = useForm({
       resolver: yupResolver(validationSchema),
-      defaultValues: {
-         email: myConsts.ACCOUNT_DETAILS.jonathan_samayoa.email,
-         phone: myConsts.ACCOUNT_DETAILS.jonathan_samayoa.phone,
-         address: myConsts.ACCOUNT_DETAILS.jonathan_samayoa.address,
-         linkedin: myConsts.ACCOUNT_DETAILS.jonathan_samayoa.linkedin,
-         currentPosition:
-            myConsts.ACCOUNT_DETAILS.jonathan_samayoa.currentPosition,
-         currentLength: myConsts.ACCOUNT_DETAILS.jonathan_samayoa.currentLength,
-         currentTechnologies:
-            myConsts.ACCOUNT_DETAILS.jonathan_samayoa.currentTechnologies,
-         collegeName: myConsts.ACCOUNT_DETAILS.jonathan_samayoa.collegeName,
-         collegeDegree: myConsts.ACCOUNT_DETAILS.jonathan_samayoa.collegeDegree,
-         collegeMajor: myConsts.ACCOUNT_DETAILS.jonathan_samayoa.collegeMajor,
-         collegePeriod: myConsts.ACCOUNT_DETAILS.jonathan_samayoa.collegePeriod,
-      },
+      defaultValues: myConsts.ACCOUNT_DETAILS.jonathan_samayoa,
    });
 
    React.useEffect(() => {
@@ -95,41 +83,12 @@ export default function Resume() {
    const handleAccountChange = (e) => {
       console.log(e.target.value);
       setValue("account", e.target.value);
-      setValue("email", myConsts.ACCOUNT_DETAILS[e.target.value].email);
-      setValue("phone", myConsts.ACCOUNT_DETAILS[e.target.value].phone);
-      setValue("address", myConsts.ACCOUNT_DETAILS[e.target.value].address);
-      setValue("linkedin", myConsts.ACCOUNT_DETAILS[e.target.value].linkedin);
-      setValue(
-         "currentPosition",
-         myConsts.ACCOUNT_DETAILS[e.target.value].currentPosition
-      );
-      setValue(
-         "currentLength",
-         myConsts.ACCOUNT_DETAILS[e.target.value].currentLength
-      );
-      setValue(
-         "currentTechnologies",
-         myConsts.ACCOUNT_DETAILS[e.target.value].currentTechnologies
-      );
-      setValue(
-         "collegeName",
-         myConsts.ACCOUNT_DETAILS[e.target.value].collegeName
-      );
-      setValue(
-         "collegeDegree",
-         myConsts.ACCOUNT_DETAILS[e.target.value].collegeDegree
-      );
-      setValue(
-         "collegeMajor",
-         myConsts.ACCOUNT_DETAILS[e.target.value].collegeMajor
-      );
-      setValue(
-         "collegePeriod",
-         myConsts.ACCOUNT_DETAILS[e.target.value].collegePeriod
-      );
+      Object.keys(myConsts.ACCOUNT_DETAILS.jonathan_samayoa).forEach((each) => {
+         setValue(each, myConsts.ACCOUNT_DETAILS[e.target.value][each]);
+      });
    };
 
-   const createApiResume = (resumeEntries) => {
+   const parseResumeFromApi = (resumeEntries) => {
       dispatch(fetchResumeData(resumeEntries));
    };
 
@@ -152,7 +111,7 @@ export default function Resume() {
                  ).label,
          workHistory: JSON.stringify(companyInfo),
       };
-      createApiResume(formData);
+      parseResumeFromApi(formData);
    };
 
    return (
@@ -355,35 +314,34 @@ export default function Resume() {
                </Grid>
             ))}
             <Divider>Parsed Data</Divider>
-            {/* objective:
-          "\n\nMy name is Jonathan Samayoa and I am an experienced software engineer with 5 years of experience in developing web applications using React, Node, JavaScript and AWS technologies. In my role at With-meetwithanyone.com I have been responsible for building new features from the ground up as well as maintaining existing codebase to ensure high performance standards are met. My knowledge of cutting edge technologies has enabled me to create innovative solutions that add value to our products while also providing a great user experience. I take pride in my work and strive for excellence in all areas related to software development.",
-       keypoints:
-          "\n\n1. Expert in developing web applications using React, Node, JavaScript and AWS technologies. \n2. Experienced in creating efficient and maintainable code with a focus on scalability and performance optimization. \n3. Demonstrated ability to develop creative solutions to complex problems while adhering to best practices of software engineering principles. \n4. Extensive knowledge of modern web development tools such as Git/GitHub for version control, npm for package management, etc.. \n5. Skilled at debugging issues quickly and efficiently by leveraging advanced troubleshooting techniques .  \n6. Proven track record of producing high-quality work within tight deadlines while maintaining excellent customer satisfaction ratings .  \n7. 5+ years experience working professionally with-meetwithanyone website platform delivering successful projects under demanding time constraints .   \n8. Self-motivated team player who can effectively collaborate with colleagues from diverse backgrounds to achieve common goals",
-       jobResponsibilities: */}
-            {Object.keys(resumeData).length !== 0 && (
-               <Grid container spacing={2} alignItems="center">
-                  <Grid item md={12} xs={12}>
-                     <FormInputTextarea
-                        name="parsedObjective"
-                        control={control}
-                        label="Objective"
-                     />
+            {resumeLoading ? (
+               <BackDrop open={resumeLoading} />
+            ) : (
+               Object.keys(resumeData).length !== 0 && (
+                  <Grid container spacing={2} alignItems="center">
+                     <Grid item md={12} xs={12}>
+                        <FormInputTextarea
+                           name="parsedObjective"
+                           control={control}
+                           label="Objective"
+                        />
+                     </Grid>
+                     <Grid item md={12} xs={12}>
+                        <FormInputTextarea
+                           name="parsedKeypoints"
+                           control={control}
+                           label="Keypoints"
+                        />
+                     </Grid>
+                     <Grid item md={12} xs={12}>
+                        <FormInputTextarea
+                           name="parsedJobResp"
+                           control={control}
+                           label="Job Responsibilities"
+                        />
+                     </Grid>
                   </Grid>
-                  <Grid item md={12} xs={12}>
-                     <FormInputTextarea
-                        name="parsedKeypoints"
-                        control={control}
-                        label="Keypoints"
-                     />
-                  </Grid>
-                  <Grid item md={12} xs={12}>
-                     <FormInputTextarea
-                        name="parsedJobResp"
-                        control={control}
-                        label="Job Responsibilities"
-                     />
-                  </Grid>
-               </Grid>
+               )
             )}
          </Box>
          <Grid
