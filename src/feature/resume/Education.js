@@ -25,14 +25,15 @@ export default function Education({
    collegeName,
    collegeDegree,
    collegeMajor,
+   collegePeriod,
 }) {
    return (
       <View style={styles.container}>
          <Title>Education</Title>
          <Text style={styles.school}>{collegeName}</Text>
-         <Text style={styles.degree}>{`${collegeDegree}`}</Text>
-         <Text style={styles.degree}>{`${collegeMajor}`}</Text>
-         <Text style={styles.candidate}>A long, long time ago</Text>
+         <Text style={styles.degree}>{collegeDegree}</Text>
+         <Text style={styles.degree}>{collegeMajor}</Text>
+         <Text style={styles.candidate}>{collegePeriod}</Text>
       </View>
    );
 }

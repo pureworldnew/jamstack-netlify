@@ -105,6 +105,7 @@ function Resume(props) {
       collegeName,
       collegeDegree,
       collegeMajor,
+      collegePeriod,
       jobResponsibilities,
    } = props;
    return (
@@ -114,7 +115,7 @@ function Resume(props) {
             phone={phone}
             linkedin={linkedin}
             name={fullName}
-            subTitle={`${currentPosition} : ${currentTechnologies}`}
+            subTitle={`${currentPosition} : ${currentTechnologies} : ${currentLength} year(s) work experience`}
             email={email}
             currentLength={currentLength}
          />
@@ -125,6 +126,7 @@ function Resume(props) {
                   collegeName={collegeName}
                   collegeDegree={collegeDegree}
                   collegeMajor={collegeMajor}
+                  collegePeriod={collegePeriod}
                />
                <Skills />
             </View>

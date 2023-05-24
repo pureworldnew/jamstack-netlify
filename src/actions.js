@@ -34,6 +34,7 @@ export const fetchResumeData = (resumeEntries) => (dispatch) => {
       collegeName,
       collegeDegree,
       collegeMajor,
+      collegePeriod,
       ...resumeParamObj
    } = resumeEntries;
 
