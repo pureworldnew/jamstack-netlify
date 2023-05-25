@@ -54,6 +54,19 @@ export default function ResumePrint() {
       resolver: yupResolver(validationSchema),
    });
 
+   React.useEffect(() => {
+      setTimeout(() => {
+         setValue("status", myConsts.STATUS_OPTIONS[0].value);
+         setValue("account", myConsts.ACCOUNT_OPTIONS[0].value);
+         setValue("jobBoard", myConsts.JOB_BOARD_OPTIONS[0].value);
+         setValue("parsedObjective", result.objective);
+         setValue("parsedKeypoints", result.keypoints);
+         setValue("parsedJobResp", result.jobResponsibilities);
+         setValue("parsedSkillsSection", result.skillsSection);
+         setValue("jobDescription", result.jobDescription);
+      });
+   }, [setValue]);
+
    const { isLoading, mutate: createNewWorkEntry } = useMutation(
       (workEntries) => workApi.create(workEntries),
       {
@@ -273,6 +286,38 @@ export default function ResumePrint() {
                         name="jobDescription"
                         control={control}
                         label="Job Description"
+                     />
+                  </Grid>
+               </Grid>
+               <Divider>Parsed Resume Data</Divider>
+               <Grid container spacing={2} alignItems="center">
+                  <Grid item md={12} xs={12}>
+                     <FormInputTextarea
+                        name="parsedObjective"
+                        control={control}
+                        label="Objective"
+                     />
+                  </Grid>
+                  <Grid item md={12} xs={12}>
+                     <FormInputTextarea
+                        name="parsedKeypoints"
+                        control={control}
+                        label="Keypoints"
+                     />
+                  </Grid>
+                  <Grid item md={12} xs={12}>
+                     <FormInputTextarea
+                        name="parsedJobResp"
+                        control={control}
+                        value={result.jobResponsibilities}
+                        label="Job Responsibilities"
+                     />
+                  </Grid>
+                  <Grid item md={12} xs={12}>
+                     <FormInputTextarea
+                        name="parsedSkillsSection"
+                        control={control}
+                        label="Skills Section"
                      />
                   </Grid>
                </Grid>

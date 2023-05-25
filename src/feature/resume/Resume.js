@@ -101,18 +101,14 @@ export default function Resume() {
          const parsedKeypoints = watch("parsedKeypoints", false);
          const parsedJobResp = watch("parsedJobResp", false);
          const parsedSkillsSection = watch("parsedSkillsSection", false);
-         console.log("parsedObjective", {
-            parsedObjective,
-            parsedKeypoints,
-            parsedJobResp,
-            parsedSkillsSection,
-         });
+         const requiredJobResp = watch("requiredJobResp", false);
          navigate("/resume-print", {
             state: {
                objective: parsedObjective,
                keypoints: parsedKeypoints,
                jobResponsibilities: parsedJobResp,
                skillsSection: parsedSkillsSection,
+               jobDescription: requiredJobResp,
             },
          });
       }
