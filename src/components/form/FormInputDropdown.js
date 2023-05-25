@@ -13,7 +13,6 @@ export function FormInputDropdown({
    labelId,
    labelText,
    options,
-   defaultValues,
    onChangeCustom,
 }) {
    const generateSelectOptions = () =>
@@ -27,16 +26,17 @@ export function FormInputDropdown({
       <Controller
          control={control}
          name={name}
-         render={({ ...field }) => (
+         render={({ field }) => (
             <FormControl sx={{ m: 1, minWidth: 120 }}>
                <InputLabel id={labelId}>{labelText}</InputLabel>
                <Select
                   labelId={labelId}
                   id={id}
-                  key={defaultValues}
-                  defaultValue={defaultValues}
-                  field={field}
-                  onChange={onChangeCustom || field.onCh}
+                  value={field.value || ""}
+                  onChange={(event) => {
+                     field.onChange(event);
+                     if (onChangeCustom) onChangeCustom(event);
+                  }}
                   autoWidth
                   label={labelText}
                >

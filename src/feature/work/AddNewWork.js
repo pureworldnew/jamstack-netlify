@@ -59,14 +59,6 @@ export default function AddNewWork({
    });
 
    React.useEffect(() => {
-      setTimeout(() => {
-         setValue("status", myConsts.STATUS_OPTIONS[0].value);
-         setValue("account", myConsts.ACCOUNT_OPTIONS[0].value);
-         setValue("jobBoard", myConsts.JOB_BOARD_OPTIONS[0].value);
-      });
-   }, [setValue]);
-
-   React.useEffect(() => {
       if (Object.keys(editData).length !== 0) {
          setValue("directCompany", editData.directCompany);
          setValue("status", editData.status);
@@ -144,18 +136,6 @@ export default function AddNewWork({
       []
    );
 
-   const handleAccountChange = (e) => {
-      setValue("account", e.target.value);
-   };
-
-   const handleJobBoardChange = (e) => {
-      setValue("jobBoard", e.target.value);
-   };
-
-   const handleStatusChange = (e) => {
-      setValue("status", e.target.value);
-   };
-
    useEffect(
       () => () => {
          debouncedResults.cancel();
@@ -217,10 +197,8 @@ export default function AddNewWork({
                            labelId="account-label"
                            labelText="Account"
                            options={myConsts.ACCOUNT_OPTIONS}
-                           defaultValues={myConsts.ACCOUNT_OPTIONS[0].value}
                            name="account"
                            control={control}
-                           onChangeCustom={handleAccountChange}
                         />
                      </Grid>
                      <Grid item md={5} xs={6}>
@@ -284,11 +262,9 @@ export default function AddNewWork({
                            id="job-board"
                            labelId="job-board-label"
                            labelText="Job Board"
-                           defaultValues={myConsts.JOB_BOARD_OPTIONS[0].value}
                            options={myConsts.JOB_BOARD_OPTIONS}
                            name="jobBoard"
                            control={control}
-                           onChangeCustom={handleJobBoardChange}
                         />
                      </Grid>
                      <Grid item xs={6} md={4}>
@@ -297,10 +273,8 @@ export default function AddNewWork({
                            labelId="status-label"
                            labelText="Status"
                            options={myConsts.STATUS_OPTIONS}
-                           defaultValues={myConsts.STATUS_OPTIONS[0].value}
                            name="status"
                            control={control}
-                           onChangeCustom={handleStatusChange}
                         />
                      </Grid>
                      <Grid item xs={6} md={4}>
