@@ -67,10 +67,10 @@ export default function AddNewWork({
          setValue("createDate", new Date(editData.createDate));
          setValue("jobDescription", editData.jobDescription);
          setValue("position", editData.position);
-         setValue("parsedObjective", editData.objective);
-         setValue("parsedKeypoints", editData.keypoints);
-         setValue("parsedJobResp", editData.jobResponsibilities);
-         setValue("parsedSkillsSection", editData.skillsSection);
+         setValue("parsedObjective", editData.parsedObjective);
+         setValue("parsedKeypoints", editData.parsedKeypoints);
+         setValue("parsedJobResp", editData.parsedJobResp);
+         setValue("parsedSkillsSection", editData.parsedSkillsSection);
       } else {
          setValue("directCompany", "");
          setValue("status", myConsts.STATUS_OPTIONS[0].value);
@@ -124,6 +124,7 @@ export default function AddNewWork({
    );
 
    const onSubmit = (data) => {
+      console.log("submit data", data);
       if (Object.keys(editData).length !== 0) {
          handleSubmitEdit({ id: editData.id, data });
       } else {
