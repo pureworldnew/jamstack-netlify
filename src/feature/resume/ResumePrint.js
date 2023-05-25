@@ -5,46 +5,113 @@ import { useLocation } from "react-router-dom";
 import { PDFDownloadLink, BlobProvider } from "@react-pdf/renderer";
 import { useSelector } from "react-redux";
 import Grid from "@mui/material/Grid";
-import { Button } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+
 import Link from "@mui/material/Link";
-import PrintPdf from "./PdfViewer/PrintPdf";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import debounce from "lodash.debounce";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import * as myConsts from "consts";
+import {
+   FormInputText,
+   FormInputDropdown,
+   FormInputDatePicker,
+   FormInputTextarea,
+} from "components/form";
+import { toast } from "react-toastify";
+
+import * as Yup from "yup";
+import workApi from "services/work";
 import ErrorPage from "./ErrorPage";
+import PrintPdf from "./PdfViewer/PrintPdf";
+
+const validationSchema = Yup.object().shape({
+   directCompany: Yup.string().required("Direct Company is required"),
+   position: Yup.string().required("Position is required"),
+});
 
 export default function ResumePrint() {
+   const [duplicated, setDuplicated] = React.useState([]);
+   const queryClient = useQueryClient();
+
    const location = useLocation();
    const storeResult = useSelector((state) => state.resume.resumeData);
    const result = { ...storeResult, ...location.state };
    console.log("location.state", location.state);
    console.log("real result", result);
    const resumeLoading = useSelector((state) => state.resume.resumeLoading);
-   // const result = {
-   //    email: "jonathandreamdev@gmail.com",
-   //    phone: "+1-806-576-1063",
-   //    address: "Amarillo, TX",
-   //    linkedin: "linkedin.com/in/jonathan-samayoa/",
-   //    currentPosition: "With-meetwithanyone.com",
-   //    currentLength: "5",
-   //    currentTechnologies: "React, Node, Javascript, AWS",
-   //    collegeName: "University of Texas at Dallas, Richardson, TX",
-   //    collegeDegree: "Bachelor of Science",
-   //    collegeMajor: "Computer Science",
-   //    collegePeriod: "2010-2014",
-   //    fullName: "Jonathan Samayoa",
-   //    workHistory: [
-   //       {
-   //          name: "sky",
-   //          position: "react developer",
-   //          fromWhenTo: "05.2018 ~ 05.2023",
-   //       },
-   //    ],
-   //    id: "7100aaa4-b191-4cc8-adb8-1698f2042c6c",
-   //    objective:
-   //       "\n\nMy name is Jonathan Samayoa and I am an experienced software engineer with 5 years of experience in developing web applications using React, Node, JavaScript and AWS technologies. In my role at With-meetwithanyone.com I have been responsible for building new features from the ground up as well as maintaining existing codebase to ensure high performance standards are met. My knowledge of cutting edge technologies has enabled me to create innovative solutions that add value to our products while also providing a great user experience. I take pride in my work and strive for excellence in all areas related to software development.",
-   //    keypoints:
-   //       "\n\n1. Expert in developing web applications using React, Node, JavaScript and AWS technologies. \n2. Experienced in creating efficient and maintainable code with a focus on scalability and performance optimization. \n3. Demonstrated ability to develop creative solutions to complex problems while adhering to best practices of software engineering principles. \n4. Extensive knowledge of modern web development tools such as Git/GitHub for version control, npm for package management, etc.. \n5. Skilled at debugging issues quickly and efficiently by leveraging advanced troubleshooting techniques .  \n6. Proven track record of producing high-quality work within tight deadlines while maintaining excellent customer satisfaction ratings .  \n7. 5+ years experience working professionally with-meetwithanyone website platform delivering successful projects under demanding time constraints .   \n8. Self-motivated team player who can effectively collaborate with colleagues from diverse backgrounds to achieve common goals",
-   //    jobResponsibilities:
-   //       "\n\n1. At With-meetwithanyone.com, I worked for 5 years as a React Developer. During that time, I was able to develop and maintain several web applications by using the latest technologies in JavaScript and HTML/CSS coding. Additionally, I provided technical support to customers while troubleshooting their issues with the software. My experience at this company enabled me to grow both technically and professionally which helped me become an efficient problem solver and leader within any team environment. \n2. Working at Sky gave me the opportunity to work on a wide range of projects such as developing mobile applications for iOS & Android platforms, creating websites from scratch utilizing modern front end frameworks like ReactJS & VueJS as well as building backend services using NodeJS & ExpressJS among other technologies . My role also involved being part of cross functional teams responsible for developing new features or fixing bugs in existing products while ensuring that they were delivered on time with high quality standards . By working here , I have gained invaluable knowledge about product development life cycle which has allowed me to take ownership over my own tasks and be proactive when it comes to finding solutions for complex problems .",
-   // };
+   const {
+      control,
+      handleSubmit,
+      setValue,
+      formState: { errors },
+   } = useForm({
+      resolver: yupResolver(validationSchema),
+   });
+
+   const { isLoading, mutate: createNewWorkEntry } = useMutation(
+      (workEntries) => workApi.create(workEntries),
+      {
+         onSuccess: () => {
+            queryClient.invalidateQueries(["get_work_entries"]);
+            toast.success("Work created successfully", {
+               autoClose: 1000,
+               closeOnClick: true,
+               pauseOnHover: false,
+               pauseOnFocusLoss: false,
+            });
+         },
+         onError: (error) => {
+            if (Array.isArray(error.data.error)) {
+               error.data.error.forEach((el) => {
+                  toast.error(el.message, {
+                     position: "top-right",
+                  });
+               });
+            } else {
+               toast.error(error.data.message, {
+                  position: "top-right",
+               });
+            }
+         },
+      }
+   );
+
+   const onSubmit = (data) => {
+      createNewWorkEntry(data);
+   };
+
+   const checkCompanyDup = async (val, name) => {
+      const res = await workApi.checkDupCompany(val, name);
+      setDuplicated(res);
+   };
+
+   const checkCompanyDuplicates = (name) => {
+      checkCompanyDup(name);
+   };
+
+   const debouncedResults = React.useMemo(
+      () => debounce(checkCompanyDuplicates, 300),
+      []
+   );
+
+   const handleAccountChange = (e) => {
+      setValue("account", e.target.value);
+   };
+
+   const handleJobBoardChange = (e) => {
+      setValue("jobBoard", e.target.value);
+   };
+
+   const handleStatusChange = (e) => {
+      setValue("status", e.target.value);
+   };
+
    // 👇🏻 returns an error page if the result object is empty
    if (JSON.stringify(result) === "{}") {
       return <ErrorPage />;
@@ -53,37 +120,164 @@ export default function ResumePrint() {
    if (resumeLoading) {
       return <div>...loading</div>;
    }
+
    return (
-      <Grid container spacing={2} alignItems="center" justifyContent="center">
-         <Grid item md={4} xs={12} justify="center" alignItems="center">
-            <PDFDownloadLink
-               document={<PrintPdf {...result} />}
-               fileName={`${result.fullName} resume.pdf`}
-               style={{ display: "flex", justifyContent: "center" }}
+      <Box>
+         <Grid
+            container
+            spacing={2}
+            alignItems="center"
+            justifyContent="center"
+         >
+            <Grid item md={4} xs={12} justify="center" alignItems="center">
+               <PDFDownloadLink
+                  document={<PrintPdf {...result} />}
+                  fileName={`${result.fullName} resume.pdf`}
+                  style={{ display: "flex", justifyContent: "center" }}
+               >
+                  {({ loading }) =>
+                     loading ? "Loading document..." : "Download Pdf"
+                  }
+               </PDFDownloadLink>
+            </Grid>
+            <Grid item md={4} xs={12} justify="center" alignItems="center">
+               <BlobProvider document={<PrintPdf {...result} />}>
+                  {({ url }) => (
+                     <Link
+                        href={url}
+                        underline="hover"
+                        style={{ display: "flex", justifyContent: "center" }}
+                     >
+                        View PDF
+                     </Link>
+                  )}
+               </BlobProvider>
+            </Grid>
+            <Grid item container md={4} xs={12} justifyContent="center">
+               <LoadingButton
+                  color="inherit"
+                  loading={isLoading}
+                  onClick={handleSubmit(onSubmit)}
+               >
+                  Save
+               </LoadingButton>
+            </Grid>
+         </Grid>
+         <form>
+            <Box
+               sx={{
+                  "& .MuiTextField-root": { m: 1 },
+                  p: 3,
+               }}
+               noValidate
+               autoComplete="off"
             >
-               {({ loading }) =>
-                  loading ? "Loading document..." : "Download Pdf"
-               }
-            </PDFDownloadLink>
-         </Grid>
-         <Grid item md={4} xs={12} justify="center" alignItems="center">
-            <BlobProvider document={<PrintPdf {...result} />}>
-               {({ url }) => (
-                  <Link
-                     href={url}
-                     underline="hover"
-                     style={{ display: "flex", justifyContent: "center" }}
-                  >
-                     View PDF
-                  </Link>
-               )}
-            </BlobProvider>
-         </Grid>
-         <Grid item container md={4} xs={12} justifyContent="center">
-            <Button variant="contained" color="primary">
-               Save Records
-            </Button>
-         </Grid>
-      </Grid>
+               <Divider>Company Information</Divider>
+               <Grid container spacing={2} alignItems="center">
+                  <Grid item md={2} xs={6}>
+                     <FormInputDropdown
+                        id="account"
+                        labelId="account-label"
+                        labelText="Account"
+                        options={myConsts.ACCOUNT_OPTIONS}
+                        defaultValues={myConsts.ACCOUNT_OPTIONS[0].value}
+                        name="account"
+                        control={control}
+                        onChangeCustom={handleAccountChange}
+                     />
+                  </Grid>
+                  <Grid item md={5} xs={6}>
+                     <FormInputText
+                        changeHandler={debouncedResults}
+                        name="directCompany"
+                        control={control}
+                        label="Direct Company"
+                        required
+                        error={!!errors.directCompany}
+                     />
+                     <Typography variant="inherit" color="textSecondary">
+                        {errors.directCompany?.message}
+                     </Typography>
+                  </Grid>
+
+                  <Grid item md={5} xs={6}>
+                     <FormInputText
+                        name="position"
+                        control={control}
+                        label="Position"
+                        required
+                        error={!!errors.position}
+                     />
+                     <Typography variant="inherit" color="textSecondary">
+                        {errors.position?.message}
+                     </Typography>
+                  </Grid>
+               </Grid>
+               <Grid>
+                  {duplicated
+                     ? duplicated.map((each) => (
+                          <Grid container spacing={2} key={each.ref["@ref"].id}>
+                             <Grid item xs>
+                                {each.data.account}
+                             </Grid>
+                             <Grid item xs>
+                                {each.data.directCompany}
+                             </Grid>
+                             <Grid item xs>
+                                {each.data.jobBoard}
+                             </Grid>
+                             <Grid item xs>
+                                {each.data.position}
+                             </Grid>
+                             <Grid item xs>
+                                {each.data.status}
+                             </Grid>
+                          </Grid>
+                       ))
+                     : ""}
+               </Grid>
+               <Divider>Application Information</Divider>
+               <Grid container spacing={2} alignItems="center">
+                  <Grid item xs={6} md={4}>
+                     <FormInputDropdown
+                        id="job-board"
+                        labelId="job-board-label"
+                        labelText="Job Board"
+                        defaultValues={myConsts.JOB_BOARD_OPTIONS[0].value}
+                        options={myConsts.JOB_BOARD_OPTIONS}
+                        name="jobBoard"
+                        control={control}
+                        onChangeCustom={handleJobBoardChange}
+                     />
+                  </Grid>
+                  <Grid item xs={6} md={4}>
+                     <FormInputDropdown
+                        id="status"
+                        labelId="status-label"
+                        labelText="Status"
+                        options={myConsts.STATUS_OPTIONS}
+                        defaultValues={myConsts.STATUS_OPTIONS[0].value}
+                        name="status"
+                        control={control}
+                        onChangeCustom={handleStatusChange}
+                     />
+                  </Grid>
+                  <Grid item xs={6} md={4}>
+                     <FormInputDatePicker name="createDate" control={control} />
+                  </Grid>
+               </Grid>
+               <Divider>Job Details</Divider>
+               <Grid container spacing={2} alignItems="center">
+                  <Grid item xs={12}>
+                     <FormInputTextarea
+                        name="jobDescription"
+                        control={control}
+                        label="Job Description"
+                     />
+                  </Grid>
+               </Grid>
+            </Box>
+         </form>
+      </Box>
    );
 }
