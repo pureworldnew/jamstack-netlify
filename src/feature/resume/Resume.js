@@ -282,18 +282,15 @@ export default function Resume() {
                </Grid>
             </Grid>
             <Divider>Prompt Section</Divider>
+
+            <Divider>Required Company & Job Responsibilities</Divider>
             <Grid container spacing={2} alignItems="center">
                <Grid item md={12} xs={12}>
-                  <FormInputText
-                     name="currentTechnologies"
+                  <FormInputTextarea
+                     name="requiredJobResp"
                      control={control}
-                     label="Technologies used"
-                     required
-                     error={!!errors.currentTechnologies}
+                     label="Required Responsibilites"
                   />
-                  <Typography variant="inherit" color="textSecondary">
-                     {errors.currentTechnologies?.message}
-                  </Typography>
                </Grid>
             </Grid>
             <Divider>Work history</Divider>
