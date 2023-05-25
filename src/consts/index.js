@@ -43,10 +43,27 @@ export const ACCOUNT_DETAILS = {
       currentPosition: "With-meetwithanyone.com",
       currentLength: "5",
       currentTechnologies: "React, Node, Javascript, AWS",
-      collegeName: "University of Texas at Dallas",
+      collegeName: "Texas A&M International University",
       collegeDegree: "Bachelor of Science",
       collegeMajor: "Computer Science",
       collegePeriod: "2010-2014",
+      companyInfo: [
+         {
+            name: "With-meetwithanyone.com",
+            position: "Full stack developer",
+            fromWhenTo: "05.2018 ~ 05.2023",
+         },
+         {
+            name: "Sky Republic Inc",
+            position: "Senior Frontend Developer",
+            fromWhenTo: "10.2016 ~ 04.2018",
+         },
+         {
+            name: "Allsocial",
+            position: "Web Developer",
+            fromWhenTo: "09.2014 ~ 09.2016",
+         },
+      ],
    },
    james_larro: {
       address: "Orlando, FL",
@@ -56,10 +73,27 @@ export const ACCOUNT_DETAILS = {
       currentPosition: "Mend",
       currentLength: "5",
       currentTechnologies: "Node.js, Express, AWS",
-      collegeName: "University of Central Florida",
+      collegeName: "New College of Florida",
       collegeDegree: "Bachelor of Science",
       collegeMajor: "Computer Science",
       collegePeriod: "2010-2014",
+      companyInfo: [
+         {
+            name: "Mend",
+            position: "Senior Software Developer",
+            fromWhenTo: "05.2018 ~ 05.2023",
+         },
+         {
+            name: "iSpot.tv",
+            position: "Full-stack Developer",
+            fromWhenTo: "09.2016 ~ 04.2018",
+         },
+         {
+            name: "Ganic",
+            position: "Web Developer",
+            fromWhenTo: "04.2014 ~ 08.2016",
+         },
+      ],
    },
    cleve_ambrose: {
       address: "Baltimore, MD",
@@ -69,10 +103,27 @@ export const ACCOUNT_DETAILS = {
       currentPosition: "UCLA, Los Angeles, California",
       currentLength: "5",
       currentTechnologies: "Node.js, Express, AWS",
-      collegeName: "University of Maryland",
+      collegeName: "Bowie State University",
       collegeDegree: "Bachelor of Science",
       collegeMajor: "Computer Science",
       collegePeriod: "2010-2014",
+      companyInfo: [
+         {
+            name: "UCLA",
+            position: "Full stack React/Node developer",
+            fromWhenTo: "05.2018 ~ 05.2023",
+         },
+         {
+            name: "BMR Thermal Inc",
+            position: "Full-stack Developer",
+            fromWhenTo: "02.2016 ~ 04.2018",
+         },
+         {
+            name: "Formless",
+            position: "Web Developer",
+            fromWhenTo: "04.2014 ~ 02.2016",
+         },
+      ],
    },
 };
 export const JOB_BOARD_OPTIONS = [

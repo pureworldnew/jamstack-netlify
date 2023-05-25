@@ -51,15 +51,15 @@ exports.handler = async (event, context) => {
       console.log("prompt1", prompt1);
    } else if (prompt === "prompt2") {
       // 👇🏻 The job responsibilities prompt
-      const prompt2 = `I am writing a resume, my details are \n name: ${fullName} \n role: ${currentPosition} (${currentLength} years). \n I write in the technolegies: ${currentTechnologies}.\n I write for this job requirements: ${requiredJobResp}. Can you write 8 points for a resume on what I am good at?`;
+      const prompt2 = `I am writing a resume, my details are \n name: ${fullName} \n role: ${currentPosition} (${currentLength} years). \n I write in the technolegies: ${currentTechnologies}.\n I write for this job requirements: ${requiredJobResp}. Can you write 8 bullet points with metrics for a resume on what I am good at?`;
       const keypoints = await GPTFunction(prompt2);
       chatgptData = { keypoints };
       console.log("prompt2", prompt2);
    } else if (prompt === "prompt3") {
       // 👇🏻 The job achievements prompt
-      const prompt3 = `I am writing a resume, my details are \n name: ${fullName} \n role: ${currentPosition} (${currentLength} years).\n I write for this job requirements: ${requiredJobResp}. \n During my years I worked at ${
+      const prompt3 = `I am writing a resume, my details are \n name: ${fullName} \n role: ${currentPosition} (${currentLength} years).\n During my years I worked at ${
          workArray.length
-      } companies. ${remainderText()} \n Can you write me 50 words for each company seperated in numbers of my succession in the company (in first person)?`;
+      } companies. ${remainderText()} \n Can you write me 50 words achievements with metrics based on these job responsibilites: ${requiredJobResp} for each company seperated in numbers of my succession in the company (in first person)?`;
       console.log("prompt3", prompt3);
       const jobResponsibilities = await GPTFunction(prompt3);
       chatgptData = { jobResponsibilities };

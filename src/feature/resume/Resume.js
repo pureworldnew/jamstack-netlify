@@ -57,9 +57,9 @@ export default function Resume() {
       setValue("parsedJobResp", resumeData.jobResponsibilities);
       setValue("parsedSkillSection", resumeData.skillsSection);
    }, [resumeData]);
-   const [companyInfo, setCompanyInfo] = React.useState([
-      { name: "", position: "", fromWhenTo: "" },
-   ]);
+   const [companyInfo, setCompanyInfo] = React.useState(
+      myConsts.ACCOUNT_DETAILS.jonathan_samayoa.companyInfo
+   );
 
    // 👇🏻 updates the state with user's input
    const handleAddCompany = () =>
@@ -85,6 +85,7 @@ export default function Resume() {
    const handleAccountChange = (e) => {
       console.log(e.target.value);
       setValue("account", e.target.value);
+      setCompanyInfo(myConsts.ACCOUNT_DETAILS[e.target.value].companyInfo);
       Object.keys(myConsts.ACCOUNT_DETAILS.jonathan_samayoa).forEach((each) => {
          setValue(each, myConsts.ACCOUNT_DETAILS[e.target.value][each]);
       });
@@ -300,6 +301,7 @@ export default function Resume() {
                      <TextField
                         name="name"
                         control={control}
+                        value={company.name}
                         onChange={(e) => handleUpdateCompany(e, index)}
                         label="Company Name"
                         fullWidth
@@ -310,6 +312,7 @@ export default function Resume() {
                      <TextField
                         name="position"
                         control={control}
+                        value={company.position}
                         onChange={(e) => handleUpdateCompany(e, index)}
                         label="Position Held"
                         fullWidth
@@ -320,6 +323,7 @@ export default function Resume() {
                      <TextField
                         name="fromWhenTo"
                         control={control}
+                        value={company.fromWhenTo}
                         onChange={(e) => handleUpdateCompany(e, index)}
                         label="from ~ To"
                         fullWidth
