@@ -32,7 +32,6 @@ export const ACCOUNT_OPTIONS = [
    { value: "jonathan_samayoa", label: "Jonathan Samayoa" },
    { value: "james_larro", label: "James Larro" },
    { value: "cleve_ambrose", label: "Cleve Ambrose" },
-   { value: "richard_correa", label: "Richard Correa" },
 ];
 export const ACCOUNT_DETAILS = {
    jonathan_samayoa: {
