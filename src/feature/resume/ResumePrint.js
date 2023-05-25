@@ -298,7 +298,6 @@ export default function ResumePrint() {
                      <FormInputTextarea
                         name="parsedJobResp"
                         control={control}
-                        value={result.jobResponsibilities}
                         label="Job Responsibilities"
                      />
                   </Grid>

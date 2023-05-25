@@ -67,6 +67,10 @@ export default function AddNewWork({
          setValue("createDate", new Date(editData.createDate));
          setValue("jobDescription", editData.jobDescription);
          setValue("position", editData.position);
+         setValue("parsedObjective", editData.objective);
+         setValue("parsedKeypoints", editData.keypoints);
+         setValue("parsedJobResp", editData.jobResponsibilities);
+         setValue("parsedSkillsSection", editData.skillsSection);
       } else {
          setValue("directCompany", "");
          setValue("status", myConsts.STATUS_OPTIONS[0].value);
@@ -294,6 +298,41 @@ export default function AddNewWork({
                         />
                      </Grid>
                   </Grid>
+                  {Object.keys(editData).length !== 0 && (
+                     <>
+                        <Divider>Parsed Resume Data</Divider>
+                        <Grid container spacing={2} alignItems="center">
+                           <Grid item md={12} xs={12}>
+                              <FormInputTextarea
+                                 name="parsedObjective"
+                                 control={control}
+                                 label="Objective"
+                              />
+                           </Grid>
+                           <Grid item md={12} xs={12}>
+                              <FormInputTextarea
+                                 name="parsedKeypoints"
+                                 control={control}
+                                 label="Keypoints"
+                              />
+                           </Grid>
+                           <Grid item md={12} xs={12}>
+                              <FormInputTextarea
+                                 name="parsedJobResp"
+                                 control={control}
+                                 label="Job Responsibilities"
+                              />
+                           </Grid>
+                           <Grid item md={12} xs={12}>
+                              <FormInputTextarea
+                                 name="parsedSkillsSection"
+                                 control={control}
+                                 label="Skills Section"
+                              />
+                           </Grid>
+                        </Grid>
+                     </>
+                  )}
                </Box>
             </form>
          </Dialog>
