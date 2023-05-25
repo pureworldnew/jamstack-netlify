@@ -2,10 +2,12 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import * as React from "react";
 import { useLocation } from "react-router-dom";
-import { PDFViewer, PDFDownloadLink } from "@react-pdf/renderer";
+import { PDFDownloadLink, BlobProvider } from "@react-pdf/renderer";
 import { useSelector } from "react-redux";
-import Box from "@mui/material/Box";
-import PrintPdf from "./PrintPdf";
+import Grid from "@mui/material/Grid";
+import { Button } from "@mui/material";
+import Link from "@mui/material/Link";
+import PrintPdf from "./PdfViewer/PrintPdf";
 import ErrorPage from "./ErrorPage";
 
 export default function ResumePrint() {
@@ -52,26 +54,36 @@ export default function ResumePrint() {
       return <div>...loading</div>;
    }
    return (
-      <Box>
-         <PDFDownloadLink
-            document={<PrintPdf {...result} />}
-            fileName={`${result.fullName} resume.pdf`}
-            style={{
-               textDecoration: "none",
-               padding: "10px",
-               color: "#4a4a4a",
-               backgroundColor: "#f2f2f2",
-               border: "1px solid #4a4a4a",
-            }}
-         >
-            {({ loading }) =>
-               loading ? "Loading document..." : "Download Pdf"
-            }
-         </PDFDownloadLink>
-         {/* Start of the document */}
-         <PDFViewer width="100%" height={window.innerHeight}>
-            <PrintPdf {...result} />
-         </PDFViewer>
-      </Box>
+      <Grid container spacing={2} alignItems="center" justifyContent="center">
+         <Grid item md={4} xs={12} justify="center" alignItems="center">
+            <PDFDownloadLink
+               document={<PrintPdf {...result} />}
+               fileName={`${result.fullName} resume.pdf`}
+               style={{ display: "flex", justifyContent: "center" }}
+            >
+               {({ loading }) =>
+                  loading ? "Loading document..." : "Download Pdf"
+               }
+            </PDFDownloadLink>
+         </Grid>
+         <Grid item md={4} xs={12} justify="center" alignItems="center">
+            <BlobProvider document={<PrintPdf {...result} />}>
+               {({ url }) => (
+                  <Link
+                     href={url}
+                     underline="hover"
+                     style={{ display: "flex", justifyContent: "center" }}
+                  >
+                     View PDF
+                  </Link>
+               )}
+            </BlobProvider>
+         </Grid>
+         <Grid item container md={4} xs={12} justifyContent="center">
+            <Button variant="contained" color="primary">
+               Save Records
+            </Button>
+         </Grid>
+      </Grid>
    );
 }

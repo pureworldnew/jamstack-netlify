@@ -32,13 +32,13 @@ function SkillEntry({ name, skills }) {
    );
 }
 
-function Skills({ skillSection }) {
+function Skills({ skillsSection }) {
    return (
       <View>
          <Title>Skills</Title>
          <SkillEntry
             name="Combat Abilities"
-            skills={parse(removeLineBreakFirstLast(skillSection))}
+            skills={parse(removeLineBreakFirstLast(skillsSection))}
          />
       </View>
    );
