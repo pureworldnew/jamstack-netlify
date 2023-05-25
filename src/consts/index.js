@@ -43,7 +43,7 @@ export const ACCOUNT_DETAILS = {
       currentPosition: "With-meetwithanyone.com",
       currentLength: "5",
       currentTechnologies: "React, Node, Javascript, AWS",
-      collegeName: "Texas A&M International University",
+      collegeName: "Texas State University",
       collegeDegree: "Bachelor of Science",
       collegeMajor: "Computer Science",
       collegePeriod: "2010-2014",
