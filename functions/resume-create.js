@@ -61,6 +61,12 @@ exports.handler = async (event, context) => {
       console.log("prompt3", prompt3);
       const jobResponsibilities = await GPTFunction(prompt3);
       chatgptData = { jobResponsibilities };
+   } else if (prompt === "prompt4") {
+      // 👇🏻 The Skills section prompt
+      const prompt4 = `I am writing a resume, my details are \n name: ${fullName} \n role: ${currentPosition} (${currentLength} years). \n I write in the technolegies: ${currentTechnologies}. Can you write 3 Skill Categories for a resume skills on what I am good at?`;
+      const skillsSection = await GPTFunction(prompt4);
+      chatgptData = { skillsSection };
+      console.log("prompt4", prompt4);
    }
 
    const saveData = { ...newEntry, ...chatgptData };

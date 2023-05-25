@@ -64,7 +64,7 @@ function WorkHistory({ workHistory, jobResponsibilities, keypoints }) {
    return (
       <View style={styles.container}>
          <Title>Work History</Title>
-         {workHistory.map((work, index) => (
+         {workHistory?.map((work, index) => (
             <View style={styles.headerContainer} key={index}>
                <View style={styles.leftColumn}>
                   <Text style={styles.title}>

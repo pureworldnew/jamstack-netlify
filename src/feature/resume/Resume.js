@@ -55,6 +55,7 @@ export default function Resume() {
       setValue("parsedObjective", resumeData.objective);
       setValue("parsedKeypoints", resumeData.keypoints);
       setValue("parsedJobResp", resumeData.jobResponsibilities);
+      setValue("parsedSkillSection", resumeData.skillsSection);
    }, [resumeData]);
    const [companyInfo, setCompanyInfo] = React.useState([
       { name: "", position: "", fromWhenTo: "" },
@@ -98,16 +99,19 @@ export default function Resume() {
          const parsedObjective = watch("parsedObjective", false);
          const parsedKeypoints = watch("parsedKeypoints", false);
          const parsedJobResp = watch("parsedJobResp", false);
+         const parsedSkillSection = watch("parsedSkillSection", false);
          console.log("parsedObjective", {
             parsedObjective,
             parsedKeypoints,
             parsedJobResp,
+            parsedSkillSection,
          });
          navigate("/resume-print", {
             state: {
                objective: parsedObjective,
                keypoints: parsedKeypoints,
                jobResponsibilities: parsedJobResp,
+               skillSection: parsedSkillSection,
             },
          });
       }
@@ -368,6 +372,13 @@ export default function Resume() {
                            name="parsedJobResp"
                            control={control}
                            label="Job Responsibilities"
+                        />
+                     </Grid>
+                     <Grid item md={12} xs={12}>
+                        <FormInputTextarea
+                           name="parsedSkillSection"
+                           control={control}
+                           label="Skills Section"
                         />
                      </Grid>
                   </Grid>

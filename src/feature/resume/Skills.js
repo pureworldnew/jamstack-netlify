@@ -2,9 +2,10 @@
 
 import React from "react";
 import { Text, View, StyleSheet } from "@react-pdf/renderer";
-
+import parse from "html-react-parser";
+import removeLineBreakFirstLast from "utils/removeLineBreakFirstLast";
 import Title from "./Title";
-import List, { Item } from "./List";
+import { Summary } from "./List";
 
 const styles = StyleSheet.create({
    title: {
@@ -17,32 +18,27 @@ const styles = StyleSheet.create({
       fontSize: 10,
       marginBottom: 10,
    },
+   detailContainer: {
+      flexDirection: "row",
+   },
 });
 
 function SkillEntry({ name, skills }) {
    return (
       <View>
          <Text style={styles.title}>{name}</Text>
-         <List>
-            {skills.map((skill, i) => (
-               <Item key={i}>{skill}</Item>
-            ))}
-         </List>
+         <Summary style={styles.detailContainer}>{skills}</Summary>
       </View>
    );
 }
 
-function Skills() {
+function Skills({ skillSection }) {
    return (
       <View>
          <Title>Skills</Title>
          <SkillEntry
             name="Combat Abilities"
-            skills={[
-               "Completed Jedi Master training and built a lightsaber from scratch in order to do battle against the Empire",
-               "Defeated the Rancor and rescued Princess Leia from Jabba the Hutt",
-               "Competent fighter pilot as well as an excelent shot with nearly any weapon",
-            ]}
+            skills={parse(removeLineBreakFirstLast(skillSection))}
          />
       </View>
    );

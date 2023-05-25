@@ -107,6 +107,7 @@ function Resume(props) {
       collegeMajor,
       collegePeriod,
       jobResponsibilities,
+      skillSection,
    } = props;
    return (
       <Page {...props} style={styles.page}>
@@ -128,7 +129,7 @@ function Resume(props) {
                   collegeMajor={collegeMajor}
                   collegePeriod={collegePeriod}
                />
-               <Skills />
+               <Skills skillSection={skillSection} />
             </View>
             <View style={styles.container}>
                <WorkHistory
