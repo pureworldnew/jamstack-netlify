@@ -67,6 +67,7 @@ export default function AddNewWork({
          setValue("createDate", new Date(editData.createDate));
          setValue("jobDescription", editData.jobDescription);
          setValue("position", editData.position);
+         setValue("currentTechnologies", editData.currentTechnologies);
          setValue("parsedObjective", editData.parsedObjective);
          setValue("parsedKeypoints", editData.parsedKeypoints);
          setValue("parsedJobResp", editData.parsedJobResp);
@@ -290,6 +291,15 @@ export default function AddNewWork({
                      </Grid>
                   </Grid>
                   <Divider>Job Details</Divider>
+                  <Grid container spacing={2} alignItems="center">
+                     <Grid item md={12} xs={12}>
+                        <FormInputText
+                           name="currentTechnologies"
+                           control={control}
+                           label="Technologies used"
+                        />
+                     </Grid>
+                  </Grid>
                   <Grid container spacing={2} alignItems="center">
                      <Grid item xs={12}>
                         <FormInputTextarea

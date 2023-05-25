@@ -32,6 +32,12 @@ const MainListItems = (
          </ListItemIcon>
          <ListItemText primary="Work" />
       </ListItemButton>
+      <ListItemButton component={Link} to="/resume">
+         <ListItemIcon>
+            <PersonSearchIcon />
+         </ListItemIcon>
+         <ListItemText primary="Resume" />
+      </ListItemButton>
       <ListItemButton component={Link} to="/plan">
          <ListItemIcon>
             <ScheduleIcon />
@@ -50,12 +56,7 @@ const MainListItems = (
          </ListItemIcon>
          <ListItemText primary="Stress" />
       </ListItemButton>
-      <ListItemButton component={Link} to="/resume">
-         <ListItemIcon>
-            <PersonSearchIcon />
-         </ListItemIcon>
-         <ListItemText primary="Resume" />
-      </ListItemButton>
+
       <ListItemButton component={Link} to="/admin">
          <ListItemIcon>
             <AdminPanelSettingsIcon />

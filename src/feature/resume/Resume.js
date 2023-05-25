@@ -29,6 +29,7 @@ const validationSchema = Yup.object().shape({
    currentPosition: Yup.string().required("Position is required"),
    currentLength: Yup.string().required("How long is required"),
    currentTechnologies: Yup.string().required("Technology used is required"),
+   requiredJobResp: Yup.string().required("Job Requirements is required"),
 });
 
 export default function Resume() {
@@ -215,18 +216,6 @@ export default function Resume() {
                      {errors.currentLength?.message}
                   </Typography>
                </Grid>
-               <Grid item md={2} xs={6}>
-                  <FormInputText
-                     name="collegePeriod"
-                     control={control}
-                     label="From ~ To"
-                     required
-                     error={!!errors.collegePeriod}
-                  />
-                  <Typography variant="inherit" color="textSecondary">
-                     {errors.collegePeriod?.message}
-                  </Typography>
-               </Grid>
                <Grid item md={3} xs={6}>
                   <FormInputText
                      name="collegeName"
@@ -237,6 +226,18 @@ export default function Resume() {
                   />
                   <Typography variant="inherit" color="textSecondary">
                      {errors.collegeName?.message}
+                  </Typography>
+               </Grid>
+               <Grid item md={2} xs={6}>
+                  <FormInputText
+                     name="collegePeriod"
+                     control={control}
+                     label="From ~ To"
+                     required
+                     error={!!errors.collegePeriod}
+                  />
+                  <Typography variant="inherit" color="textSecondary">
+                     {errors.collegePeriod?.message}
                   </Typography>
                </Grid>
                <Grid item md={2} xs={6}>
@@ -287,7 +288,12 @@ export default function Resume() {
                      name="requiredJobResp"
                      control={control}
                      label="Required Responsibilites"
+                     required
+                     error={!!errors.requiredJobResp}
                   />
+                  <Typography variant="inherit" color="textSecondary">
+                     {errors.requiredJobResp?.message}
+                  </Typography>
                </Grid>
             </Grid>
             <Divider>Work history</Divider>

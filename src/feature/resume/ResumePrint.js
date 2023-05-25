@@ -64,6 +64,7 @@ export default function ResumePrint() {
          setValue("parsedJobResp", result.jobResponsibilities);
          setValue("parsedSkillsSection", result.skillsSection);
          setValue("jobDescription", result.jobDescription);
+         setValue("currentTechnologies", result.currentTechnologies);
       });
    }, [setValue]);
 
@@ -269,6 +270,15 @@ export default function ResumePrint() {
                   </Grid>
                </Grid>
                <Divider>Job Details</Divider>
+               <Grid container spacing={2} alignItems="center">
+                  <Grid item md={12} xs={12}>
+                     <FormInputText
+                        name="currentTechnologies"
+                        control={control}
+                        label="Technologies used"
+                     />
+                  </Grid>
+               </Grid>
                <Grid container spacing={2} alignItems="center">
                   <Grid item xs={12}>
                      <FormInputTextarea
