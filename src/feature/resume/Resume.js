@@ -52,6 +52,7 @@ export default function Resume() {
    });
 
    React.useEffect(() => {
+      setValue("account", myConsts.ACCOUNT_OPTIONS[0].value);
       setValue("parsedObjective", resumeData.objective);
       setValue("parsedKeypoints", resumeData.keypoints);
       setValue("parsedJobResp", resumeData.jobResponsibilities);
@@ -148,7 +149,6 @@ export default function Resume() {
                      labelId="account-label"
                      labelText="Account"
                      options={myConsts.ACCOUNT_OPTIONS}
-                     defaultValues={myConsts.ACCOUNT_OPTIONS[0].value}
                      name="account"
                      control={control}
                      onChangeCustom={handleAccountChange}

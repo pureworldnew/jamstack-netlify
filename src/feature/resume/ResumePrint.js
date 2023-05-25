@@ -117,14 +117,6 @@ export default function ResumePrint() {
       setValue("account", e.target.value);
    };
 
-   const handleJobBoardChange = (e) => {
-      setValue("jobBoard", e.target.value);
-   };
-
-   const handleStatusChange = (e) => {
-      setValue("status", e.target.value);
-   };
-
    // 👇🏻 returns an error page if the result object is empty
    if (JSON.stringify(result) === "{}") {
       return <ErrorPage />;
@@ -256,11 +248,9 @@ export default function ResumePrint() {
                         id="job-board"
                         labelId="job-board-label"
                         labelText="Job Board"
-                        defaultValues={myConsts.JOB_BOARD_OPTIONS[0].value}
                         options={myConsts.JOB_BOARD_OPTIONS}
                         name="jobBoard"
                         control={control}
-                        onChangeCustom={handleJobBoardChange}
                      />
                   </Grid>
                   <Grid item xs={6} md={4}>
@@ -272,7 +262,6 @@ export default function ResumePrint() {
                         defaultValues={myConsts.STATUS_OPTIONS[0].value}
                         name="status"
                         control={control}
-                        onChangeCustom={handleStatusChange}
                      />
                   </Grid>
                   <Grid item xs={6} md={4}>
