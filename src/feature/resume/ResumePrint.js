@@ -1,7 +1,7 @@
 /* eslint-disable react/no-danger */
 /* eslint-disable import/no-extraneous-dependencies */
 import * as React from "react";
-
+import { useLocation } from "react-router-dom";
 import { PDFViewer, PDFDownloadLink } from "@react-pdf/renderer";
 import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
@@ -9,7 +9,11 @@ import PrintPdf from "./PrintPdf";
 import ErrorPage from "./ErrorPage";
 
 export default function ResumePrint() {
-   const result = useSelector((state) => state.resume.resumeData);
+   const location = useLocation();
+   const storeResult = useSelector((state) => state.resume.resumeData);
+   const result = { ...storeResult, ...location.state };
+   console.log("location.state", location.state);
+   console.log("real result", result);
    const resumeLoading = useSelector((state) => state.resume.resumeLoading);
    // const result = {
    //    email: "jonathandreamdev@gmail.com",

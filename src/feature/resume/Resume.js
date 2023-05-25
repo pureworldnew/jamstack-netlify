@@ -43,6 +43,7 @@ export default function Resume() {
    const {
       control,
       handleSubmit,
+      watch,
       setValue,
       formState: { errors },
    } = useForm({
@@ -94,7 +95,21 @@ export default function Resume() {
 
    const printResumePdf = () => {
       if (!resumeLoading) {
-         navigate("/resume-print");
+         const parsedObjective = watch("parsedObjective", false);
+         const parsedKeypoints = watch("parsedKeypoints", false);
+         const parsedJobResp = watch("parsedJobResp", false);
+         console.log("parsedObjective", {
+            parsedObjective,
+            parsedKeypoints,
+            parsedJobResp,
+         });
+         navigate("/resume-print", {
+            state: {
+               objective: parsedObjective,
+               keypoints: parsedKeypoints,
+               jobResponsibilities: parsedJobResp,
+            },
+         });
       }
    };
 
