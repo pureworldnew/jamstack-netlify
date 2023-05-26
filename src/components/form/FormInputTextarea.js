@@ -11,20 +11,19 @@ export function FormInputTextarea({ name, control, error, label }) {
          control={control}
          render={({ field }) => (
             <TextField
-               id="standard-basic"
-               placeholder={label}
+               id={name}
+               label={label}
                multiline
                error={error || false}
-               label={label}
                fullWidth
                InputProps={{
+                  inputComponent: TextareaAutosize,
                   inputProps: {
                      style: {
-                        resize: "auto",
+                        resize: "none",
                      },
                   },
                }}
-               inputComponent={TextareaAutosize}
                {...field}
             />
          )}

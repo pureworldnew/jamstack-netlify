@@ -27,6 +27,7 @@ import { toast } from "react-toastify";
 
 import * as Yup from "yup";
 import workApi from "services/work";
+import { Button } from "@mui/material";
 import ErrorPage from "./ErrorPage";
 import PrintPdf from "./PdfViewer/PrintPdf";
 
@@ -122,6 +123,8 @@ export default function ResumePrint() {
       setValue("account", e.target.value);
    };
 
+   const handleGenerateResume = () => {};
+
    // 👇🏻 returns an error page if the result object is empty
    if (JSON.stringify(result) === "{}") {
       return <ErrorPage />;
@@ -139,7 +142,7 @@ export default function ResumePrint() {
             alignItems="center"
             justifyContent="center"
          >
-            <Grid item md={4} xs={12} justify="center" alignItems="center">
+            <Grid item md={3} xs={12} justify="center" alignItems="center">
                <PDFDownloadLink
                   document={<PrintPdf {...result} />}
                   fileName={`${result.fullName} resume.pdf`}
@@ -150,7 +153,10 @@ export default function ResumePrint() {
                   }
                </PDFDownloadLink>
             </Grid>
-            <Grid item md={4} xs={12} justify="center" alignItems="center">
+            <Grid item md={3} xs={12} justify="center" alignItems="center">
+               <Button onClick={handleGenerateResume}>Word Resume</Button>
+            </Grid>
+            <Grid item md={3} xs={12} justify="center" alignItems="center">
                <BlobProvider document={<PrintPdf {...result} />}>
                   {({ url }) => (
                      <Link
@@ -163,7 +169,7 @@ export default function ResumePrint() {
                   )}
                </BlobProvider>
             </Grid>
-            <Grid item container md={4} xs={12} justifyContent="center">
+            <Grid item container md={3} xs={12} justifyContent="center">
                <LoadingButton
                   color="inherit"
                   loading={isLoading}
