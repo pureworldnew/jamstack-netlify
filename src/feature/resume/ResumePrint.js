@@ -123,7 +123,16 @@ export default function ResumePrint() {
       setValue("account", e.target.value);
    };
 
-   const handleGenerateResume = () => {};
+   const handleGenerateResume = () => {
+      workApi.createWordResume({
+         name: "John Doe",
+         email: "john.doe@example.com",
+         phone: "1234567890",
+         experience: "5 years",
+         education: "Bachelor of Science",
+         // Add more data properties as needed
+      });
+   };
 
    // 👇🏻 returns an error page if the result object is empty
    if (JSON.stringify(result) === "{}") {
@@ -154,7 +163,7 @@ export default function ResumePrint() {
                </PDFDownloadLink>
             </Grid>
             <Grid item md={3} xs={12} justify="center" alignItems="center">
-               <Button onClick={handleGenerateResume}>Word Resume</Button>
+               <Button onClick={handleGenerateResume}>Cread Word Resume</Button>
             </Grid>
             <Grid item md={3} xs={12} justify="center" alignItems="center">
                <BlobProvider document={<PrintPdf {...result} />}>

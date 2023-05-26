@@ -18,6 +18,10 @@ const checkDupCompany = async (companyName) => {
    return response.data;
 };
 
+const createWordResume = (resumeDocData) => {
+   axios.post("/.netlify/functions/work-doc-resume", { ...resumeDocData });
+};
+
 const update = (workId, data) =>
    axios.post(`/.netlify/functions/work-update/${workId}`, {
       ...data,
@@ -35,6 +39,7 @@ export default {
    create,
    readAll,
    checkDupCompany,
+   createWordResume,
    update,
    delete: deleteWork,
    batchDelete: batchDeleteWork,
