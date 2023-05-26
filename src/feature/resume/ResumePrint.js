@@ -1,7 +1,7 @@
 /* eslint-disable react/no-danger */
 /* eslint-disable import/no-extraneous-dependencies */
 import * as React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { PDFDownloadLink, BlobProvider } from "@react-pdf/renderer";
 import { useSelector } from "react-redux";
 import Grid from "@mui/material/Grid";
@@ -36,6 +36,8 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function ResumePrint() {
+   const navigate = useNavigate();
+
    const [duplicated, setDuplicated] = React.useState([]);
    const queryClient = useQueryClient();
 
@@ -64,6 +66,7 @@ export default function ResumePrint() {
          setValue("parsedJobResp", result.jobResponsibilities);
          setValue("parsedSkillsSection", result.skillsSection);
          setValue("jobDescription", result.jobDescription);
+         setValue("companyProfile", result.companyProfile);
          setValue("currentTechnologies", result.currentTechnologies);
       });
    }, [setValue]);
@@ -73,6 +76,7 @@ export default function ResumePrint() {
       {
          onSuccess: () => {
             queryClient.invalidateQueries(["get_work_entries"]);
+            navigate("/work");
             toast.success("Work created successfully", {
                autoClose: 1000,
                closeOnClick: true,
@@ -276,6 +280,15 @@ export default function ResumePrint() {
                         name="currentTechnologies"
                         control={control}
                         label="Technologies used"
+                     />
+                  </Grid>
+               </Grid>
+               <Grid container spacing={2} alignItems="center">
+                  <Grid item xs={12}>
+                     <FormInputTextarea
+                        name="companyProfile"
+                        control={control}
+                        label="Company Description"
                      />
                   </Grid>
                </Grid>

@@ -9,27 +9,23 @@ export function FormInputTextarea({ name, control, error, label }) {
       <Controller
          name={name}
          control={control}
-         render={({ field: { onChange, onBlur, value } }) => (
+         render={({ field }) => (
             <TextField
                id="standard-basic"
-               placeholder="Standard"
+               placeholder={label}
                multiline
                error={error || false}
                label={label}
-               value={value || ""}
-               onChange={(val) => {
-                  onChange(val);
-               }}
-               onBlur={onBlur}
+               fullWidth
                InputProps={{
-                  inputComponent: TextareaAutosize,
                   inputProps: {
                      style: {
                         resize: "auto",
                      },
                   },
                }}
-               fullWidth
+               inputComponent={TextareaAutosize}
+               {...field}
             />
          )}
       />

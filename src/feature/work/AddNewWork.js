@@ -66,6 +66,7 @@ export default function AddNewWork({
          setValue("jobBoard", editData.jobBoard);
          setValue("createDate", new Date(editData.createDate));
          setValue("jobDescription", editData.jobDescription);
+         setValue("companyProfile", editData.companyProfile);
          setValue("position", editData.position);
          setValue("currentTechnologies", editData.currentTechnologies);
          setValue("parsedObjective", editData.parsedObjective);
@@ -79,6 +80,7 @@ export default function AddNewWork({
          setValue("jobBoard", myConsts.JOB_BOARD_OPTIONS[0].value);
          setValue("createDate", new Date());
          setValue("jobDescription", "");
+         setValue("companyProfile", "");
          setValue("position", "");
       }
    }, [editData]);
@@ -90,6 +92,7 @@ export default function AddNewWork({
          account: myConsts.ACCOUNT_OPTIONS[0].value,
          jobBoard: myConsts.JOB_BOARD_OPTIONS[0].value,
          jobDescription: "",
+         companyProfile: "",
          position: "",
       });
       handleClose();
@@ -297,6 +300,15 @@ export default function AddNewWork({
                            name="currentTechnologies"
                            control={control}
                            label="Technologies used"
+                        />
+                     </Grid>
+                  </Grid>
+                  <Grid container spacing={2} alignItems="center">
+                     <Grid item xs={12}>
+                        <FormInputTextarea
+                           name="companyProfile"
+                           control={control}
+                           label="Company Description"
                         />
                      </Grid>
                   </Grid>

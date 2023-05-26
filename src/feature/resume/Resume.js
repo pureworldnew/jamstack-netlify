@@ -30,6 +30,7 @@ const validationSchema = Yup.object().shape({
    currentLength: Yup.string().required("How long is required"),
    currentTechnologies: Yup.string().required("Technology used is required"),
    requiredJobResp: Yup.string().required("Job Requirements is required"),
+   companyProfile: Yup.string().required("Company Description is required"),
 });
 
 export default function Resume() {
@@ -104,6 +105,7 @@ export default function Resume() {
          const parsedJobResp = watch("parsedJobResp", false);
          const parsedSkillsSection = watch("parsedSkillsSection", false);
          const requiredJobResp = watch("requiredJobResp", false);
+         const companyProfile = watch("companyProfile", false);
          navigate("/resume-print", {
             state: {
                objective: parsedObjective,
@@ -111,6 +113,7 @@ export default function Resume() {
                jobResponsibilities: parsedJobResp,
                skillsSection: parsedSkillsSection,
                jobDescription: requiredJobResp,
+               companyProfile,
             },
          });
       }
@@ -283,6 +286,18 @@ export default function Resume() {
 
             <Divider>Required Company & Job Responsibilities</Divider>
             <Grid container spacing={2} alignItems="center">
+               <Grid item md={12} xs={12}>
+                  <FormInputTextarea
+                     name="companyProfile"
+                     control={control}
+                     label="Company Profile"
+                     required
+                     error={!!errors.companyProfile}
+                  />
+                  <Typography variant="inherit" color="textSecondary">
+                     {errors.companyProfile?.message}
+                  </Typography>
+               </Grid>
                <Grid item md={12} xs={12}>
                   <FormInputTextarea
                      name="requiredJobResp"
