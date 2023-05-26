@@ -23,7 +23,6 @@
     "bcryptjs": "^2.4.3",
     "chalk": "^5.2.0",
     "dayjs": "^1.11.6",
-    "docxtemplater": "^3.37.8",
     "dotenv": "^16.0.1",
     "faunadb": "^2.14.2",
     "html-docx-js": "^0.3.1",

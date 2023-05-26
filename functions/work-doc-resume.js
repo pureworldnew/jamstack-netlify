@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 const fs = require("fs");
 const HtmlDocx = require("html-docx-js");
-const Docxtemplater = require("docxtemplater");
 
 /* export our lambda function as named "handler" export */
 exports.handler = async (event, context) => {
