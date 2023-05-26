@@ -64,6 +64,8 @@ export default function AddNewPlan({
             "finishedDate",
             editData.finishedDate ? new Date(editData.finishedDate) : new Date()
          );
+      } else {
+         setValue("planStatus", myConsts.PLAN_STATUS_OPTIONS[0].value);
       }
    }, [editData]);
 
@@ -89,10 +91,6 @@ export default function AddNewPlan({
       ),
       []
    );
-
-   const handlePlanStatusChange = (e) => {
-      setValue("planStatus", e.target.value);
-   };
 
    const onSubmit = (data) => {
       if (Object.keys(planEditData).length !== 0) {
@@ -192,10 +190,8 @@ export default function AddNewPlan({
                            labelId="status-label"
                            labelText="Status"
                            options={myConsts.PLAN_STATUS_OPTIONS}
-                           defaultValues={myConsts.PLAN_STATUS_OPTIONS[0].value}
                            name="planStatus"
                            control={control}
-                           onChangeCustom={handlePlanStatusChange}
                         />
                      </Grid>
 
