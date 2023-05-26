@@ -125,6 +125,19 @@ const ResumePrintComponentWithErrorBoundary = withErrorBoundary(
    }
 );
 
+const ResumePrintDocComponentWithErrorBoundary = withErrorBoundary(
+   loadable(() => import("./feature/resume/ResumePrintDoc"), {
+      fallback: <Fallback />,
+   }),
+   {
+      FallbackComponent: ErrorFallback,
+      onError(error, info) {
+         // Do something with the error
+         // E.g. log to an error logging client here
+      },
+   }
+);
+
 const DashboardComponentWithErrorBoundary = withErrorBoundary(
    loadable(() => import("./feature/dashboard"), {
       fallback: <Fallback />,
@@ -199,6 +212,10 @@ export default function App() {
             <Route
                path="/resume-print"
                element={<ResumePrintComponentWithErrorBoundary />}
+            />
+            <Route
+               path="/resume-print-doc"
+               element={<ResumePrintDocComponentWithErrorBoundary />}
             />
             <Route
                path="/admin"

@@ -124,14 +124,7 @@ export default function ResumePrint() {
    };
 
    const handleGenerateResume = () => {
-      workApi.createWordResume({
-         name: "John Doe",
-         email: "john.doe@example.com",
-         phone: "1234567890",
-         experience: "5 years",
-         education: "Bachelor of Science",
-         // Add more data properties as needed
-      });
+      navigate("/resume-print-doc");
    };
 
    // 👇🏻 returns an error page if the result object is empty
