@@ -18,6 +18,7 @@ import workApi from "services/work";
 import debounce from "lodash.debounce";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import { AccordionComponent } from "components/accordion";
 
 import * as myConsts from "consts";
 import {
@@ -293,60 +294,57 @@ export default function AddNewWork({
                         />
                      </Grid>
                   </Grid>
-                  <Divider>Job Details</Divider>
-                  <Grid container spacing={2} alignItems="center">
-                     <Grid item md={12} xs={12}>
-                        <FormInputText
-                           name="currentTechnologies"
-                           control={control}
-                           label="Technologies used"
-                        />
+                  <AccordionComponent summary="Job Details">
+                     <Grid container spacing={2} alignItems="center">
+                        <Grid item md={12} xs={12}>
+                           <FormInputText
+                              name="currentTechnologies"
+                              control={control}
+                              label="Technologies used"
+                           />
+                        </Grid>
+                        <Grid item xs={12}>
+                           <FormInputTextarea
+                              name="companyProfile"
+                              control={control}
+                              label="Company Description"
+                           />
+                        </Grid>
+                        <Grid item xs={12}>
+                           <FormInputTextarea
+                              name="jobDescription"
+                              control={control}
+                              label="Job Description"
+                           />
+                        </Grid>
                      </Grid>
-                  </Grid>
-                  <Grid container spacing={2} alignItems="center">
-                     <Grid item xs={12}>
-                        <FormInputTextarea
-                           name="companyProfile"
-                           control={control}
-                           label="Company Description"
-                        />
-                     </Grid>
-                  </Grid>
-                  <Grid container spacing={2} alignItems="center">
-                     <Grid item xs={12}>
-                        <FormInputTextarea
-                           name="jobDescription"
-                           control={control}
-                           label="Job Description"
-                        />
-                     </Grid>
-                  </Grid>
+                  </AccordionComponent>
+                  <Divider />
                   {Object.keys(editData).length !== 0 && (
-                     <>
-                        <Divider>Parsed Resume Data</Divider>
+                     <AccordionComponent summary="Parsed Resume Data">
                         <Grid container spacing={2} alignItems="center">
-                           <Grid item md={12} xs={12}>
+                           <Grid item xs={12}>
                               <FormInputTextarea
                                  name="parsedObjective"
                                  control={control}
                                  label="Objective"
                               />
                            </Grid>
-                           <Grid item md={12} xs={12}>
+                           <Grid item xs={12}>
                               <FormInputTextarea
                                  name="parsedKeypoints"
                                  control={control}
                                  label="Keypoints"
                               />
                            </Grid>
-                           <Grid item md={12} xs={12}>
+                           <Grid item xs={12}>
                               <FormInputTextarea
                                  name="parsedJobResp"
                                  control={control}
                                  label="Job Responsibilities"
                               />
                            </Grid>
-                           <Grid item md={12} xs={12}>
+                           <Grid item xs={12}>
                               <FormInputTextarea
                                  name="parsedSkillsSection"
                                  control={control}
@@ -354,7 +352,7 @@ export default function AddNewWork({
                               />
                            </Grid>
                         </Grid>
-                     </>
+                     </AccordionComponent>
                   )}
                </Box>
             </form>

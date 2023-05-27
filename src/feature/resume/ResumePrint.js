@@ -66,6 +66,7 @@ export default function ResumePrint() {
          setValue("account", myConsts.ACCOUNT_OPTIONS[0].value);
          setValue("jobBoard", myConsts.JOB_BOARD_OPTIONS[0].value);
          setValue("parsedObjective", result.objective);
+         setValue("parsedCoverLetter", result.coverLetter);
          setValue("parsedKeypoints", result.keypoints);
          setValue("parsedJobResp", result.jobResponsibilities);
          setValue("parsedSkillsSection", result.skillsSection);
@@ -104,8 +105,8 @@ export default function ResumePrint() {
       }
    );
 
-   const onSubmit = (data) => {
-      createNewWorkEntry(data);
+   const onSubmit = ({ parsedCoverLetter, ...saveParam }) => {
+      createNewWorkEntry(saveParam);
    };
 
    const checkCompanyDup = async (val, name) => {
@@ -338,6 +339,13 @@ export default function ResumePrint() {
 
                <AccordionComponent summary="Parsed Resume Data">
                   <Grid container spacing={2} alignItems="center">
+                     <Grid item xs={12}>
+                        <FormInputTextarea
+                           name="parsedCoverLetter"
+                           control={control}
+                           label="Cover Letter"
+                        />
+                     </Grid>
                      <Grid item xs={12}>
                         <FormInputTextarea
                            name="parsedObjective"

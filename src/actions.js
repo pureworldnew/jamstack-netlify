@@ -52,8 +52,11 @@ export const fetchResumeData = (resumeEntries) => (dispatch) => {
    const prompt3Promise = ResumeApi.create2(resumeParam);
    promiseArr.push(prompt3Promise);
    resumeParam.prompt = "prompt4";
-   const prompt4Promise = ResumeApi.create2(resumeParam);
+   const prompt4Promise = ResumeApi.create1(resumeParam);
    promiseArr.push(prompt4Promise);
+   resumeParam.prompt = "prompt5";
+   const prompt5Promise = ResumeApi.create2(resumeParam);
+   promiseArr.push(prompt5Promise);
    const successfulResponses = [];
    function getFulfilled(promises) {
       Promise.allSettled(promises)
@@ -74,6 +77,7 @@ export const fetchResumeData = (resumeEntries) => (dispatch) => {
                   ...successfulResponses[1],
                   ...successfulResponses[2],
                   ...successfulResponses[3],
+                  ...successfulResponses[4],
                };
                console.log("resumeResultData", resumeResultData);
                dispatch(fetchResumeSuccess(resumeResultData));

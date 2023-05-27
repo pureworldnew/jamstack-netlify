@@ -55,6 +55,7 @@ export default function Resume() {
 
    React.useEffect(() => {
       setValue("account", myConsts.ACCOUNT_OPTIONS[0].value);
+      setValue("parsedCoverLetter", resumeData.coverLetter);
       setValue("parsedObjective", resumeData.objective);
       setValue("parsedKeypoints", resumeData.keypoints);
       setValue("parsedJobResp", resumeData.jobResponsibilities);
@@ -100,6 +101,7 @@ export default function Resume() {
 
    const printResumePdf = () => {
       if (!resumeLoading) {
+         const parsedCoverLetter = watch("parsedCoverLetter", false);
          const parsedObjective = watch("parsedObjective", false);
          const parsedKeypoints = watch("parsedKeypoints", false);
          const parsedJobResp = watch("parsedJobResp", false);
@@ -108,6 +110,7 @@ export default function Resume() {
          const companyProfile = watch("companyProfile", false);
          navigate("/resume-print", {
             state: {
+               coverLetter: parsedCoverLetter,
                objective: parsedObjective,
                keypoints: parsedKeypoints,
                jobResponsibilities: parsedJobResp,
@@ -371,6 +374,13 @@ export default function Resume() {
             ) : (
                Object.keys(resumeData).length !== 0 && (
                   <Grid container spacing={2} alignItems="center">
+                     <Grid item md={12} xs={12}>
+                        <FormInputTextarea
+                           name="parsedCoverLetter"
+                           control={control}
+                           label="Cover Letter"
+                        />
+                     </Grid>
                      <Grid item md={12} xs={12}>
                         <FormInputTextarea
                            name="parsedObjective"

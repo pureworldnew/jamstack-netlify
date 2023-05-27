@@ -69,6 +69,12 @@ exports.handler = async (event, context) => {
       const skillsSection = await GPTFunction(prompt4);
       chatgptData = { skillsSection };
       console.log("prompt4", prompt4);
+   } else if (prompt === "prompt5") {
+      // 👇🏻 The Skills section prompt
+      const prompt5 = `I am writing a cover letter, my details are \n name: ${fullName} \n role: ${currentPosition} (${currentLength} years). \n I write in the technolegies: ${currentTechnologies}.\n I write for this job requirements: ${requiredJobResp}. Can you write cover letter less than 300 words for job applying?`;
+      const coverLetter = await GPTFunction(prompt5);
+      chatgptData = { coverLetter };
+      console.log("prompt5", prompt5);
    }
 
    const saveData = { ...newEntry, ...chatgptData };
