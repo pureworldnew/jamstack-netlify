@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import debounce from "lodash.debounce";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AccordionComponent } from "components/accordion";
 
 import * as myConsts from "consts";
 import {
@@ -308,65 +309,65 @@ export default function ResumePrint() {
                      <FormInputDatePicker name="createDate" control={control} />
                   </Grid>
                </Grid>
-               <Divider>Job Details</Divider>
-               <Grid container spacing={2} alignItems="center">
-                  <Grid item md={12} xs={12}>
-                     <FormInputText
-                        name="currentTechnologies"
-                        control={control}
-                        label="Technologies used"
-                     />
+               <AccordionComponent summary="Job Details">
+                  <Grid container spacing={2} alignItems="center">
+                     <Grid item md={12} xs={12}>
+                        <FormInputText
+                           name="currentTechnologies"
+                           control={control}
+                           label="Technologies used"
+                        />
+                     </Grid>
+                     <Grid item xs={12}>
+                        <FormInputTextarea
+                           name="companyProfile"
+                           control={control}
+                           label="Company Description"
+                        />
+                     </Grid>
+                     <Grid item xs={12}>
+                        <FormInputTextarea
+                           name="jobDescription"
+                           control={control}
+                           label="Job Description"
+                        />
+                     </Grid>
                   </Grid>
-               </Grid>
-               <Grid container spacing={2} alignItems="center">
-                  <Grid item xs={12}>
-                     <FormInputTextarea
-                        name="companyProfile"
-                        control={control}
-                        label="Company Description"
-                     />
+               </AccordionComponent>
+               <Divider />
+
+               <AccordionComponent summary="Parsed Resume Data">
+                  <Grid container spacing={2} alignItems="center">
+                     <Grid item xs={12}>
+                        <FormInputTextarea
+                           name="parsedObjective"
+                           control={control}
+                           label="Objective"
+                        />
+                     </Grid>
+                     <Grid item xs={12}>
+                        <FormInputTextarea
+                           name="parsedKeypoints"
+                           control={control}
+                           label="Keypoints"
+                        />
+                     </Grid>
+                     <Grid item xs={12}>
+                        <FormInputTextarea
+                           name="parsedJobResp"
+                           control={control}
+                           label="Job Responsibilities"
+                        />
+                     </Grid>
+                     <Grid item xs={12}>
+                        <FormInputTextarea
+                           name="parsedSkillsSection"
+                           control={control}
+                           label="Skills Section"
+                        />
+                     </Grid>
                   </Grid>
-               </Grid>
-               <Grid container spacing={2} alignItems="center">
-                  <Grid item xs={12}>
-                     <FormInputTextarea
-                        name="jobDescription"
-                        control={control}
-                        label="Job Description"
-                     />
-                  </Grid>
-               </Grid>
-               <Divider>Parsed Resume Data</Divider>
-               <Grid container spacing={2} alignItems="center">
-                  <Grid item xs={12}>
-                     <FormInputTextarea
-                        name="parsedObjective"
-                        control={control}
-                        label="Objective"
-                     />
-                  </Grid>
-                  <Grid item xs={12}>
-                     <FormInputTextarea
-                        name="parsedKeypoints"
-                        control={control}
-                        label="Keypoints"
-                     />
-                  </Grid>
-                  <Grid item xs={12}>
-                     <FormInputTextarea
-                        name="parsedJobResp"
-                        control={control}
-                        label="Job Responsibilities"
-                     />
-                  </Grid>
-                  <Grid item xs={12}>
-                     <FormInputTextarea
-                        name="parsedSkillsSection"
-                        control={control}
-                        label="Skills Section"
-                     />
-                  </Grid>
-               </Grid>
+               </AccordionComponent>
             </Box>
          </form>
       </Box>
