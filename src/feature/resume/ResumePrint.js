@@ -40,6 +40,8 @@ export default function ResumePrint() {
    const navigate = useNavigate();
 
    const [duplicated, setDuplicated] = React.useState([]);
+   const [downloadLink, setDownloadLink] = React.useState(null);
+
    const queryClient = useQueryClient();
 
    const location = useLocation();
@@ -123,8 +125,27 @@ export default function ResumePrint() {
       setValue("account", e.target.value);
    };
 
-   const handleGenerateResume = () => {
-      navigate("/resume-print-doc");
+   const handleGenerateResume = async () => {
+      try {
+         const response = await workApi.createWordResume({
+            name: "John Doe",
+            email: "john.doe@example.com",
+            phone: "1234567890",
+            experience: "5 years",
+            education: "Bachelor of Science",
+            // Add more data properties as needed
+         });
+         console.log("response", response);
+         const blob = new Blob([response.data], {
+            type: response.headers["content-type"],
+         });
+         const url = URL.createObjectURL(blob);
+         setDownloadLink(url);
+      } catch (err) {
+         console.log(err);
+      }
+
+      // navigate("/resume-print-doc");
    };
 
    // 👇🏻 returns an error page if the result object is empty
@@ -157,8 +178,13 @@ export default function ResumePrint() {
             </Grid>
             <Grid item md={3} xs={12} justify="center" alignItems="center">
                <Button onClick={handleGenerateResume}>
-                  Create Word Resume
+                  Generate Word Resume
                </Button>
+               {downloadLink && (
+                  <a href={downloadLink} download>
+                     Click here
+                  </a>
+               )}
             </Grid>
             <Grid item md={3} xs={12} justify="center" alignItems="center">
                <BlobProvider document={<PrintPdf {...result} />}>

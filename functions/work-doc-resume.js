@@ -25,19 +25,21 @@ exports.handler = async (event, context) => {
       phone: "5 years of industry experience",
    });
 
-   const buf = doc.getZip().generate({
+   const generatedDocBuffer = doc.getZip().generate({
       type: "nodebuffer",
-      // compression: DEFLATE adds a compression step.
-      // For a 50MB output document, expect 500ms additional CPU time
       compression: "DEFLATE",
    });
 
-   // buf is a nodejs Buffer, you can either write it to a
-   // file or res.send it with express for example.
-   fs.writeFileSync(path.resolve(__dirname, "output.docx"), buf);
+   const responseHeaders = {
+      "Content-Type":
+         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "Content-Disposition": "attachment; filename=output.docx",
+   };
 
    return {
       statusCode: 200,
-      body: "Hello World!",
+      headers: responseHeaders,
+      body: generatedDocBuffer.toString("base64"),
+      isBase64Encoded: true,
    };
 };

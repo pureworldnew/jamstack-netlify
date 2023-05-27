@@ -18,9 +18,12 @@ const checkDupCompany = async (companyName) => {
    return response.data;
 };
 
-const createWordResume = (resumeDocData) => {
-   axios.post("/.netlify/functions/work-doc-resume", { ...resumeDocData });
-};
+const createWordResume = (resumeDocData) =>
+   axios.post(
+      "/.netlify/functions/work-doc-resume",
+      { ...resumeDocData },
+      { responseType: "arraybuffer" }
+   );
 
 const update = (workId, data) =>
    axios.post(`/.netlify/functions/work-update/${workId}`, {
