@@ -144,8 +144,6 @@ export default function ResumePrint() {
       } catch (err) {
          console.log(err);
       }
-
-      // navigate("/resume-print-doc");
    };
 
    // 👇🏻 returns an error page if the result object is empty
@@ -177,10 +175,11 @@ export default function ResumePrint() {
                </PDFDownloadLink>
             </Grid>
             <Grid item md={3} xs={12} justify="center" alignItems="center">
-               <Button onClick={handleGenerateResume}>
-                  Generate Word Resume
-               </Button>
-               {downloadLink && (
+               {!downloadLink ? (
+                  <Button onClick={handleGenerateResume}>
+                     Generate Word Resume
+                  </Button>
+               ) : (
                   <a href={downloadLink} download>
                      Click here
                   </a>
