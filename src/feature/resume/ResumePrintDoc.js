@@ -18,7 +18,7 @@ export default function ResumePrintDoc() {
    };
    return (
       <Box>
-         <Button onClick={handleGenerateResume}>Cread Word Resume</Button>
+         <Button onClick={handleGenerateResume}>Create Word Resume</Button>
       </Box>
    );
 }

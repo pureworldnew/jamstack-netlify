@@ -156,7 +156,9 @@ export default function ResumePrint() {
                </PDFDownloadLink>
             </Grid>
             <Grid item md={3} xs={12} justify="center" alignItems="center">
-               <Button onClick={handleGenerateResume}>Cread Word Resume</Button>
+               <Button onClick={handleGenerateResume}>
+                  Create Word Resume
+               </Button>
             </Grid>
             <Grid item md={3} xs={12} justify="center" alignItems="center">
                <BlobProvider document={<PrintPdf {...result} />}>
