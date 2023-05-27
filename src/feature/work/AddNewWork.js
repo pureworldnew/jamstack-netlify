@@ -267,7 +267,7 @@ export default function AddNewWork({
                   </Grid>
                   <Divider>Application Information</Divider>
                   <Grid container spacing={2} alignItems="center">
-                     <Grid item xs={6} md={4}>
+                     <Grid item xs={6} md={2}>
                         <FormInputDropdown
                            id="job-board"
                            labelId="job-board-label"
@@ -277,7 +277,7 @@ export default function AddNewWork({
                            control={control}
                         />
                      </Grid>
-                     <Grid item xs={6} md={4}>
+                     <Grid item xs={6} md={2}>
                         <FormInputDropdown
                            id="status"
                            labelId="status-label"
@@ -287,10 +287,17 @@ export default function AddNewWork({
                            control={control}
                         />
                      </Grid>
-                     <Grid item xs={6} md={4}>
+                     <Grid item xs={6} md={2}>
                         <FormInputDatePicker
                            name="createDate"
                            control={control}
+                        />
+                     </Grid>
+                     <Grid item xs={12} md={6}>
+                        <FormInputTextarea
+                           name="interviewFeedback"
+                           control={control}
+                           label="Interview Feedback"
                         />
                      </Grid>
                   </Grid>
