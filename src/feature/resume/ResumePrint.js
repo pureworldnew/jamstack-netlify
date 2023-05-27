@@ -338,28 +338,28 @@ export default function ResumePrint() {
                </Grid>
                <Divider>Parsed Resume Data</Divider>
                <Grid container spacing={2} alignItems="center">
-                  <Grid item md={12} xs={12}>
+                  <Grid item xs={12}>
                      <FormInputTextarea
                         name="parsedObjective"
                         control={control}
                         label="Objective"
                      />
                   </Grid>
-                  <Grid item md={12} xs={12}>
+                  <Grid item xs={12}>
                      <FormInputTextarea
                         name="parsedKeypoints"
                         control={control}
                         label="Keypoints"
                      />
                   </Grid>
-                  <Grid item md={12} xs={12}>
+                  <Grid item xs={12}>
                      <FormInputTextarea
                         name="parsedJobResp"
                         control={control}
                         label="Job Responsibilities"
                      />
                   </Grid>
-                  <Grid item md={12} xs={12}>
+                  <Grid item xs={12}>
                      <FormInputTextarea
                         name="parsedSkillsSection"
                         control={control}
