@@ -45,13 +45,13 @@ exports.handler = async (event, context) => {
 
    if (prompt === "prompt1") {
       // 👇🏻 The job description prompt
-      const prompt1 = `I am writing a resume, my details are \n name: ${fullName} \n role: ${currentPosition} (${currentLength} years). \n I write in the technolegies: ${currentTechnologies}.\n I write for this job requirements: ${requiredJobResp}. Can you write a 100 words description for the top of the resume(first person writing)?`;
+      const prompt1 = `I am writing a resume, my details are \n name: ${fullName} \n role: ${currentPosition} (${currentLength} years). \n I write in the technolegies: ${currentTechnologies}.\n I write for this job requirements: ${requiredJobResp}. \n Can you write a 100 words description for the top of the resume(first person writing)?`;
       const objective = await GPTFunction(prompt1);
       chatgptData = { objective };
       console.log("prompt1", prompt1);
    } else if (prompt === "prompt2") {
       // 👇🏻 The job responsibilities prompt
-      const prompt2 = `I am writing a resume, my details are \n name: ${fullName} \n role: ${currentPosition} (${currentLength} years). \n I write in the technolegies: ${currentTechnologies}.\n I write for this job requirements: ${requiredJobResp}. Can you write 8 bullet points with metrics for a resume on what I am good at?`;
+      const prompt2 = `I am writing a resume, my details are \n name: ${fullName} \n role: ${currentPosition} (${currentLength} years). \n I write in the technolegies: ${currentTechnologies}.\n I write for this job requirements: ${requiredJobResp}. \n Can you write 8 bullet points with metrics for a resume on what I am good at?`;
       const keypoints = await GPTFunction(prompt2);
       chatgptData = { keypoints };
       console.log("prompt2", prompt2);
@@ -65,13 +65,13 @@ exports.handler = async (event, context) => {
       chatgptData = { jobResponsibilities };
    } else if (prompt === "prompt4") {
       // 👇🏻 The Skills section prompt
-      const prompt4 = `I am writing a resume, my details are \n name: ${fullName} \n role: ${currentPosition} (${currentLength} years). \n I write in the technolegies: ${currentTechnologies}.\n I write for this job requirements: ${requiredJobResp}. Can you write 3 Skill Categories for a resume skills on what I am good at?`;
+      const prompt4 = `I am writing a resume, my details are \n name: ${fullName} \n role: ${currentPosition} (${currentLength} years). \n I write in the technolegies: ${currentTechnologies}.\n I write for this job requirements: ${requiredJobResp}.\n Can you write 3 Skill Categories for a resume skills on what I am good at?`;
       const skillsSection = await GPTFunction(prompt4);
       chatgptData = { skillsSection };
       console.log("prompt4", prompt4);
    } else if (prompt === "prompt5") {
       // 👇🏻 The Skills section prompt
-      const prompt5 = `I am writing a cover letter, my details are \n name: ${fullName} \n role: ${currentPosition} (${currentLength} years). \n I write in the technolegies: ${currentTechnologies}.\n I write for this job requirements: ${requiredJobResp}. Can you write cover letter less than 300 words for job applying?`;
+      const prompt5 = `I am writing a cover letter, my details are \n name: ${fullName} \n role: ${currentPosition} (${currentLength} years). \n I write in the technolegies: ${currentTechnologies}.\n I write for this job requirements: ${requiredJobResp}. \n Can you write cover letter less than 300 words for job applying?`;
       const coverLetter = await GPTFunction(prompt5);
       chatgptData = { coverLetter };
       console.log("prompt5", prompt5);

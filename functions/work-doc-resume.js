@@ -20,7 +20,7 @@ exports.handler = async (event, context) => {
 
    // Render the document (Replace {first_name} by John, {last_name} by Doe, ...)
    doc.render({
-      NAME: "John Doe",
+      fullName: "John Doe",
       address: "Bachelor of Science",
       phone: "5 years of industry experience",
    });
