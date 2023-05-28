@@ -61,6 +61,7 @@ export default function AddNewWork({
 
    React.useEffect(() => {
       if (Object.keys(editData).length !== 0) {
+         console.log("edit Data is here", editData);
          setValue("directCompany", editData.directCompany);
          setValue("status", editData.status);
          setValue("account", editData.account);

@@ -1,10 +1,9 @@
 import React from "react";
-import TextareaAutosize from "@mui/material/TextareaAutosize";
 import TextField from "@mui/material/TextField";
 
 import { Controller } from "react-hook-form";
 
-export function FormInputTextarea({ name, control, error, label }) {
+function FormInputTextarea({ name, control, error, label }) {
    return (
       <Controller
          name={name}
@@ -12,21 +11,17 @@ export function FormInputTextarea({ name, control, error, label }) {
          render={({ field }) => (
             <TextField
                id={name}
+               variant="outlined"
                label={label}
                multiline
                error={error || false}
                fullWidth
-               InputProps={{
-                  inputComponent: TextareaAutosize,
-                  inputProps: {
-                     style: {
-                        resize: "none",
-                     },
-                  },
-               }}
+               rows={5}
                {...field}
             />
          )}
       />
    );
 }
+
+export default React.memo(FormInputTextarea);
