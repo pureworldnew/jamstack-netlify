@@ -97,7 +97,7 @@ export const ACCOUNT_DETAILS = {
       email: "amcleverose@gmail.com",
       phone: "+1-781-609-7575",
       linkedin: "linkedin.com/in/amcleverose/",
-      currentPosition: "UCLA, Los Angeles, California",
+      currentPosition: "UCLA, Los Angeles, California.",
       currentLength: "5",
       collegeName: "Bowie State University",
       collegeDegree: "Bachelor of Science",
@@ -105,17 +105,17 @@ export const ACCOUNT_DETAILS = {
       collegePeriod: "2010-2014",
       companyInfo: [
          {
-            name: "UCLA",
+            name: "UCLA, Los Angeles, California.",
             position: "Full stack React/Node developer",
             fromWhenTo: "05.2018 ~ 05.2023",
          },
          {
-            name: "BMR Thermal Inc",
+            name: "BMR Thermal Inc, Portsmouth, NH.",
             position: "Full-stack Developer",
             fromWhenTo: "02.2016 ~ 04.2018",
          },
          {
-            name: "Formless",
+            name: "Formless, Portsmouth, NH.",
             position: "Web Developer",
             fromWhenTo: "04.2014 ~ 02.2016",
          },

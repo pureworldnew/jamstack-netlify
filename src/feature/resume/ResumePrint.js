@@ -129,14 +129,7 @@ export default function ResumePrint() {
 
    const handleGenerateResume = async () => {
       try {
-         const response = await workApi.createWordResume({
-            name: "John Doe",
-            email: "john.doe@example.com",
-            phone: "1234567890",
-            experience: "5 years",
-            education: "Bachelor of Science",
-            // Add more data properties as needed
-         });
+         const response = await workApi.createWordResume(result);
          console.log("response", response);
          const blob = new Blob([response.data], {
             type: response.headers["content-type"],
@@ -182,7 +175,7 @@ export default function ResumePrint() {
                      Generate Word Resume
                   </Button>
                ) : (
-                  <a href={downloadLink} download>
+                  <a href={downloadLink} download="output.docx">
                      Click here
                   </a>
                )}

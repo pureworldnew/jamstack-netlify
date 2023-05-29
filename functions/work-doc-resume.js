@@ -7,9 +7,11 @@ const path = require("path");
 
 /* export our lambda function as named "handler" export */
 exports.handler = async (event, context) => {
+   const data = JSON.parse(event.body);
+   console.log("Function `work-create` invoked", data);
    /* parse the string body into a usable JS object */
    const content = fs.readFileSync(
-      path.resolve(__dirname, "resume-template.docx"),
+      path.resolve(__dirname, "../resume-template.docx"),
       "binary"
    );
    const zip = new PizZip(content);
@@ -19,11 +21,7 @@ exports.handler = async (event, context) => {
    });
 
    // Render the document (Replace {first_name} by John, {last_name} by Doe, ...)
-   doc.render({
-      fullName: "John Doe",
-      address: "Bachelor of Science",
-      phone: "5 years of industry experience",
-   });
+   doc.render(data);
 
    const generatedDocBuffer = doc.getZip().generate({
       type: "nodebuffer",
