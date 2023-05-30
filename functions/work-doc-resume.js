@@ -14,10 +14,7 @@ exports.handler = async (event, context) => {
       path.resolve(__dirname, "../resume.docx")
    );
    /* parse the string body into a usable JS object */
-   const content = fs.readFileSync(
-      path.join(__dirname, "public", "resume.docx"),
-      "binary"
-   );
+   const content = fs.readFileSync("resume.docx", "binary");
    const zip = new PizZip(content);
    const doc = new Docxtemplater(zip, {
       paragraphLoop: true,
