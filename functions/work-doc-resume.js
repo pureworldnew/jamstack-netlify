@@ -8,10 +8,14 @@ const path = require("path");
 /* export our lambda function as named "handler" export */
 exports.handler = async (event, context) => {
    const data = JSON.parse(event.body);
-   console.log("Function `work-create` invoked i", data);
+   console.log(
+      "Function `work-create` invoked i",
+      data,
+      path.resolve(__dirname, "../resume.docx")
+   );
    /* parse the string body into a usable JS object */
    const content = fs.readFileSync(
-      path.resolve(__dirname, "resume.docx"),
+      path.resolve(__dirname, "../resume.docx"),
       "binary"
    );
    const zip = new PizZip(content);
