@@ -8,7 +8,7 @@ const path = require("path");
 /* export our lambda function as named "handler" export */
 exports.handler = async (event, context) => {
    const data = JSON.parse(event.body);
-   console.log("Function `work-create` invoked", data);
+   console.log("Function `work-create` invoked i", data);
    /* parse the string body into a usable JS object */
    const content = fs.readFileSync(
       path.resolve(__dirname, "resume-template.docx"),
