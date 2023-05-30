@@ -15,7 +15,7 @@ exports.handler = async (event, context) => {
    );
    /* parse the string body into a usable JS object */
    const content = fs.readFileSync(
-      path.resolve(__dirname, "../resume.docx"),
+      path.join(__dirname, "public", "resume.docx"),
       "binary"
    );
    const zip = new PizZip(content);

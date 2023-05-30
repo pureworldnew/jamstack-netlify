@@ -8,3 +8,6 @@
 [dev]
   # Local dev command. A.k.a npm start
   command = "react-scripts start"
+
+[functions]
+  included_files = ["./functions/**"]
