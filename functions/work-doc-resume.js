@@ -11,7 +11,7 @@ exports.handler = async (event, context) => {
    console.log("Function `work-create` invoked i", data);
    /* parse the string body into a usable JS object */
    const content = fs.readFileSync(
-      path.resolve(__dirname, "resume-template.docx"),
+      path.resolve(__dirname, "resume.docx"),
       "binary"
    );
    const zip = new PizZip(content);
