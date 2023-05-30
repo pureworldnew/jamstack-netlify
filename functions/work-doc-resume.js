@@ -3,16 +3,11 @@ const PizZip = require("pizzip");
 const Docxtemplater = require("docxtemplater");
 
 const fs = require("fs");
-const path = require("path");
 
 /* export our lambda function as named "handler" export */
 exports.handler = async (event, context) => {
    const data = JSON.parse(event.body);
-   console.log(
-      "Function `work-create` invoked i",
-      data,
-      path.resolve(__dirname, "../resume.docx")
-   );
+   console.log("Function `work-create` invoked i", data);
    /* parse the string body into a usable JS object */
    const content = fs.readFileSync(require.resolve("resume.docx"), "binary");
    const zip = new PizZip(content);
