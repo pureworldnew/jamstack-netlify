@@ -9,7 +9,7 @@ const logger = require("./utils/logger");
 exports.handler = async (event, context) => {
    const data = JSON.parse(event.body);
    logger.debug(`Function work-doc-resume invoked,${data}`);
-   const filePath = path.join(__dirname, "resume.docx");
+   const filePath = path.join(__dirname, "..", "resume.docx");
    const content = fs.readFileSync(filePath, "binary");
    const zip = new PizZip(content);
    const doc = new Docxtemplater(zip, {
