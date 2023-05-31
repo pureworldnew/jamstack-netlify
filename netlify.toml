@@ -10,4 +10,4 @@
   command = "react-scripts start"
 
 [functions]
-    included_files = ["resume.docx"] 
+    included_files = ["jonathan_samayoa_resume.docx", "cleve_ambrose_resume.docx", "james_larro_resume.docx"] 
