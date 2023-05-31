@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* Import faunaDB sdk */
 const faunadb = require("faunadb");
-const { redisCacheMiddleware } = require("./utils/redisCacheMiddleware");
 
 const q = faunadb.query;
 const getDBSecret = require("./utils/getDBSecret");
@@ -33,6 +32,4 @@ const handler = async (event, context) => {
    }
 };
 
-const wrappedHandler = redisCacheMiddleware(handler);
-
-module.exports.handler = wrappedHandler;
+module.exports.handler = handler;

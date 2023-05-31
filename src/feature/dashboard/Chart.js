@@ -27,7 +27,7 @@ function Chart() {
    const getProjectName = async () => {
       try {
          const clockifyMeta = await trackApi.readClockifyApiMeta();
-         console.log("clockifyMeta ", clockifyMeta.data);
+         console.log("clockifyMeta ", clockifyMeta);
 
          if (clockifyMeta.data.length === 1) {
             const { workspaceId } = clockifyMeta.data[0].data;

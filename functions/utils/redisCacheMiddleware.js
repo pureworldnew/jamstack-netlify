@@ -38,7 +38,4 @@ const redisCacheMiddleware = (handler) => async (event, context, callback) => {
    return callback(null, data);
 };
 
-module.exports = {
-   redisClient,
-   redisCacheMiddleware,
-};
+module.exports = redisCacheMiddleware;
