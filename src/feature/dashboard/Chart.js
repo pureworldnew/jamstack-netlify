@@ -48,6 +48,7 @@ function Chart() {
    const parseChartData = async (entryArray) => {
       const chartDataArr = new Array(7);
       const projectNameArr = await getProjectName();
+      console.log("projectNameArr is ", projectNameArr);
       setProjectName(projectNameArr);
       for (let i = 0; i < 7; i += 1) {
          const dateOfWeek = dayjs(dayjs().day(i)).format("YYYY-MM-DD");
@@ -55,7 +56,7 @@ function Chart() {
          chartDataArr[i] = {
             name: `${dateOfWeek} / ${dayjs(dateOfWeek).format("ddd")}`,
          };
-         projectNameArr.forEach((projName) => {
+         projectNameArr?.forEach((projName) => {
             chartDataArr[i][projName] = 0;
          });
 
@@ -73,7 +74,7 @@ function Chart() {
             }
          });
 
-         projectNameArr.forEach((proName) => {
+         projectNameArr?.forEach((proName) => {
             chartDataArr[i][proName] = chartDataArr[i][proName].toFixed(2);
          });
       }

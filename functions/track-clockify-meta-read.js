@@ -1,31 +1,38 @@
 /* eslint-disable no-unused-vars */
 /* Import faunaDB sdk */
 const faunadb = require("faunadb");
+const { redisCacheMiddleware } = require("./utils/redisCacheMiddleware");
 
 const q = faunadb.query;
 const getDBSecret = require("./utils/getDBSecret");
 
-exports.handler = (event, context) => {
-   console.log("Function `clockify-read-all` invoked");
+const handler = async (event, context) => {
+   console.log("Function `track-clockify-meta-read` invoked", event.path);
    /* configure faunaDB Client with our secret */
    const client = new faunadb.Client({
       secret: getDBSecret(),
       domain: "db.us.fauna.com",
       scheme: "https",
    });
-   return client
-      .query(
+   try {
+      const { data } = await client.query(
          q.Map(
             q.Paginate(q.Documents(q.Collection("clockify_meta_entries"))),
             q.Lambda((x) => q.Get(x))
          )
-      )
-      .then((response) => ({
+      );
+      return {
          statusCode: 200,
-         body: JSON.stringify(response.data),
-      }))
-      .catch((error) => ({
-         statusCode: 400,
-         body: JSON.stringify(error),
-      }));
+         body: JSON.stringify(data),
+      };
+   } catch (err) {
+      return {
+         statusCode: 500,
+         body: JSON.stringify("Something went wrong. Try again later.", err),
+      };
+   }
 };
+
+const wrappedHandler = redisCacheMiddleware(handler);
+
+module.exports.handler = wrappedHandler;

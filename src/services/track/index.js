@@ -14,8 +14,17 @@ const createClockifyApiMeta = (data) =>
 
 const readAll = () => axios.get("/.netlify/functions/track-read-all");
 
-const readClockifyApiMeta = () =>
-   axios.get("/.netlify/functions/track-clockify-meta-read");
+const readClockifyApiMeta = async () => {
+   const response = await axios.get(
+      "/.netlify/functions/track-clockify-meta-read"
+   );
+   console.log(
+      "JSON.parse(response.data.body)",
+      JSON.parse(response.data.body)
+   );
+   return { data: JSON.parse(response.data.body) };
+};
+
 const udpateClockifyApiMeta = (clockifyMetaId, data) =>
    axios.post(
       `/.netlify/functions/track-clockify-meta-update/${clockifyMetaId}`,

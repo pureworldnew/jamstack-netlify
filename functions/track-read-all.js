@@ -6,7 +6,7 @@ const q = faunadb.query;
 const getDBSecret = require("./utils/getDBSecret");
 
 exports.handler = (event, context) => {
-   console.log("Function `track-read-all` invoked", event);
+   console.log("Function `track-read-all` invoked");
    /* configure faunaDB Client with our secret */
    const client = new faunadb.Client({
       secret: getDBSecret(),
