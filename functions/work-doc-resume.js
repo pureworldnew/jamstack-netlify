@@ -1,15 +1,16 @@
 /* eslint-disable no-unused-vars */
 const PizZip = require("pizzip");
 const Docxtemplater = require("docxtemplater");
-
 const fs = require("fs");
+const path = require("path");
+const logger = require("./utils/logger");
 
 /* export our lambda function as named "handler" export */
 exports.handler = async (event, context) => {
    const data = JSON.parse(event.body);
-   console.log("Function `work-create` invoked i", data);
-   /* parse the string body into a usable JS object */
-   const content = fs.readFileSync(require.resolve("resume.docx"), "binary");
+   logger.debug(`Function work-doc-resume invoked,${data}`);
+   const filePath = path.join(__dirname, "resume.docx");
+   const content = fs.readFileSync(filePath, "binary");
    const zip = new PizZip(content);
    const doc = new Docxtemplater(zip, {
       paragraphLoop: true,
