@@ -19,15 +19,6 @@ const logger = winston.createLogger({
       new transports.Console({
          format: format.combine(format.colorize(), logFormat),
       }),
-      new transports.File({
-         filename: "logs/combined.log",
-         format: format.combine(
-            // Render in one line in your log file.
-            // If you use prettyPrint() here it will be really
-            // difficult to exploit your logs files afterwards.
-            format.json()
-         ),
-      }),
    ],
    exitOnError: false,
 });
