@@ -130,7 +130,6 @@ export default function ResumePrint() {
    const handleGenerateResume = async () => {
       try {
          const response = await workApi.createWordResume(result);
-         console.log("response", response);
          const blob = new Blob([response.data], {
             type: response.headers["content-type"],
          });
@@ -149,6 +148,9 @@ export default function ResumePrint() {
    if (resumeLoading) {
       return <div>...loading</div>;
    }
+   const outPutFile = result.fullName
+      ? `${result.fullName}resume.docx`
+      : "resume.docx";
 
    return (
       <Box>
@@ -175,7 +177,7 @@ export default function ResumePrint() {
                      Generate Word Resume
                   </Button>
                ) : (
-                  <a href={downloadLink} download="output.docx">
+                  <a href={downloadLink} download={outPutFile}>
                      Click here
                   </a>
                )}
