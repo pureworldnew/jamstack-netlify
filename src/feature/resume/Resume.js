@@ -99,7 +99,7 @@ export default function Resume() {
       dispatch(fetchResumeData(resumeEntries));
    };
 
-   const printResumePdf = () => {
+   const handlePrint = () => {
       if (!resumeLoading) {
          const parsedCoverLetter = watch("parsedCoverLetter", false);
          const parsedObjective = watch("parsedObjective", false);
@@ -422,8 +422,8 @@ export default function Resume() {
             <LoadingButton variant="contained" onClick={handleSubmit(onSubmit)}>
                Parse
             </LoadingButton>
-            <LoadingButton variant="contained" onClick={printResumePdf}>
-               Print
+            <LoadingButton variant="contained" onClick={handlePrint}>
+               Go on printing
             </LoadingButton>
          </Grid>
       </form>
