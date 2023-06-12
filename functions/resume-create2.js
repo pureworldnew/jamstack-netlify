@@ -45,14 +45,14 @@ exports.handler = async (event, context) => {
 
    if (prompt === "prompt1") {
       // 👇🏻 The job description prompt
-      const prompt1 = `I am writing a resume, my details are \n name: ${fullName} \n role: ${currentPosition} (${currentLength} years). \n I write in the technolegies: ${currentTechnologies}.\n I write for this job requirements: ${requiredJobResp}. \n Can you write a 100 words description for the top of the resume(first person writing)?`;
+      const prompt1 = `I am writing a resume, my details are \n name: ${fullName} \n role: ${currentPosition} (${currentLength} years). \n I write in the technolegies: ${currentTechnologies}.\n I write for this job requirements: ${requiredJobResp}. \n Can you write a 75 words description for the top of the resume(first person writing)?`;
       // const objective = await GPTFunction(prompt1);
       const objective = prompt1;
       chatgptData = { objective };
       console.log("prompt1", prompt1);
    } else if (prompt === "prompt2") {
       // 👇🏻 The job responsibilities prompt
-      const prompt2 = `I am writing a resume, my details are \n name: ${fullName} \n role: ${currentPosition} (${currentLength} years). \n I write in the technolegies: ${currentTechnologies}.\n I write for this job requirements: ${requiredJobResp}. \n Can you write 8 bullet points with metrics for a resume on what I am good at?`;
+      const prompt2 = `I am writing a resume, my details are \n name: ${fullName} \n role: ${currentPosition} (${currentLength} years). \n I write in the technolegies: ${currentTechnologies}.\n I write for this job requirements: ${requiredJobResp}. \n Can you write 5 bullet points with metrics for a resume on what I am good at?`;
       // const keypoints = await GPTFunction(prompt2);
       const keypoints = prompt2;
       chatgptData = { keypoints };
