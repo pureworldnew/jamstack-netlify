@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
    },
 });
 
-function WorkHistory({ workHistory, jobResponsibilities, keypoints }) {
+function WorkHistory({ workHistory, jobResponsibilities }) {
    return (
       <View style={styles.container}>
          <Title>Work History</Title>
@@ -78,9 +78,6 @@ function WorkHistory({ workHistory, jobResponsibilities, keypoints }) {
             {parse(removeLineBreakFirstLast(jobResponsibilities))}
          </Summary>
          <Title>JOB RESPONSIBILITIES</Title>
-         <Summary style={styles.detailContainer}>
-            {parse(removeLineBreakFirstLast(keypoints))}
-         </Summary>
       </View>
    );
 }

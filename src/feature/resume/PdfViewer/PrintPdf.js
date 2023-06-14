@@ -101,7 +101,6 @@ function Resume(props) {
       linkedin,
       workHistory,
       objective,
-      keypoints,
       collegeName,
       collegeDegree,
       collegeMajor,
@@ -135,7 +134,6 @@ function Resume(props) {
                <WorkHistory
                   workHistory={workHistory}
                   jobResponsibilities={jobResponsibilities}
-                  keypoints={keypoints}
                />
             </View>
          </View>

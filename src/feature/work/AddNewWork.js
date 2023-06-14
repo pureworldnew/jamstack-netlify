@@ -72,7 +72,6 @@ export default function AddNewWork({
          setValue("position", editData.position);
          setValue("currentTechnologies", editData.currentTechnologies);
          setValue("parsedObjective", editData.parsedObjective);
-         setValue("parsedKeypoints", editData.parsedKeypoints);
          setValue("parsedJobResp", editData.parsedJobResp);
          setValue("parsedSkillsSection", editData.parsedSkillsSection);
       } else {
@@ -336,13 +335,6 @@ export default function AddNewWork({
                                  name="parsedObjective"
                                  control={control}
                                  label="Objective"
-                              />
-                           </Grid>
-                           <Grid item xs={12}>
-                              <FormInputTextarea
-                                 name="parsedKeypoints"
-                                 control={control}
-                                 label="Keypoints"
                               />
                            </Grid>
                            <Grid item xs={12}>

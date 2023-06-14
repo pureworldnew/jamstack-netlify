@@ -61,7 +61,7 @@ exports.handler = async (event, context) => {
       // 👇🏻 The job achievements prompt
       const prompt3 = `I am writing a resume, my details are \n name: ${fullName} \n role: ${currentPosition} (${currentLength} years).\n During my years I worked at ${
          workArray.length
-      } companies. ${remainderText()} \n Can you write me 50 words achievements with metrics based on these job responsibilites: ${requiredJobResp} for each company seperated in numbers of my succession in the company (in first person)?`;
+      } companies. ${remainderText()} \n Can you write me achievements with metrics based on these job responsibilites: ${requiredJobResp} for each company seperated in numbers of my succession in the company (in first person)?`;
       console.log("prompt3", prompt3);
       // const jobResponsibilities = await GPTFunction(prompt3);
       const jobResponsibilities = prompt3;

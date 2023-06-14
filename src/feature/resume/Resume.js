@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/no-array-index-key */
 import * as React from "react";
@@ -57,7 +58,6 @@ export default function Resume() {
       setValue("account", myConsts.ACCOUNT_OPTIONS[0].value);
       setValue("parsedCoverLetter", resumeData.coverLetter);
       setValue("parsedObjective", resumeData.objective);
-      setValue("parsedKeypoints", resumeData.keypoints);
       setValue("parsedJobResp", resumeData.jobResponsibilities);
       setValue("parsedSkillsSection", resumeData.skillsSection);
    }, [resumeData]);
@@ -103,8 +103,11 @@ export default function Resume() {
       if (!resumeLoading) {
          const parsedCoverLetter = watch("parsedCoverLetter", false);
          const parsedObjective = watch("parsedObjective", false);
-         const parsedKeypoints = watch("parsedKeypoints", false);
          const parsedJobResp = watch("parsedJobResp", false);
+         console.log("parsedJobResp is", parsedJobResp);
+         const re = /^At\s(\w|.)*:$/gm;
+         const splitedWorkHistory = parsedJobResp.split(re);
+
          const parsedSkillsSection = watch("parsedSkillsSection", false);
          const requiredJobResp = watch("requiredJobResp", false);
          const companyProfile = watch("companyProfile", false);
@@ -112,11 +115,15 @@ export default function Resume() {
             state: {
                coverLetter: parsedCoverLetter,
                objective: parsedObjective,
-               keypoints: parsedKeypoints,
                jobResponsibilities: parsedJobResp,
                skillsSection: parsedSkillsSection,
                jobDescription: requiredJobResp,
                companyProfile,
+               companyWorkHistory: [
+                  splitedWorkHistory[2],
+                  splitedWorkHistory[4],
+                  splitedWorkHistory[6],
+               ],
             },
          });
       }
@@ -285,8 +292,6 @@ export default function Resume() {
                   </Typography>
                </Grid>
             </Grid>
-            <Divider>Prompt Section</Divider>
-
             <Divider>Required Company & Job Responsibilities</Divider>
             <Grid container spacing={2} alignItems="center">
                <Grid item md={12} xs={12}>
@@ -328,6 +333,7 @@ export default function Resume() {
                         required
                      />
                   </Grid>
+
                   <Grid item xs={6} md={4}>
                      <TextField
                         name="position"
@@ -386,13 +392,6 @@ export default function Resume() {
                            name="parsedObjective"
                            control={control}
                            label="Objective"
-                        />
-                     </Grid>
-                     <Grid item md={12} xs={12}>
-                        <FormInputTextarea
-                           name="parsedKeypoints"
-                           control={control}
-                           label="Keypoints"
                         />
                      </Grid>
                      <Grid item md={12} xs={12}>

@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 /* eslint-disable react/no-danger */
 /* eslint-disable import/no-extraneous-dependencies */
 import * as React from "react";
@@ -48,6 +49,10 @@ export default function ResumePrint() {
    const location = useLocation();
    const storeResult = useSelector((state) => state.resume.resumeData);
    const result = { ...storeResult, ...location.state };
+   result.workHistory.map(
+      (e, index) =>
+         (e.companyWorkHistory = `${location.state.companyWorkHistory[index]}`)
+   );
    console.log("location.state", location.state);
    console.log("real result", result);
    const resumeLoading = useSelector((state) => state.resume.resumeLoading);
@@ -67,7 +72,6 @@ export default function ResumePrint() {
          setValue("jobBoard", myConsts.JOB_BOARD_OPTIONS[0].value);
          setValue("parsedObjective", result.objective);
          setValue("parsedCoverLetter", result.coverLetter);
-         setValue("parsedKeypoints", result.keypoints);
          setValue("parsedJobResp", result.jobResponsibilities);
          setValue("parsedSkillsSection", result.skillsSection);
          setValue("jobDescription", result.jobDescription);
@@ -346,13 +350,6 @@ export default function ResumePrint() {
                            name="parsedObjective"
                            control={control}
                            label="Objective"
-                        />
-                     </Grid>
-                     <Grid item xs={12}>
-                        <FormInputTextarea
-                           name="parsedKeypoints"
-                           control={control}
-                           label="Keypoints"
                         />
                      </Grid>
                      <Grid item xs={12}>

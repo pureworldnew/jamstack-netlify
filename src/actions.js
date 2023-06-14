@@ -35,7 +35,6 @@ export const fetchResumeData = (resumeEntries) => (dispatch) => {
       collegeMajor,
       collegePeriod,
       parsedJobResp,
-      parsedKeypoints,
       parsedObjective,
       ...resumeParamObj
    } = resumeEntries;
