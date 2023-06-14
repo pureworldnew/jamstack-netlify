@@ -77,6 +77,8 @@ export default function ResumePrint() {
          setValue("jobDescription", result.jobDescription);
          setValue("companyProfile", result.companyProfile);
          setValue("currentTechnologies", result.currentTechnologies);
+         setValue("directCompany", result.directCompany);
+         setValue("position", result.position);
       });
    }, [setValue]);
 

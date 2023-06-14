@@ -5,6 +5,8 @@ import * as React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
@@ -13,6 +15,8 @@ import { LoadingButton } from "@mui/lab";
 import { useForm } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
+import debounce from "lodash.debounce";
+import workApi from "services/work";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -26,6 +30,8 @@ import * as myConsts from "consts";
 import { BackDrop } from "components/backdrop";
 
 const validationSchema = Yup.object().shape({
+   directCompany: Yup.string().required("Direct Company is required"),
+   position: Yup.string().required("Position is required"),
    email: Yup.string().required("Email is required"),
    currentPosition: Yup.string().required("Position is required"),
    currentLength: Yup.string().required("How long is required"),
@@ -35,6 +41,12 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function Resume() {
+   const [checked, setChecked] = React.useState(false);
+   const [duplicated, setDuplicated] = React.useState([]);
+
+   const handleCoverLetterChange = (event) => {
+      setChecked(event.target.checked);
+   };
    const navigate = useNavigate();
    const resumeData = useSelector((state) => state.resume.resumeData);
    const resumeError = useSelector((state) => state.resume.resumeError);
@@ -104,11 +116,12 @@ export default function Resume() {
          const parsedCoverLetter = watch("parsedCoverLetter", false);
          const parsedObjective = watch("parsedObjective", false);
          const parsedJobResp = watch("parsedJobResp", false);
-         console.log("parsedJobResp is", parsedJobResp);
          const re = /^At\s(\w|.)*:$/gm;
          const splitedWorkHistory = parsedJobResp.split(re);
 
          const parsedSkillsSection = watch("parsedSkillsSection", false);
+         const directCompany = watch("directCompany", false);
+         const position = watch("position", false);
          const requiredJobResp = watch("requiredJobResp", false);
          const companyProfile = watch("companyProfile", false);
          navigate("/resume-print", {
@@ -119,6 +132,8 @@ export default function Resume() {
                skillsSection: parsedSkillsSection,
                jobDescription: requiredJobResp,
                companyProfile,
+               directCompany,
+               position,
                companyWorkHistory: [
                   splitedWorkHistory[2],
                   splitedWorkHistory[4],
@@ -145,6 +160,20 @@ export default function Resume() {
       parseResumeFromApi(formData);
    };
 
+   const checkCompanyDup = async (val, name) => {
+      const res = await workApi.checkDupCompany(val, name);
+      setDuplicated(res);
+   };
+
+   const checkCompanyDuplicates = (name) => {
+      checkCompanyDup(name);
+   };
+
+   const debouncedResults = React.useMemo(
+      () => debounce(checkCompanyDuplicates, 300),
+      []
+   );
+
    return (
       <form>
          <Box
@@ -155,7 +184,98 @@ export default function Resume() {
             noValidate
             autoComplete="off"
          >
-            <Divider>Company Information</Divider>
+            <Divider>Required Company & Job Responsibilities</Divider>
+            <Grid container spacing={2} alignItems="center">
+               <Grid item md={6} xs={6}>
+                  <FormInputText
+                     changeHandler={debouncedResults}
+                     name="directCompany"
+                     control={control}
+                     label="Direct Company"
+                     required
+                     error={!!errors.directCompany}
+                  />
+                  <Typography variant="inherit" color="textSecondary">
+                     {errors.directCompany?.message}
+                  </Typography>
+               </Grid>
+
+               <Grid item md={6} xs={6}>
+                  <FormInputText
+                     name="position"
+                     control={control}
+                     label="Position"
+                     required
+                     error={!!errors.position}
+                  />
+                  <Typography variant="inherit" color="textSecondary">
+                     {errors.position?.message}
+                  </Typography>
+               </Grid>
+            </Grid>
+            <Grid>
+               {duplicated
+                  ? duplicated.map((each) => (
+                       <Grid container spacing={2} key={each.ref["@ref"].id}>
+                          <Grid item xs>
+                             {each.data.account}
+                          </Grid>
+                          <Grid item xs>
+                             {each.data.directCompany}
+                          </Grid>
+                          <Grid item xs>
+                             {each.data.jobBoard}
+                          </Grid>
+                          <Grid item xs>
+                             {each.data.position}
+                          </Grid>
+                          <Grid item xs>
+                             {each.data.status}
+                          </Grid>
+                       </Grid>
+                    ))
+                  : ""}
+            </Grid>
+            <Grid container spacing={2} alignItems="center">
+               <Grid item md={12} xs={12}>
+                  <FormInputText
+                     name="currentTechnologies"
+                     control={control}
+                     label="Technologies used"
+                     required
+                     error={!!errors.currentTechnologies}
+                  />
+                  <Typography variant="inherit" color="textSecondary">
+                     {errors.currentTechnologies?.message}
+                  </Typography>
+               </Grid>
+            </Grid>
+            <Grid container spacing={2} alignItems="center">
+               <Grid item md={12} xs={12}>
+                  <FormInputTextarea
+                     name="companyProfile"
+                     control={control}
+                     label="Company Profile"
+                     required
+                     error={!!errors.companyProfile}
+                  />
+                  <Typography variant="inherit" color="textSecondary">
+                     {errors.companyProfile?.message}
+                  </Typography>
+               </Grid>
+               <Grid item md={12} xs={12}>
+                  <FormInputTextarea
+                     name="requiredJobResp"
+                     control={control}
+                     label="Required Responsibilites"
+                     required
+                     error={!!errors.requiredJobResp}
+                  />
+                  <Typography variant="inherit" color="textSecondary">
+                     {errors.requiredJobResp?.message}
+                  </Typography>
+               </Grid>
+            </Grid>
             <Grid container spacing={2} alignItems="center">
                <Grid item xs={6} md={2}>
                   <FormInputDropdown
@@ -168,6 +288,7 @@ export default function Resume() {
                      onChangeCustom={handleAccountChange}
                   />
                </Grid>
+
                <Grid item xs={6} md={2}>
                   <FormInputText
                      name="email"
@@ -278,47 +399,7 @@ export default function Resume() {
                   </Typography>
                </Grid>
             </Grid>
-            <Grid container spacing={2} alignItems="center">
-               <Grid item md={12} xs={12}>
-                  <FormInputText
-                     name="currentTechnologies"
-                     control={control}
-                     label="Technologies used"
-                     required
-                     error={!!errors.currentTechnologies}
-                  />
-                  <Typography variant="inherit" color="textSecondary">
-                     {errors.currentTechnologies?.message}
-                  </Typography>
-               </Grid>
-            </Grid>
-            <Divider>Required Company & Job Responsibilities</Divider>
-            <Grid container spacing={2} alignItems="center">
-               <Grid item md={12} xs={12}>
-                  <FormInputTextarea
-                     name="companyProfile"
-                     control={control}
-                     label="Company Profile"
-                     required
-                     error={!!errors.companyProfile}
-                  />
-                  <Typography variant="inherit" color="textSecondary">
-                     {errors.companyProfile?.message}
-                  </Typography>
-               </Grid>
-               <Grid item md={12} xs={12}>
-                  <FormInputTextarea
-                     name="requiredJobResp"
-                     control={control}
-                     label="Required Responsibilites"
-                     required
-                     error={!!errors.requiredJobResp}
-                  />
-                  <Typography variant="inherit" color="textSecondary">
-                     {errors.requiredJobResp?.message}
-                  </Typography>
-               </Grid>
-            </Grid>
+
             <Divider>Work history</Divider>
             {companyInfo.map((company, index) => (
                <Grid container spacing={2} alignItems="center" key={index}>
@@ -382,13 +463,6 @@ export default function Resume() {
                   <Grid container spacing={2} alignItems="center">
                      <Grid item md={12} xs={12}>
                         <FormInputTextarea
-                           name="parsedCoverLetter"
-                           control={control}
-                           label="Cover Letter"
-                        />
-                     </Grid>
-                     <Grid item md={12} xs={12}>
-                        <FormInputTextarea
                            name="parsedObjective"
                            control={control}
                            label="Objective"
@@ -407,6 +481,27 @@ export default function Resume() {
                            control={control}
                            label="Skills Section"
                         />
+                     </Grid>
+                     <Grid item md={12} xs={12}>
+                        <FormControlLabel
+                           control={
+                              <Checkbox
+                                 checked={checked}
+                                 onChange={handleCoverLetterChange}
+                                 inputProps={{ "aria-label": "controlled" }}
+                              />
+                           }
+                           label="Cover Letter"
+                        />
+                        {checked ? (
+                           <FormInputTextarea
+                              name="parsedCoverLetter"
+                              control={control}
+                              label="Cover Letter"
+                           />
+                        ) : (
+                           ""
+                        )}
                      </Grid>
                   </Grid>
                )
