@@ -44,7 +44,7 @@ export const ACCOUNT_DETAILS = {
       collegeName: "Texas State University",
       collegeDegree: "Bachelor of Science",
       collegeMajor: "Computer Science",
-      collegePeriod: "2010-2014",
+      collegePeriod: "2009-2013",
       companyInfo: [
          {
             name: "With-meetwithanyone.com",
@@ -59,7 +59,7 @@ export const ACCOUNT_DETAILS = {
          {
             name: "Allsocial",
             position: "Web Developer",
-            fromWhenTo: "09.2014 ~ 09.2016",
+            fromWhenTo: "09.2013 ~ 09.2016",
          },
       ],
    },
@@ -73,7 +73,7 @@ export const ACCOUNT_DETAILS = {
       collegeName: "New College of Florida",
       collegeDegree: "Bachelor of Science",
       collegeMajor: "Computer Science",
-      collegePeriod: "2010-2014",
+      collegePeriod: "2009-2013",
       companyInfo: [
          {
             name: "Mend",
@@ -88,7 +88,7 @@ export const ACCOUNT_DETAILS = {
          {
             name: "Ganic",
             position: "Web Developer",
-            fromWhenTo: "04.2014 ~ 08.2016",
+            fromWhenTo: "10.2013 ~ 08.2016",
          },
       ],
    },
@@ -102,7 +102,7 @@ export const ACCOUNT_DETAILS = {
       collegeName: "Bowie State University",
       collegeDegree: "Bachelor of Science",
       collegeMajor: "Computer Science",
-      collegePeriod: "2010-2014",
+      collegePeriod: "2009-2013",
       companyInfo: [
          {
             name: "UCLA, Los Angeles, California.",
@@ -117,7 +117,7 @@ export const ACCOUNT_DETAILS = {
          {
             name: "Formless, Portsmouth, NH.",
             position: "Web Developer",
-            fromWhenTo: "04.2014 ~ 02.2016",
+            fromWhenTo: "11.2013 ~ 02.2016",
          },
       ],
    },
