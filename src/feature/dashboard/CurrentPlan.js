@@ -53,7 +53,6 @@ function CurrentPlan() {
       setLoading(true);
       getData();
    }, []);
-
    useEffect(() => {
       getData();
       setRefreshData(false);

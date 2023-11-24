@@ -76,6 +76,8 @@ export default function AddNewPlan({
          planTags: "",
          planResult: "",
          planStatus: "",
+         createDate: new Date(),
+         finishedDate: new Date(),
       });
       handleClose();
    };
@@ -95,6 +97,7 @@ export default function AddNewPlan({
    const onSubmit = (data) => {
       if (Object.keys(planEditData).length !== 0) {
          handleSubmitEdit(planEditData.id, data);
+         handleCloseDialog();
       } else {
          debouncedClick(data);
       }
