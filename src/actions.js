@@ -45,16 +45,16 @@ export const fetchResumeData = (resumeEntries) => (dispatch) => {
    const prompt1Promise = ResumeApi.create(resumeParam);
    promiseArr.push(prompt1Promise);
    resumeParam.prompt = "prompt2";
-   const prompt2Promise = ResumeApi.create1(resumeParam);
+   const prompt2Promise = ResumeApi.create(resumeParam);
    promiseArr.push(prompt2Promise);
    resumeParam.prompt = "prompt3";
-   const prompt3Promise = ResumeApi.create2(resumeParam);
+   const prompt3Promise = ResumeApi.create(resumeParam);
    promiseArr.push(prompt3Promise);
    resumeParam.prompt = "prompt4";
-   const prompt4Promise = ResumeApi.create1(resumeParam);
+   const prompt4Promise = ResumeApi.create(resumeParam);
    promiseArr.push(prompt4Promise);
    resumeParam.prompt = "prompt5";
-   const prompt5Promise = ResumeApi.create2(resumeParam);
+   const prompt5Promise = ResumeApi.create(resumeParam);
    promiseArr.push(prompt5Promise);
    const successfulResponses = [];
    function getFulfilled(promises) {
