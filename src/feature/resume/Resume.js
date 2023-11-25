@@ -25,6 +25,7 @@ import {
    FormInputDropdown,
    FormInputTextarea,
 } from "components/form";
+import { ParsedResume } from "components/parsed-resume";
 import { fetchResumeData } from "actions";
 import * as myConsts from "consts";
 import { BackDrop } from "components/backdrop";
@@ -36,7 +37,7 @@ const validationSchema = Yup.object().shape({
    currentPosition: Yup.string().required("Position is required"),
    currentLength: Yup.string().required("How long is required"),
    currentTechnologies: Yup.string().required("Technology used is required"),
-   requiredJobResp: Yup.string().required("Job Requirements is required"),
+   jobDescription: Yup.string().required("Job Requirements is required"),
    companyProfile: Yup.string().required("Company Description is required"),
 });
 
@@ -69,9 +70,6 @@ export default function Resume() {
    React.useEffect(() => {
       setValue("account", myConsts.ACCOUNT_OPTIONS[0].value);
       setValue("parsedCoverLetter", resumeData.coverLetter);
-      setValue("parsedObjective", resumeData.objective);
-      setValue("parsedJobResp", resumeData.jobResponsibilities);
-      setValue("parsedSkillsSection", resumeData.skillsSection);
    }, [resumeData]);
    const [companyInfo, setCompanyInfo] = React.useState(
       myConsts.ACCOUNT_DETAILS.jonathan_samayoa.companyInfo
@@ -122,7 +120,7 @@ export default function Resume() {
          const parsedSkillsSection = watch("parsedSkillsSection", false);
          const directCompany = watch("directCompany", false);
          const position = watch("position", false);
-         const requiredJobResp = watch("requiredJobResp", false);
+         const jobDescription = watch("jobDescription", false);
          const companyProfile = watch("companyProfile", false);
          navigate("/resume-print", {
             state: {
@@ -130,7 +128,7 @@ export default function Resume() {
                objective: parsedObjective,
                jobResponsibilities: parsedJobResp,
                skillsSection: parsedSkillsSection,
-               jobDescription: requiredJobResp,
+               jobDescription,
                companyProfile,
                directCompany,
                position,
@@ -265,14 +263,14 @@ export default function Resume() {
                </Grid>
                <Grid item md={12} xs={12}>
                   <FormInputTextarea
-                     name="requiredJobResp"
+                     name="jobDescription"
                      control={control}
                      label="Required Responsibilites"
                      required
-                     error={!!errors.requiredJobResp}
+                     error={!!errors.jobDescription}
                   />
                   <Typography variant="inherit" color="textSecondary">
-                     {errors.requiredJobResp?.message}
+                     {errors.jobDescription?.message}
                   </Typography>
                </Grid>
             </Grid>
@@ -460,28 +458,12 @@ export default function Resume() {
                <BackDrop open={resumeLoading} />
             ) : (
                Object.keys(resumeData).length !== 0 && (
-                  <Grid container spacing={2} alignItems="center">
-                     <Grid item md={12} xs={12}>
-                        <FormInputTextarea
-                           name="parsedObjective"
-                           control={control}
-                           label="Objective"
-                        />
-                     </Grid>
-                     <Grid item md={12} xs={12}>
-                        <FormInputTextarea
-                           name="parsedJobResp"
-                           control={control}
-                           label="Job Responsibilities"
-                        />
-                     </Grid>
-                     <Grid item md={12} xs={12}>
-                        <FormInputTextarea
-                           name="parsedSkillsSection"
-                           control={control}
-                           label="Skills Section"
-                        />
-                     </Grid>
+                  <Grid>
+                     <ParsedResume
+                        control={control}
+                        setValue={setValue}
+                        result={resumeData}
+                     />
                      <Grid item md={12} xs={12}>
                         <FormControlLabel
                            control={

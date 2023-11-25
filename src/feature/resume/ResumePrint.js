@@ -16,7 +16,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import debounce from "lodash.debounce";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { AccordionComponent } from "components/accordion";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 
 import * as myConsts from "consts";
 import {
@@ -30,6 +31,8 @@ import { toast } from "react-toastify";
 import * as Yup from "yup";
 import workApi from "services/work";
 import { Button } from "@mui/material";
+import { ParsedResume } from "components/parsed-resume";
+import { JobDetails } from "components/job-details";
 import ErrorPage from "./ErrorPage";
 import PrintPdf from "./PdfViewer/PrintPdf";
 
@@ -39,6 +42,10 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function ResumePrint() {
+   const [checked, setChecked] = React.useState(false);
+   const handleCoverLetterChange = (event) => {
+      setChecked(event.target.checked);
+   };
    const navigate = useNavigate();
 
    const [duplicated, setDuplicated] = React.useState([]);
@@ -49,7 +56,7 @@ export default function ResumePrint() {
    const location = useLocation();
    const storeResult = useSelector((state) => state.resume.resumeData);
    const result = { ...storeResult, ...location.state };
-   result.workHistory.map(
+   result.workHistory?.map(
       (e, index) =>
          (e.companyWorkHistory = `${location.state.companyWorkHistory[index]}`)
    );
@@ -70,13 +77,7 @@ export default function ResumePrint() {
          setValue("status", myConsts.STATUS_OPTIONS[0].value);
          setValue("account", myConsts.ACCOUNT_OPTIONS[0].value);
          setValue("jobBoard", myConsts.JOB_BOARD_OPTIONS[0].value);
-         setValue("parsedObjective", result.objective);
          setValue("parsedCoverLetter", result.coverLetter);
-         setValue("parsedJobResp", result.jobResponsibilities);
-         setValue("parsedSkillsSection", result.skillsSection);
-         setValue("jobDescription", result.jobDescription);
-         setValue("companyProfile", result.companyProfile);
-         setValue("currentTechnologies", result.currentTechnologies);
          setValue("directCompany", result.directCompany);
          setValue("position", result.position);
       });
@@ -311,65 +312,40 @@ export default function ResumePrint() {
                      <FormInputDatePicker name="createDate" control={control} />
                   </Grid>
                </Grid>
-               <AccordionComponent summary="Job Details">
-                  <Grid container spacing={2} alignItems="center">
-                     <Grid item md={12} xs={12}>
-                        <FormInputText
-                           name="currentTechnologies"
-                           control={control}
-                           label="Technologies used"
-                        />
-                     </Grid>
-                     <Grid item xs={12}>
-                        <FormInputTextarea
-                           name="companyProfile"
-                           control={control}
-                           label="Company Description"
-                        />
-                     </Grid>
-                     <Grid item xs={12}>
-                        <FormInputTextarea
-                           name="jobDescription"
-                           control={control}
-                           label="Job Description"
-                        />
-                     </Grid>
-                  </Grid>
-               </AccordionComponent>
+               <JobDetails
+                  control={control}
+                  setValue={setValue}
+                  result={result}
+               />
                <Divider />
 
-               <AccordionComponent summary="Parsed Resume Data">
-                  <Grid container spacing={2} alignItems="center">
-                     <Grid item xs={12}>
-                        <FormInputTextarea
-                           name="parsedCoverLetter"
-                           control={control}
-                           label="Cover Letter"
+               <ParsedResume
+                  control={control}
+                  setValue={setValue}
+                  result={result}
+               />
+
+               <Grid item md={12} xs={12}>
+                  <FormControlLabel
+                     control={
+                        <Checkbox
+                           checked={checked}
+                           onChange={handleCoverLetterChange}
+                           inputProps={{ "aria-label": "controlled" }}
                         />
-                     </Grid>
-                     <Grid item xs={12}>
-                        <FormInputTextarea
-                           name="parsedObjective"
-                           control={control}
-                           label="Objective"
-                        />
-                     </Grid>
-                     <Grid item xs={12}>
-                        <FormInputTextarea
-                           name="parsedJobResp"
-                           control={control}
-                           label="Job Responsibilities"
-                        />
-                     </Grid>
-                     <Grid item xs={12}>
-                        <FormInputTextarea
-                           name="parsedSkillsSection"
-                           control={control}
-                           label="Skills Section"
-                        />
-                     </Grid>
-                  </Grid>
-               </AccordionComponent>
+                     }
+                     label="Cover Letter"
+                  />
+                  {checked ? (
+                     <FormInputTextarea
+                        name="parsedCoverLetter"
+                        control={control}
+                        label="Cover Letter"
+                     />
+                  ) : (
+                     ""
+                  )}
+               </Grid>
             </Box>
          </form>
       </Box>
