@@ -61,6 +61,7 @@ export default function Resume() {
       handleSubmit,
       watch,
       setValue,
+      getValues,
       formState: { errors },
    } = useForm({
       resolver: yupResolver(validationSchema),
@@ -172,6 +173,19 @@ export default function Resume() {
       []
    );
 
+   const getMatchRate = async () => {
+      console.log(
+         "get match rating",
+         getValues("jobDescription"),
+         getValues("resumeContent")
+      );
+      const res = await workApi.checkMatchRating({
+         jobDescription: getValues("jobDescription"),
+         resumeContent: getValues("resumeContent"),
+      });
+      console.log("res from match function", res);
+   };
+
    return (
       <form>
          <Box
@@ -265,7 +279,7 @@ export default function Resume() {
                   <FormInputTextarea
                      name="jobDescription"
                      control={control}
-                     label="Required Responsibilites"
+                     label="Job Description"
                      required
                      error={!!errors.jobDescription}
                   />
@@ -273,6 +287,19 @@ export default function Resume() {
                      {errors.jobDescription?.message}
                   </Typography>
                </Grid>
+               <Grid item md={12} xs={12}>
+                  <FormInputTextarea
+                     name="resumeContent"
+                     control={control}
+                     label="Resume Content"
+                     required
+                     error={!!errors.resumeContent}
+                  />
+                  <Typography variant="inherit" color="textSecondary">
+                     {errors.resumeContent?.message}
+                  </Typography>
+               </Grid>
+               <Button onClick={getMatchRate}>Get Match Rate</Button>
             </Grid>
             <Grid container spacing={2} alignItems="center">
                <Grid item xs={6} md={2}>

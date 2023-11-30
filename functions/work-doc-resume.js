@@ -8,7 +8,7 @@ const logger = require("./utils/logger");
 /* export our lambda function as named "handler" export */
 exports.handler = async (event, context) => {
    const data = JSON.parse(event.body);
-   logger.debug(`Function work-doc-resume invoked,${data}`);
+   logger.debug(`Function work-doc-resume invoked, ${JSON.stringify(data)}`);
 
    const filePath = path.join(__dirname, "..", `${data.account}_resume.docx`);
    const content = fs.readFileSync(filePath, "binary");
