@@ -29,6 +29,7 @@ import { ParsedResume } from "components/parsed-resume";
 import { fetchResumeData } from "actions";
 import * as myConsts from "consts";
 import { BackDrop } from "components/backdrop";
+import Highlighter from "react-highlight-words";
 
 const validationSchema = Yup.object().shape({
    directCompany: Yup.string().required("Direct Company is required"),
@@ -44,6 +45,8 @@ const validationSchema = Yup.object().shape({
 export default function Resume() {
    const [checked, setChecked] = React.useState(false);
    const [duplicated, setDuplicated] = React.useState([]);
+   const [matchKeywords, setMatchKeywords] = React.useState([]);
+   const [matchRate, setMatchRate] = React.useState("");
 
    const handleCoverLetterChange = (event) => {
       setChecked(event.target.checked);
@@ -183,6 +186,8 @@ export default function Resume() {
          jobDescription: getValues("jobDescription"),
          resumeContent: getValues("resumeContent"),
       });
+      setMatchRate(res.matchPercentage);
+      setMatchKeywords(res.matchedKeywords);
       console.log("res from match function", res);
    };
 
@@ -295,11 +300,24 @@ export default function Resume() {
                      required
                      error={!!errors.resumeContent}
                   />
+                  <Typography textAlign="center">
+                     {matchRate ? `This is match rating: ${matchRate}` : ""}
+                  </Typography>
+                  <Highlighter
+                     highlightClassName="YourHighlightClass"
+                     searchWords={matchKeywords}
+                     autoEscape
+                     textToHighlight={
+                        getValues("jobDescription")
+                           ? getValues("jobDescription")
+                           : ""
+                     }
+                  />
                   <Typography variant="inherit" color="textSecondary">
                      {errors.resumeContent?.message}
                   </Typography>
+                  <Button onClick={getMatchRate}>Get Match Rate</Button>
                </Grid>
-               <Button onClick={getMatchRate}>Get Match Rate</Button>
             </Grid>
             <Grid container spacing={2} alignItems="center">
                <Grid item xs={6} md={2}>
