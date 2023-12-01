@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@analytics/google-analytics": "^0.3.1",
+    "@ckeditor/ckeditor5-build-classic": "^40.1.0",
+    "@ckeditor/ckeditor5-react": "^6.2.0",
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
     "@hookform/resolvers": "^2.9.7",
@@ -25,6 +27,7 @@
     "dayjs": "^1.11.6",
     "docxtemplater": "^3.37.9",
     "dotenv": "^16.0.1",
+    "draft-js": "^0.11.7",
     "faunadb": "^2.14.2",
     "html-docx-js": "^0.3.1",
     "html-react-parser": "^3.0.16",

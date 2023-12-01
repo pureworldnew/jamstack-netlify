@@ -30,6 +30,7 @@ import { fetchResumeData } from "actions";
 import * as myConsts from "consts";
 import { BackDrop } from "components/backdrop";
 import Highlighter from "react-highlight-words";
+import { RichEditor } from "components/rich-editor";
 
 const validationSchema = Yup.object().shape({
    directCompany: Yup.string().required("Direct Company is required"),
@@ -47,6 +48,7 @@ export default function Resume() {
    const [duplicated, setDuplicated] = React.useState([]);
    const [matchKeywords, setMatchKeywords] = React.useState([]);
    const [matchRate, setMatchRate] = React.useState("");
+   const [resumeContent, setResumeContent] = React.useState("");
 
    const handleCoverLetterChange = (event) => {
       setChecked(event.target.checked);
@@ -176,19 +178,30 @@ export default function Resume() {
       []
    );
 
+   function highlightWords(line, word) {
+      const regex = new RegExp(`(${word})`, "gi");
+      return line.replace(regex, "<b>$1</b>");
+   }
+
    const getMatchRate = async () => {
-      console.log(
-         "get match rating",
-         getValues("jobDescription"),
-         getValues("resumeContent")
-      );
+      console.log("get match rating", resumeContent);
+      const originalContent = resumeContent;
       const res = await workApi.checkMatchRating({
          jobDescription: getValues("jobDescription"),
-         resumeContent: getValues("resumeContent"),
+         resumeContent,
       });
       setMatchRate(res.matchPercentage);
       setMatchKeywords(res.matchedKeywords);
+      const pattern = new RegExp(res.matchedKeywords.join("|"), "gi");
+
+      // Replace the matched keywords with a span having a class for styling
+      const highlightedText = originalContent.replace(
+         pattern,
+         (match) => `<strong>${match}</strong>`
+      );
+      setResumeContent(highlightedText);
       console.log("res from match function", res);
+      console.log("highlightedText", highlightedText);
    };
 
    return (
@@ -293,13 +306,13 @@ export default function Resume() {
                   </Typography>
                </Grid>
                <Grid item md={12} xs={12}>
-                  <FormInputTextarea
-                     name="resumeContent"
-                     control={control}
-                     label="Resume Content"
-                     required
-                     error={!!errors.resumeContent}
+                  <RichEditor
+                     setResumeContent={setResumeContent}
+                     resumeContent={resumeContent}
                   />
+                  <Typography variant="inherit" color="textSecondary">
+                     {errors.resumeContent?.message}
+                  </Typography>
                   <Typography textAlign="center">
                      {matchRate ? `This is match rating: ${matchRate}` : ""}
                   </Typography>
@@ -313,9 +326,6 @@ export default function Resume() {
                            : ""
                      }
                   />
-                  <Typography variant="inherit" color="textSecondary">
-                     {errors.resumeContent?.message}
-                  </Typography>
                   <Button onClick={getMatchRate}>Get Match Rate</Button>
                </Grid>
             </Grid>
