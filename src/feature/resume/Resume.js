@@ -29,7 +29,6 @@ import { ParsedResume } from "components/parsed-resume";
 import { fetchResumeData } from "actions";
 import * as myConsts from "consts";
 import { BackDrop } from "components/backdrop";
-import Highlighter from "react-highlight-words";
 import { RichEditor } from "components/rich-editor";
 
 const validationSchema = Yup.object().shape({
@@ -38,7 +37,6 @@ const validationSchema = Yup.object().shape({
    email: Yup.string().required("Email is required"),
    currentPosition: Yup.string().required("Position is required"),
    currentLength: Yup.string().required("How long is required"),
-   jobDescription: Yup.string().required("Job Requirements is required"),
 });
 
 export default function Resume() {
@@ -149,6 +147,7 @@ export default function Resume() {
    const onSubmit = (data) => {
       const formData = {
          ...data,
+         jobDescription,
          fullName:
             data.account !== undefined
                ? myConsts.ACCOUNT_OPTIONS.find(
@@ -175,11 +174,6 @@ export default function Resume() {
       () => debounce(checkCompanyDuplicates, 300),
       []
    );
-
-   function highlightWords(line, word) {
-      const regex = new RegExp(`(${word})`, "gi");
-      return line.replace(regex, "<b>$1</b>");
-   }
 
    const getMatchRate = async () => {
       const originalContent = resumeContent;
@@ -288,16 +282,6 @@ export default function Resume() {
                   <Typography textAlign="center">
                      {matchRate ? `This is match rating: ${matchRate}` : ""}
                   </Typography>
-                  <Highlighter
-                     highlightClassName="YourHighlightClass"
-                     searchWords={matchKeywords}
-                     autoEscape
-                     textToHighlight={
-                        getValues("jobDescription")
-                           ? getValues("jobDescription")
-                           : ""
-                     }
-                  />
                   <Button onClick={getMatchRate}>Get Match Rate</Button>
                </Grid>
             </Grid>
