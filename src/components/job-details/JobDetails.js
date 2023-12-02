@@ -1,41 +1,16 @@
 import * as React from "react";
 import Grid from "@mui/material/Grid";
-import { FormInputText, FormInputTextarea } from "components/form";
+import { RichEditor } from "components/rich-editor";
 import { AccordionComponent } from "components/accordion";
 
-function JobDetails({ control, setValue, result }) {
-   React.useEffect(() => {
-      setTimeout(() => {
-         setValue("parsedObjective", result.objective);
-         setValue("parsedJobResp", result.jobResponsibilities);
-         setValue("parsedSkillsSection", result.skillsSection);
-      });
-   }, [setValue]);
-
+function JobDetails({ jobDescription, setJobDescription }) {
    return (
-      <AccordionComponent summary="Job Details">
+      <AccordionComponent summary="Job Description">
          <Grid container spacing={2} alignItems="center">
-            <Grid item md={12} xs={12}>
-               <FormInputText
-                  name="currentTechnologies"
-                  control={control}
-                  label="Technologies used"
-               />
-            </Grid>
-            <Grid item xs={12}>
-               <FormInputTextarea
-                  name="companyProfile"
-                  control={control}
-                  label="Company Description"
-               />
-            </Grid>
-            <Grid item xs={12}>
-               <FormInputTextarea
-                  name="jobDescription"
-                  control={control}
-                  label="Job Description"
-               />
-            </Grid>
+            <RichEditor
+               setContent={setJobDescription}
+               content={jobDescription}
+            />
          </Grid>
       </AccordionComponent>
    );

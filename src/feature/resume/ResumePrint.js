@@ -60,6 +60,9 @@ export default function ResumePrint() {
       (e, index) =>
          (e.companyWorkHistory = `${location.state.companyWorkHistory[index]}`)
    );
+   const [jobDescription, setJobDescription] = React.useState(
+      result.jobDescription
+   );
    console.log("location.state", location.state);
    console.log("real result", result);
    const resumeLoading = useSelector((state) => state.resume.resumeLoading);
@@ -312,11 +315,15 @@ export default function ResumePrint() {
                      <FormInputDatePicker name="createDate" control={control} />
                   </Grid>
                </Grid>
-               <JobDetails
-                  control={control}
-                  setValue={setValue}
-                  result={result}
-               />
+               <Grid container spacing={2} alignItems="center">
+                  <Grid item md={12} xs={12}>
+                     <JobDetails
+                        jobDescription={jobDescription}
+                        setJobDescription={setJobDescription}
+                     />
+                  </Grid>
+               </Grid>
+
                <Divider />
 
                <ParsedResume
