@@ -38,9 +38,7 @@ const validationSchema = Yup.object().shape({
    email: Yup.string().required("Email is required"),
    currentPosition: Yup.string().required("Position is required"),
    currentLength: Yup.string().required("How long is required"),
-   currentTechnologies: Yup.string().required("Technology used is required"),
    jobDescription: Yup.string().required("Job Requirements is required"),
-   companyProfile: Yup.string().required("Company Description is required"),
 });
 
 export default function Resume() {
@@ -49,6 +47,7 @@ export default function Resume() {
    const [matchKeywords, setMatchKeywords] = React.useState([]);
    const [matchRate, setMatchRate] = React.useState("");
    const [resumeContent, setResumeContent] = React.useState("");
+   const [jobDescription, setJobDescription] = React.useState("");
 
    const handleCoverLetterChange = (event) => {
       setChecked(event.target.checked);
@@ -126,7 +125,6 @@ export default function Resume() {
          const parsedSkillsSection = watch("parsedSkillsSection", false);
          const directCompany = watch("directCompany", false);
          const position = watch("position", false);
-         const jobDescription = watch("jobDescription", false);
          const companyProfile = watch("companyProfile", false);
          navigate("/resume-print", {
             state: {
@@ -184,10 +182,9 @@ export default function Resume() {
    }
 
    const getMatchRate = async () => {
-      console.log("get match rating", resumeContent);
       const originalContent = resumeContent;
       const res = await workApi.checkMatchRating({
-         jobDescription: getValues("jobDescription"),
+         jobDescription,
          resumeContent,
       });
       setMatchRate(res.matchPercentage);
@@ -200,8 +197,6 @@ export default function Resume() {
          (match) => `<strong>${match}</strong>`
       );
       setResumeContent(highlightedText);
-      console.log("res from match function", res);
-      console.log("highlightedText", highlightedText);
    };
 
    return (
@@ -268,47 +263,24 @@ export default function Resume() {
             </Grid>
             <Grid container spacing={2} alignItems="center">
                <Grid item md={12} xs={12}>
-                  <FormInputText
-                     name="currentTechnologies"
-                     control={control}
-                     label="Technologies used"
-                     required
-                     error={!!errors.currentTechnologies}
-                  />
                   <Typography variant="inherit" color="textSecondary">
-                     {errors.currentTechnologies?.message}
+                     Job Description
                   </Typography>
-               </Grid>
-            </Grid>
-            <Grid container spacing={2} alignItems="center">
-               <Grid item md={12} xs={12}>
-                  <FormInputTextarea
-                     name="companyProfile"
-                     control={control}
-                     label="Company Profile"
-                     required
-                     error={!!errors.companyProfile}
-                  />
-                  <Typography variant="inherit" color="textSecondary">
-                     {errors.companyProfile?.message}
-                  </Typography>
-               </Grid>
-               <Grid item md={12} xs={12}>
-                  <FormInputTextarea
-                     name="jobDescription"
-                     control={control}
-                     label="Job Description"
-                     required
-                     error={!!errors.jobDescription}
+                  <RichEditor
+                     setContent={setJobDescription}
+                     content={jobDescription}
                   />
                   <Typography variant="inherit" color="textSecondary">
                      {errors.jobDescription?.message}
                   </Typography>
                </Grid>
                <Grid item md={12} xs={12}>
+                  <Typography variant="inherit" color="textSecondary">
+                     Resume
+                  </Typography>
                   <RichEditor
-                     setResumeContent={setResumeContent}
-                     resumeContent={resumeContent}
+                     setContent={setResumeContent}
+                     content={resumeContent}
                   />
                   <Typography variant="inherit" color="textSecondary">
                      {errors.resumeContent?.message}

@@ -1,15 +1,19 @@
 import * as React from "react";
-import Toolbar from "@mui/material/Toolbar";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Dialog from "@mui/material/Dialog";
-import AppBar from "@mui/material/AppBar";
-import IconButton from "@mui/material/IconButton";
+
 import CloseIcon from "@mui/icons-material/Close";
-import Slide from "@mui/material/Slide";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import Divider from "@mui/material/Divider";
+
+import {
+   Toolbar,
+   Button,
+   Typography,
+   Dialog,
+   AppBar as MuiAppBar,
+   IconButton,
+   Slide,
+   Box,
+   Grid,
+   Divider,
+} from "@mui/material";
 import { toast, ToastContainer } from "react-toastify";
 import { LoadingButton } from "@mui/lab";
 import { useForm } from "react-hook-form";
@@ -19,6 +23,7 @@ import debounce from "lodash.debounce";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { AccordionComponent } from "components/accordion";
+import { RichEditor } from "components/rich-editor";
 
 import * as myConsts from "consts";
 import {
@@ -59,6 +64,8 @@ export default function AddNewWork({
       resolver: yupResolver(validationSchema),
    });
 
+   const [jobDescription, setJobDescription] = React.useState("");
+
    React.useEffect(() => {
       if (Object.keys(editData).length !== 0) {
          console.log("edit Data is here", editData);
@@ -67,10 +74,7 @@ export default function AddNewWork({
          setValue("account", editData.account);
          setValue("jobBoard", editData.jobBoard);
          setValue("createDate", new Date(editData.createDate));
-         setValue("jobDescription", editData.jobDescription);
-         setValue("companyProfile", editData.companyProfile);
          setValue("position", editData.position);
-         setValue("currentTechnologies", editData.currentTechnologies);
          setValue("parsedObjective", editData.parsedObjective);
          setValue("parsedJobResp", editData.parsedJobResp);
          setValue("parsedSkillsSection", editData.parsedSkillsSection);
@@ -80,8 +84,6 @@ export default function AddNewWork({
          setValue("account", myConsts.ACCOUNT_OPTIONS[0].value);
          setValue("jobBoard", myConsts.JOB_BOARD_OPTIONS[0].value);
          setValue("createDate", new Date());
-         setValue("jobDescription", "");
-         setValue("companyProfile", "");
          setValue("position", "");
       }
    }, [editData]);
@@ -92,8 +94,6 @@ export default function AddNewWork({
          status: myConsts.STATUS_OPTIONS[0].value,
          account: myConsts.ACCOUNT_OPTIONS[0].value,
          jobBoard: myConsts.JOB_BOARD_OPTIONS[0].value,
-         jobDescription: "",
-         companyProfile: "",
          position: "",
       });
       handleClose();
@@ -133,7 +133,7 @@ export default function AddNewWork({
       if (Object.keys(editData).length !== 0) {
          handleSubmitEdit({ id: editData.id, data });
       } else {
-         createNewWorkEntry(data);
+         createNewWorkEntry({ ...data, jobDescription });
       }
    };
 
@@ -165,7 +165,7 @@ export default function AddNewWork({
             TransitionComponent={Transition}
          >
             <form>
-               <AppBar sx={{ position: "relative" }}>
+               <MuiAppBar sx={{ position: "relative" }}>
                   <Toolbar>
                      <IconButton
                         edge="start"
@@ -190,7 +190,7 @@ export default function AddNewWork({
                         Save
                      </LoadingButton>
                   </Toolbar>
-               </AppBar>
+               </MuiAppBar>
                <Box
                   sx={{
                      "& .MuiTextField-root": { m: 1 },
@@ -303,25 +303,13 @@ export default function AddNewWork({
                   </Grid>
                   <AccordionComponent summary="Job Details">
                      <Grid container spacing={2} alignItems="center">
-                        <Grid item md={12} xs={12}>
-                           <FormInputText
-                              name="currentTechnologies"
-                              control={control}
-                              label="Technologies used"
-                           />
-                        </Grid>
                         <Grid item xs={12}>
-                           <FormInputTextarea
-                              name="companyProfile"
-                              control={control}
-                              label="Company Description"
-                           />
-                        </Grid>
-                        <Grid item xs={12}>
-                           <FormInputTextarea
-                              name="jobDescription"
-                              control={control}
-                              label="Job Description"
+                           <Typography variant="inherit" color="textSecondary">
+                              Job Description
+                           </Typography>
+                           <RichEditor
+                              setContent={setJobDescription}
+                              content={jobDescription}
                            />
                         </Grid>
                      </Grid>
