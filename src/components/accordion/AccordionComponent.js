@@ -6,15 +6,18 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-function AccordionComponent({ summary, children, expand }) {
+function AccordionComponent({ summary, children, expand, setExpand }) {
+   const toggleAccordion = () => {
+      setExpand((prev) => !prev);
+   };
    return (
       <Accordion expanded={expand}>
          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
+            expandIcon={<ExpandMoreIcon onClick={toggleAccordion} />}
             aria-controls="panel1a-content"
             id="panel1a-header"
          >
-            <Typography>{summary}</Typography>
+            <Typography onClick={toggleAccordion}>{summary}</Typography>
          </AccordionSummary>
          <AccordionDetails>{children}</AccordionDetails>
       </Accordion>

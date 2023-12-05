@@ -53,6 +53,7 @@ export default function AddNewWork({
    editData,
    duplicated,
 }) {
+   console.log("editData is", editData);
    const queryClient = useQueryClient();
    const {
       control,
@@ -65,7 +66,13 @@ export default function AddNewWork({
    });
 
    const [jobDescription, setJobDescription] = React.useState("");
-
+   const [expand, setExpand] = React.useState(
+      jobDescription !== "" && Object.keys(editData).length !== 0
+   );
+   // React.useEffect(() => {
+   //    setExpand(jobDescription !== "" && Object.keys(editData).length !== 0);
+   // }, [jobDescription, editData]);
+   console.log("jobDescription is", jobDescription);
    React.useEffect(() => {
       if (Object.keys(editData).length !== 0) {
          console.log("edit Data is here", editData);
@@ -304,7 +311,8 @@ export default function AddNewWork({
                   </Grid>
                   <AccordionComponent
                      summary="Job Description"
-                     expand={!!jobDescription}
+                     expand={expand}
+                     setExpand={setExpand}
                   >
                      <Grid container spacing={2} alignItems="center">
                         <Grid item xs={12}>
