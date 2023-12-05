@@ -75,6 +75,7 @@ export default function AddNewWork({
          setValue("jobBoard", editData.jobBoard);
          setValue("createDate", new Date(editData.createDate));
          setValue("position", editData.position);
+         setJobDescription(editData.jobDescription);
       } else {
          setValue("directCompany", "");
          setValue("status", myConsts.STATUS_OPTIONS[0].value);
@@ -82,6 +83,7 @@ export default function AddNewWork({
          setValue("jobBoard", myConsts.JOB_BOARD_OPTIONS[0].value);
          setValue("createDate", new Date());
          setValue("position", "");
+         setJobDescription("");
       }
    }, [editData]);
 
@@ -125,12 +127,14 @@ export default function AddNewWork({
       }
    );
 
-   const onSubmit = (data) => {
+   const onSubmit = (param) => {
+      const data = { ...param, jobDescription };
       console.log("submit data", data);
+
       if (Object.keys(editData).length !== 0) {
          handleSubmitEdit({ id: editData.id, data });
       } else {
-         createNewWorkEntry({ ...data, jobDescription });
+         createNewWorkEntry(data);
       }
    };
 
@@ -298,7 +302,10 @@ export default function AddNewWork({
                         />
                      </Grid>
                   </Grid>
-                  <AccordionComponent summary="Job Details">
+                  <AccordionComponent
+                     summary="Job Description"
+                     expand={!!jobDescription}
+                  >
                      <Grid container spacing={2} alignItems="center">
                         <Grid item xs={12}>
                            <RichEditor

@@ -12,16 +12,18 @@ exports.handler = (event, context) => {
       domain: "db.us.fauna.com",
       scheme: "https",
    });
+   const id = getId(event.path);
    const data = JSON.parse(event.body);
+   console.log(
+      `Function work-update invoked. Data Passed: ${JSON.stringify(
+         data
+      )}, id: ${id}`
+   );
    if (!Object.prototype.hasOwnProperty.call(data, "createDate")) {
       data.createDate = new Date().toISOString();
    } else {
       data.createDate = new Date(data.createDate).toISOString();
    }
-   const id = getId(event.path);
-   console.log(
-      `Function work-update invoked. update id:, ${data.createDate} ${id}`
-   );
    return client
       .query(q.Update(q.Ref(`classes/work_entries/${id}`), { data }))
       .then((response) => ({ statusCode: 200, body: JSON.stringify(response) }))

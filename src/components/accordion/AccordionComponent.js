@@ -6,9 +6,9 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-function AccordionComponent({ summary, children }) {
+function AccordionComponent({ summary, children, expand }) {
    return (
-      <Accordion>
+      <Accordion expanded={expand}>
          <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"

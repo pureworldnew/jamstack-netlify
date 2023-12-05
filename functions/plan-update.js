@@ -14,7 +14,11 @@ exports.handler = (event, context) => {
    });
    const data = JSON.parse(event.body);
    const id = getId(event.path);
-   console.log(`Function 'plan-update' invoked. update id: ${id}`);
+   console.log(
+      `Function 'plan-update' invoked. update id: ${id}, data: ${JSON.stringify(
+         data
+      )}`
+   );
    return client
       .query(q.Update(q.Ref(`classes/plan_entries/${id}`), { data }))
       .then((response) => ({
