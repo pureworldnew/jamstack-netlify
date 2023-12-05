@@ -32,7 +32,8 @@ import * as Yup from "yup";
 import workApi from "services/work";
 import { Button } from "@mui/material";
 import { ParsedResume } from "components/parsed-resume";
-import { JobDetails } from "components/job-details";
+import { RichEditor } from "components/rich-editor";
+
 import ErrorPage from "./ErrorPage";
 import PrintPdf from "./PdfViewer/PrintPdf";
 
@@ -61,7 +62,7 @@ export default function ResumePrint() {
          (e.companyWorkHistory = `${location.state.companyWorkHistory[index]}`)
    );
    const [jobDescription, setJobDescription] = React.useState(
-      result.jobDescription
+      result && result.jobDescription ? result.jobDescription : ""
    );
    console.log("location.state", location.state);
    console.log("real result", result);
@@ -317,9 +318,12 @@ export default function ResumePrint() {
                </Grid>
                <Grid container spacing={2} alignItems="center">
                   <Grid item md={12} xs={12}>
-                     <JobDetails
-                        jobDescription={jobDescription}
-                        setJobDescription={setJobDescription}
+                     <Typography variant="inherit" color="textSecondary">
+                        Job Description
+                     </Typography>
+                     <RichEditor
+                        setContent={setJobDescription}
+                        content={jobDescription}
                      />
                   </Grid>
                </Grid>

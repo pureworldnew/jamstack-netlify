@@ -181,6 +181,7 @@ export default function Resume() {
          jobDescription,
          resumeContent,
       });
+      console.log("res from matchedRate api", res);
       setMatchRate(res.matchPercentage);
       setMatchKeywords(res.matchedKeywords);
       const pattern = new RegExp(res.matchedKeywords.join("|"), "gi");
@@ -190,7 +191,7 @@ export default function Resume() {
          pattern,
          (match) => `<strong>${match}</strong>`
       );
-      setResumeContent(highlightedText);
+      // setResumeContent(highlightedText);
    };
 
    return (
@@ -279,7 +280,7 @@ export default function Resume() {
                   <Typography variant="inherit" color="textSecondary">
                      {errors.resumeContent?.message}
                   </Typography>
-                  <Typography textAlign="center">
+                  <Typography textAlign="center" color="textSecondary">
                      {matchRate ? `This is match rating: ${matchRate}` : ""}
                   </Typography>
                   <Button onClick={getMatchRate}>Get Match Rate</Button>

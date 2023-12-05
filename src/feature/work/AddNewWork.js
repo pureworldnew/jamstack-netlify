@@ -75,9 +75,6 @@ export default function AddNewWork({
          setValue("jobBoard", editData.jobBoard);
          setValue("createDate", new Date(editData.createDate));
          setValue("position", editData.position);
-         setValue("parsedObjective", editData.parsedObjective);
-         setValue("parsedJobResp", editData.parsedJobResp);
-         setValue("parsedSkillsSection", editData.parsedSkillsSection);
       } else {
          setValue("directCompany", "");
          setValue("status", myConsts.STATUS_OPTIONS[0].value);
@@ -304,9 +301,6 @@ export default function AddNewWork({
                   <AccordionComponent summary="Job Details">
                      <Grid container spacing={2} alignItems="center">
                         <Grid item xs={12}>
-                           <Typography variant="inherit" color="textSecondary">
-                              Job Description
-                           </Typography>
                            <RichEditor
                               setContent={setJobDescription}
                               content={jobDescription}
@@ -315,33 +309,6 @@ export default function AddNewWork({
                      </Grid>
                   </AccordionComponent>
                   <Divider />
-                  {Object.keys(editData).length !== 0 && (
-                     <AccordionComponent summary="Parsed Resume Data">
-                        <Grid container spacing={2} alignItems="center">
-                           <Grid item xs={12}>
-                              <FormInputTextarea
-                                 name="parsedObjective"
-                                 control={control}
-                                 label="Objective"
-                              />
-                           </Grid>
-                           <Grid item xs={12}>
-                              <FormInputTextarea
-                                 name="parsedJobResp"
-                                 control={control}
-                                 label="Job Responsibilities"
-                              />
-                           </Grid>
-                           <Grid item xs={12}>
-                              <FormInputTextarea
-                                 name="parsedSkillsSection"
-                                 control={control}
-                                 label="Skills Section"
-                              />
-                           </Grid>
-                        </Grid>
-                     </AccordionComponent>
-                  )}
                </Box>
             </form>
          </Dialog>
