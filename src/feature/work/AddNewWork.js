@@ -53,7 +53,6 @@ export default function AddNewWork({
    editData,
    duplicated,
 }) {
-   console.log("editData is", editData);
    const queryClient = useQueryClient();
    const {
       control,
@@ -69,13 +68,8 @@ export default function AddNewWork({
    const [expand, setExpand] = React.useState(
       jobDescription !== "" && Object.keys(editData).length !== 0
    );
-   // React.useEffect(() => {
-   //    setExpand(jobDescription !== "" && Object.keys(editData).length !== 0);
-   // }, [jobDescription, editData]);
-   console.log("jobDescription is", jobDescription);
    React.useEffect(() => {
       if (Object.keys(editData).length !== 0) {
-         console.log("edit Data is here", editData);
          setValue("directCompany", editData.directCompany);
          setValue("status", editData.status);
          setValue("account", editData.account);
@@ -136,7 +130,6 @@ export default function AddNewWork({
 
    const onSubmit = (param) => {
       const data = { ...param, jobDescription };
-      console.log("submit data", data);
 
       if (Object.keys(editData).length !== 0) {
          handleSubmitEdit({ id: editData.id, data });
