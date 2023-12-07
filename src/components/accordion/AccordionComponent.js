@@ -11,9 +11,9 @@ function AccordionComponent({ summary, children, expand, setExpand }) {
       setExpand((prev) => !prev);
    };
    return (
-      <Accordion expanded={expand} onClick={toggleAccordion}>
+      <Accordion expanded={expand}>
          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
+            expandIcon={<ExpandMoreIcon onClick={toggleAccordion} />}
             aria-controls="panel1a-content"
             id="panel1a-header"
          >
