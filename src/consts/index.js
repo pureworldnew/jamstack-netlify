@@ -135,15 +135,6 @@ export const JOB_BOARD_OPTIONS = [
 
 export const WORK_COLUMNS = [
    {
-      Header: "Company Information",
-      columns: [
-         {
-            Header: "Direct Company",
-            accessor: "directCompany",
-         },
-      ],
-   },
-   {
       Header: "Job Details",
       columns: [
          {
@@ -153,12 +144,17 @@ export const WORK_COLUMNS = [
       ],
    },
    {
-      Header: "Application Information",
+      Header: "Company Information",
       columns: [
          {
-            Header: "Status",
-            accessor: "status",
+            Header: "Direct Company",
+            accessor: "directCompany",
          },
+      ],
+   },
+   {
+      Header: "Application Information",
+      columns: [
          {
             Header: "Account",
             accessor: "account",
@@ -166,6 +162,10 @@ export const WORK_COLUMNS = [
          {
             Header: "Job Board",
             accessor: "jobBoard",
+         },
+         {
+            Header: "Status",
+            accessor: "status",
          },
          {
             Header: "Date",
