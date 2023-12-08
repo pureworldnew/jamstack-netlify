@@ -200,7 +200,6 @@ export default function AddNewWork({
                   noValidate
                   autoComplete="off"
                >
-                  <Divider>Company Information</Divider>
                   <Grid container spacing={2} alignItems="center">
                      <Grid item md={3} xs={6}>
                         <FormInputText
@@ -299,7 +298,7 @@ export default function AddNewWork({
                         </Grid>
                      </Grid>
                   </AccordionComponent>
-                  <Divider>Application Information</Divider>
+
                   <Grid container spacing={2} alignItems="center">
                      <Grid item xs={6} md={2}>
                         <FormInputDatePicker

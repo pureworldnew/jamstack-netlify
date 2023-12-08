@@ -56,7 +56,6 @@ export default function AddNewPlan({
       if (Object.keys(editData).length !== 0) {
          setValue("planTitle", editData.planTitle);
          setValue("planDescription", editData.planDescription);
-         setValue("planTags", editData.planTags);
          setValue("planResult", editData.planResult);
          setValue("planStatus", editData.planStatus);
          setValue("createDate", new Date(editData.createDate));
@@ -73,7 +72,6 @@ export default function AddNewPlan({
       reset({
          planTitle: "",
          planDescription: "",
-         planTags: "",
          planResult: "",
          planStatus: "",
          createDate: new Date(),
@@ -170,14 +168,7 @@ export default function AddNewPlan({
                            label="Description"
                         />
                      </Grid>
-                     <Grid item md={3} xs={6}>
-                        <FormInputText
-                           name="planTags"
-                           control={control}
-                           label="Tags"
-                        />
-                     </Grid>
-                     <Grid item md={3} xs={6}>
+                     <Grid item md={6} xs={6}>
                         <FormInputText
                            name="planResult"
                            control={control}

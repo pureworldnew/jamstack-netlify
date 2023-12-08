@@ -8,6 +8,11 @@ import CurrentPlan from "./CurrentPlan";
 export default function Dashboard() {
    return (
       <Grid container spacing={3}>
+         <Grid item xs={12}>
+            <Paper sx={{ p: 2 }}>
+               <CurrentPlan />
+            </Paper>
+         </Grid>
          {/* Chart */}
          <Grid item xs={12} md={8} lg={9}>
             <Paper
@@ -37,11 +42,7 @@ export default function Dashboard() {
          {/* Recent Track */}
          {/* Recent Work */}
          {/* Recent Plan */}
-         <Grid item xs={12}>
-            <Paper sx={{ p: 2 }}>
-               <CurrentPlan />
-            </Paper>
-         </Grid>
+
          {/* Recent Cash */}
          {/* Recent Stress */}
       </Grid>

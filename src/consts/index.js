@@ -295,10 +295,6 @@ export const PLAN_COLUMNS = [
             accessor: "planDescription",
          },
          {
-            Header: "Tags",
-            accessor: "planTags",
-         },
-         {
             Header: "Result",
             accessor: "planResult",
          },
@@ -315,7 +311,7 @@ export const PLAN_COLUMNS = [
                   return <LabelChip label="Not Finished" color="warning" />;
                }
                if (value === "holding") {
-                  return <LabelChip label="Holiding" color="error" />;
+                  return <LabelChip label="Holding" color="error" />;
                }
                if (value === "finished") {
                   return <LabelChip label="Finished" color="success" />;
