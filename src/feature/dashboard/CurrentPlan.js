@@ -15,7 +15,7 @@ import DeleteModal from "components/delete-modal/DeleteModal";
 
 import * as myConsts from "consts";
 import { toast, ToastContainer } from "react-toastify";
-import Title from "./Title";
+import { Title } from "components/title";
 
 function CurrentPlan() {
    const [entry, setEntry] = useState([]);
@@ -109,7 +109,10 @@ function CurrentPlan() {
 
    return (
       <>
-         <Title>Today Plan</Title>
+         <Title>
+            {`Today Plan : Yesterday is history, Tomorrow is a mystery, but today is a
+            gift, so it's called the present.`.toUpperCase()}
+         </Title>
          <CssBaseline />
          <ToastContainer />
          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>

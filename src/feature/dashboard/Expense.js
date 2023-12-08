@@ -14,7 +14,7 @@ import Grid from "@mui/material/Grid";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import Title from "./Title";
+import { Title } from "components/title";
 
 const validationSchema = Yup.object().shape({
    planTitle: Yup.string().required("Title is required"),

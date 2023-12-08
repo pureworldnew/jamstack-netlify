@@ -14,6 +14,7 @@ import workApi from "services/work";
 
 import DeleteModal from "components/delete-modal/DeleteModal";
 import * as myConsts from "consts";
+import { Title } from "components/title";
 import AddNewWork from "./AddNewWork";
 
 function Work() {
@@ -159,40 +160,49 @@ function Work() {
          {isLoading ? (
             <BackDrop open={isLoading} />
          ) : (
-            <ReactTable
-               columns={[
-                  ...columns,
-                  {
-                     Header: "Delete",
-                     id: "delete",
-                     accessor: (str) => "delete",
-                     Cell: (row) => (
-                        <Chip
-                           label="Delete"
-                           onClick={() => handleClickDelete(row.row.original)}
-                           onDelete={() => handleClickDelete(row.row.original)}
-                        />
-                     ),
-                     disableFilters: true,
-                     disableSortBy: true,
-                  },
-                  {
-                     Header: "Edit",
-                     id: "edit",
-                     accessor: (str) => "Edit",
-                     Cell: (row) => (
-                        <Chip
-                           label="Edit"
-                           onClick={() => handleClickEdit(row.row.original)}
-                        />
-                     ),
-                     disableFilters: true,
-                     disableSortBy: true,
-                  },
-               ]}
-               data={queryResults}
-               mode="workEntry"
-            />
+            <>
+               <Title>
+                  {`Anything is possible when you have inner peace.`.toUpperCase()}
+               </Title>
+               <ReactTable
+                  columns={[
+                     ...columns,
+                     {
+                        Header: "Delete",
+                        id: "delete",
+                        accessor: (str) => "delete",
+                        Cell: (row) => (
+                           <Chip
+                              label="Delete"
+                              onClick={() =>
+                                 handleClickDelete(row.row.original)
+                              }
+                              onDelete={() =>
+                                 handleClickDelete(row.row.original)
+                              }
+                           />
+                        ),
+                        disableFilters: true,
+                        disableSortBy: true,
+                     },
+                     {
+                        Header: "Edit",
+                        id: "edit",
+                        accessor: (str) => "Edit",
+                        Cell: (row) => (
+                           <Chip
+                              label="Edit"
+                              onClick={() => handleClickEdit(row.row.original)}
+                           />
+                        ),
+                        disableFilters: true,
+                        disableSortBy: true,
+                     },
+                  ]}
+                  data={queryResults}
+                  mode="workEntry"
+               />
+            </>
          )}
       </>
    );
