@@ -10,6 +10,7 @@ const breadcrumbNameMap = {
    "/work": "Work",
    "/plan": "Plan",
    "/cash": "Cash",
+   "/resume": "Resume",
    "/stress": "Stress",
 };
 

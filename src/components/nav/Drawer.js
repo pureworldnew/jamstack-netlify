@@ -8,6 +8,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Toolbar from "@mui/material/Toolbar";
 import MainListItems from "components/nav/MainListItems";
 import SecondaryListItems from "components/nav/SecondaryListItems";
+import innerPeace from "assets/innerpeace.png";
 import * as myConsts from "consts";
 
 const CustomDrawer = styled(MuiDrawer, {
@@ -47,6 +48,9 @@ function Drawer({ variant, open, toggleDrawer }) {
                px: [1],
             }}
          >
+            <div className="img-container">
+               <img src={innerPeace} alt="" width="100%" />
+            </div>
             <IconButton onClick={toggleDrawer}>
                <ChevronLeftIcon />
             </IconButton>
