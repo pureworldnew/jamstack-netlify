@@ -2,6 +2,10 @@ import React from "react";
 import { LabelChip } from "components/label-chip/LabelChip";
 
 export const DRAWER_WIDTH = 240;
+export const TOAST_CONFIG = {
+   position: "top-center",
+   autoClose: 500,
+};
 export const STATUS_OPTIONS = [
    { value: "job_apply_waiting", label: "Job Apply & Waiting" },
    { value: "rtr_confirmation", label: "RTR Confirmation" },

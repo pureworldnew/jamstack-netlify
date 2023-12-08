@@ -14,7 +14,7 @@ import {
    Grid,
    Divider,
 } from "@mui/material";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { LoadingButton } from "@mui/lab";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -103,12 +103,7 @@ export default function AddNewWork({
       {
          onSuccess: () => {
             queryClient.invalidateQueries(["get_work_entries"]);
-            toast.success("Work created successfully", {
-               autoClose: 1000,
-               closeOnClick: true,
-               pauseOnHover: false,
-               pauseOnFocusLoss: false,
-            });
+            toast.success("Work created successfully", myConsts.TOAST_CONFIG);
             handleCloseDialog();
          },
          onError: (error) => {
@@ -158,7 +153,7 @@ export default function AddNewWork({
          <Button variant="outlined" onClick={handleClickOpen}>
             Create New
          </Button>
-         <ToastContainer />
+
          <Dialog
             fullScreen
             open={open}

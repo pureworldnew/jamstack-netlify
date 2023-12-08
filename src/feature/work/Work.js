@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import { ReactTable } from "components/table";
 import { BackDrop } from "components/backdrop";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 import workApi from "services/work";
 
@@ -57,7 +57,10 @@ function Work() {
    const { mutate: deleteWorkEntry } = useMutation((id) => workApi.delete(id), {
       onSuccess(data) {
          queryClient.invalidateQueries("get_work_entries");
-         toast.success("Work Entries deleted successfully!");
+         toast.success(
+            "Work Entries deleted successfully!",
+            myConsts.TOAST_CONFIG
+         );
          setPopup({ show: false, rowData: null });
       },
       onError(error) {
@@ -85,7 +88,10 @@ function Work() {
       {
          onSuccess: () => {
             queryClient.invalidateQueries(["get_work_entries"]);
-            toast.success("Work Entry updated successfully");
+            toast.success(
+               "Work Entry updated successfully",
+               myConsts.TOAST_CONFIG
+            );
             handleClose();
          },
          onError: (error) => {
@@ -127,6 +133,7 @@ function Work() {
    return (
       <>
          <CssBaseline />
+         <ToastContainer />
          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             <AddNewWork
                duplicated={duplicated}

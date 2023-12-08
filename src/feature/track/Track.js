@@ -16,7 +16,7 @@ import * as myConsts from "consts";
 import trackApi from "services/track";
 import DeleteModal from "components/delete-modal/DeleteModal";
 import useClockify from "hooks/useClockify";
-import CustomizedSnackbars from "components/customized-snackbars/CustomizedSnackbars";
+import { toast, ToastContainer } from "react-toastify";
 import * as dayjs from "dayjs";
 
 import { formatDate } from "utils/formatDate";
@@ -24,8 +24,6 @@ import { formatDate } from "utils/formatDate";
 export default function Track() {
    const [entry, setEntry] = useState([]);
    const [loading, setLoading] = useState(false);
-   const [openToast, setOpenToast] = useState(false);
-   const [toastText, setToastText] = useState("");
    const [refreshData, setRefreshData] = useState(false);
    const [popup, setPopup] = useState({
       show: false, // initial values set to false and null
@@ -165,8 +163,10 @@ export default function Track() {
                   trackApi
                      .create(paramArray)
                      .then((res) => {
-                        setToastText("Track Data imported successfully!");
-                        setOpenToast(true);
+                        toast.success(
+                           "Track Data imported successfully!",
+                           myConsts.TOAST_CONFIG
+                        );
                         setRefreshData(true);
                      })
                      .catch((err) => console.log(err));
@@ -213,16 +213,20 @@ export default function Track() {
                         userId,
                      })
                      .then((res) => {
-                        setToastText("clockify api key updated successfully");
-                        setOpenToast(true);
+                        toast.success(
+                           "clockify api key updated successfully!",
+                           myConsts.TOAST_CONFIG
+                        );
                         setLoading(false);
                      });
                } else {
                   trackApi
                      .createClockifyApiMeta({ workspaceId, userId })
                      .then((res) => {
-                        setToastText("clockify api key created successfully");
-                        setOpenToast(true);
+                        toast.success(
+                           "clockify api key created successfully!",
+                           myConsts.TOAST_CONFIG
+                        );
                         setLoading(false);
                      });
                }
@@ -257,8 +261,10 @@ export default function Track() {
                         show: false,
                         rowData: null,
                      });
-                     setToastText("Track Data deleted successfully!");
-                     setOpenToast(true);
+                     toast.success(
+                        "Track Data deleted successfully!",
+                        myConsts.TOAST_CONFIG
+                     );
                      setRefreshData(true);
                   });
                })
@@ -276,6 +282,7 @@ export default function Track() {
    return (
       <>
          <CssBaseline />
+         <ToastContainer />
          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             <Button
                variant="outlined"
@@ -288,12 +295,6 @@ export default function Track() {
                Clockify Initialization
             </Button>
          </Box>
-
-         <CustomizedSnackbars
-            open={openToast}
-            setOpen={setOpenToast}
-            labelText={toastText}
-         />
 
          <DeleteModal
             delOpen={popup.show}
