@@ -214,6 +214,18 @@ export default function AddNewWork({
                      </Grid>
                      <Grid item md={5} xs={6}>
                         <FormInputText
+                           name="position"
+                           control={control}
+                           label="Position"
+                           required
+                           error={!!errors.position}
+                        />
+                        <Typography variant="inherit" color="textSecondary">
+                           {errors.position?.message}
+                        </Typography>
+                     </Grid>
+                     <Grid item md={5} xs={6}>
+                        <FormInputText
                            changeHandler={debouncedResults}
                            name="directCompany"
                            control={control}
@@ -223,19 +235,6 @@ export default function AddNewWork({
                         />
                         <Typography variant="inherit" color="textSecondary">
                            {errors.directCompany?.message}
-                        </Typography>
-                     </Grid>
-
-                     <Grid item md={5} xs={6}>
-                        <FormInputText
-                           name="position"
-                           control={control}
-                           label="Position"
-                           required
-                           error={!!errors.position}
-                        />
-                        <Typography variant="inherit" color="textSecondary">
-                           {errors.position?.message}
                         </Typography>
                      </Grid>
                   </Grid>
