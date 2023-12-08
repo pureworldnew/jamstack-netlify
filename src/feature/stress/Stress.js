@@ -11,7 +11,7 @@ import { ReactTable } from "components/table";
 import { BackDrop } from "components/backdrop";
 import stressApi from "services/stress";
 import DeleteModal from "components/delete-modal/DeleteModal";
-import CustomizedSnackbars from "components/customized-snackbars/CustomizedSnackbars";
+import { toast, ToastContainer } from "react-toastify";
 
 import * as myConsts from "consts";
 import AddNewStress from "./AddNewStress";
@@ -20,8 +20,6 @@ function Stress() {
    const [entry, setEntry] = useState([]);
    const [loading, setLoading] = useState(false);
    const [open, setOpen] = useState(false);
-   const [openToast, setOpenToast] = useState(false);
-   const [toastText, setToastText] = useState("");
    const [refreshData, setRefreshData] = useState(false);
    const [editData, setEditData] = useState({});
    const [popup, setPopup] = useState({
@@ -74,8 +72,7 @@ function Stress() {
    const handleClickConfirm = () => {
       if (popup.show && popup.rowData) {
          stressApi.delete(popup.rowData.id).then((res) => {
-            setToastText("Deleted Successfully!");
-            setOpenToast(true);
+            toast.success("Deleted Successfully!", myConsts.TOAST_CONFIG);
             setRefreshData(true);
             setPopup({ show: false, rowData: null });
          });
@@ -84,8 +81,7 @@ function Stress() {
 
    const handleSubmitNew = (data) => {
       stressApi.create(data).then((res) => {
-         setToastText("Inserted Successfully!");
-         setOpenToast(true);
+         toast.success("Inserted Successfully!", myConsts.TOAST_CONFIG);
          setRefreshData(true);
          handleClose();
       });
@@ -93,8 +89,7 @@ function Stress() {
 
    const handleSubmitEdit = (id, data) => {
       stressApi.update(id, data).then((res) => {
-         setToastText("Updated Successfully!");
-         setOpenToast(true);
+         toast.success("Updated Successfully!", myConsts.TOAST_CONFIG);
          setRefreshData(true);
          handleClose();
       });
@@ -108,6 +103,7 @@ function Stress() {
    return (
       <>
          <CssBaseline />
+         <ToastContainer />
          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             <AddNewStress
                open={open}
@@ -119,12 +115,6 @@ function Stress() {
                editData={editData}
             />
          </Box>
-
-         <CustomizedSnackbars
-            open={openToast}
-            setOpen={setOpenToast}
-            labelText={toastText}
-         />
 
          <DeleteModal
             delOpen={popup.show}

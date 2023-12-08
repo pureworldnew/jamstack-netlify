@@ -15,11 +15,13 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import signInImage from "assets/difficult-roads.jpg";
+import * as myConsts from "consts";
+
 // eslint-disable-next-line import/no-unresolved
 import { Copyright } from "components/nav";
-import CustomizedSnackbars from "components/customized-snackbars/CustomizedSnackbars";
 // eslint-disable-next-line import/no-unresolved
 import { useAuth } from "hooks/useAuth";
+import { toast, ToastContainer } from "react-toastify";
 
 const theme = createTheme({
    components: {
@@ -36,9 +38,7 @@ const theme = createTheme({
 function SignInSide() {
    const navigate = useNavigate();
 
-   const [openToast, setOpenToast] = React.useState(false);
    const [rememberMe, setRememberMe] = React.useState(false);
-   const [toastText, setToastText] = React.useState("");
    const { login, setUser, setAuthToken } = useAuth();
 
    const handleSubmit = async (event) => {
@@ -57,8 +57,7 @@ function SignInSide() {
          setAuthToken(token);
          navigate("/dashboard", { replace: true });
       } catch (err) {
-         setOpenToast(true);
-         setToastText("Invalid credentials!");
+         toast.success("Invalid credentials!", myConsts.TOAST_CONFIG);
       }
    };
 
@@ -66,6 +65,7 @@ function SignInSide() {
       <ThemeProvider theme={theme}>
          <Grid container component="main" sx={{ height: "100vh" }}>
             <CssBaseline />
+            <ToastContainer />
             <Grid
                item
                xs={false}
@@ -169,11 +169,6 @@ function SignInSide() {
                   </Box>
                </Box>
             </Grid>
-            <CustomizedSnackbars
-               open={openToast}
-               setOpen={setOpenToast}
-               labelText={toastText}
-            />
          </Grid>
       </ThemeProvider>
    );

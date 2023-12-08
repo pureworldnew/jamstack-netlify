@@ -11,16 +11,14 @@ import { ReactTable } from "components/table";
 import { BackDrop } from "components/backdrop";
 import cashApi from "services/cash";
 import DeleteModal from "components/delete-modal/DeleteModal";
-import CustomizedSnackbars from "components/customized-snackbars/CustomizedSnackbars";
 import * as myConsts from "consts";
+import { toast, ToastContainer } from "react-toastify";
 import AddNewCash from "./AddNewCash";
 
 function Cash() {
    const [entry, setEntry] = useState([]);
    const [loading, setLoading] = useState(false);
    const [open, setOpen] = useState(false);
-   const [openToast, setOpenToast] = useState(false);
-   const [toastText, setToastText] = useState("");
    const [refreshData, setRefreshData] = useState(false);
    const [popup, setPopup] = useState({
       show: false, // initial values set to false and null
@@ -69,8 +67,7 @@ function Cash() {
    const handleClickConfirm = () => {
       if (popup.show && popup.rowData) {
          cashApi.delete(popup.rowData.id);
-         setToastText("Deleted Successfully!");
-         setOpenToast(true);
+         toast.success("Deleted Successfully!", myConsts.TOAST_CONFIG);
          setRefreshData(true);
          setPopup({ show: false, rowData: null });
       }
@@ -78,8 +75,7 @@ function Cash() {
 
    const handleSubmitNew = (data) => {
       cashApi.create(data).then((res) => {
-         setToastText("Inserted Successfully!");
-         setOpenToast(true);
+         toast.success("Inserted Successfully!", myConsts.TOAST_CONFIG);
          setRefreshData(true);
          handleClose();
       });
@@ -87,8 +83,7 @@ function Cash() {
 
    const handleSubmitEdit = (id, data) => {
       cashApi.update(id, data).then((res) => {
-         setToastText("Updated Successfully!");
-         setOpenToast(true);
+         toast.success("Updated Successfully!", myConsts.TOAST_CONFIG);
          setRefreshData(true);
          handleClose();
       });
@@ -102,6 +97,7 @@ function Cash() {
    return (
       <>
          <CssBaseline />
+         <ToastContainer />
          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             <AddNewCash
                open={open}
@@ -113,12 +109,6 @@ function Cash() {
                editData={editData}
             />
          </Box>
-
-         <CustomizedSnackbars
-            open={openToast}
-            setOpen={setOpenToast}
-            labelText={toastText}
-         />
 
          <DeleteModal
             delOpen={popup.show}

@@ -11,17 +11,15 @@ import { ReactTable } from "components/table";
 import { BackDrop } from "components/backdrop";
 import planApi from "services/plan";
 import DeleteModal from "components/delete-modal/DeleteModal";
-import CustomizedSnackbars from "components/customized-snackbars/CustomizedSnackbars";
 
 import * as myConsts from "consts";
+import { toast, ToastContainer } from "react-toastify";
 import AddNewPlan from "./AddNewPlan";
 
 function Plan() {
    const [entry, setEntry] = useState([]);
    const [loading, setLoading] = useState(false);
    const [open, setOpen] = useState(false);
-   const [openToast, setOpenToast] = useState(false);
-   const [toastText, setToastText] = useState("");
    const [refreshData, setRefreshData] = useState(false);
    const [popup, setPopup] = useState({
       show: false, // initial values set to false and null
@@ -77,8 +75,7 @@ function Plan() {
    const handleClickConfirm = () => {
       if (popup.show && popup.rowData) {
          planApi.delete(popup.rowData.id);
-         setToastText("Deleted Successfully!");
-         setOpenToast(true);
+         toast.success("Deleted Successfully!", myConsts.TOAST_CONFIG);
          setRefreshData(true);
          setPopup({ show: false, rowData: null });
       }
@@ -91,8 +88,7 @@ function Plan() {
          localData.planStatus = "notFinished";
       }
       planApi.create(localData).then((res) => {
-         setToastText("Inserted Successfully!");
-         setOpenToast(true);
+         toast.success("Inserted Successfully!", myConsts.TOAST_CONFIG);
          setRefreshData(true);
          setPopup({ show: false, rowData: null });
          handleClose();
@@ -101,8 +97,7 @@ function Plan() {
 
    const handleSubmitEdit = (id, data) => {
       planApi.update(id, data).then((res) => {
-         setToastText("Updated Successfully!");
-         setOpenToast(true);
+         toast.success("Updated Successfully!", myConsts.TOAST_CONFIG);
          setRefreshData(true);
          setPopup({ show: false, rowData: null });
          handleClose();
@@ -117,6 +112,7 @@ function Plan() {
    return (
       <>
          <CssBaseline />
+         <ToastContainer />
          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             <AddNewPlan
                open={open}
@@ -128,11 +124,7 @@ function Plan() {
                editData={editData}
             />
          </Box>
-         <CustomizedSnackbars
-            open={openToast}
-            setOpen={setOpenToast}
-            labelText={toastText}
-         />
+
          <DeleteModal
             delOpen={popup.show}
             setDelOpen={setPopup}

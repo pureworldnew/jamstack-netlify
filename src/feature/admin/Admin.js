@@ -51,7 +51,11 @@ function Admin() {
       {
          onSuccess(data) {
             queryClient.invalidateQueries("get_profile_entries");
-            toast.success("Profile Entries deleted successfully!");
+            toast.success(
+               "Profile Entries deleted successfully!",
+               myConsts.TOAST_CONFIG
+            );
+
             setPopup({ show: false, rowData: null });
          },
          onError(error) {
@@ -80,7 +84,11 @@ function Admin() {
       {
          onSuccess: () => {
             queryClient.invalidateQueries(["get_profile_entries"]);
-            toast.success("Profile Entry updated successfully");
+            toast.success(
+               "Profile Entry updated successfully",
+               myConsts.TOAST_CONFIG
+            );
+
             handleClose();
          },
          onError: (error) => {
@@ -117,6 +125,7 @@ function Admin() {
    return (
       <>
          <CssBaseline />
+         <ToastContainer />
          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             <AddNewAdmin
                loadingUpdate={loadingUpdate}
@@ -130,9 +139,6 @@ function Admin() {
                editData={editData}
             />
          </Box>
-
-         <ToastContainer />
-
          <DeleteModal
             delOpen={popup.show}
             setDelOpen={setPopup}

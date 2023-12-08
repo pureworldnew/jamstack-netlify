@@ -16,6 +16,7 @@ import { LoadingButton } from "@mui/lab";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import adminApi from "services/admin";
+import * as myConsts from "consts";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -69,7 +70,11 @@ export default function AddNewAdmin({
       {
          onSuccess: () => {
             queryClient.invalidateQueries(["get_profile_entries"]);
-            toast.success("Profile created successfully");
+            toast.success(
+               "Profile created successfully",
+               myConsts.TOAST_CONFIG
+            );
+
             handleCloseDialog();
          },
          onError: (error) => {
