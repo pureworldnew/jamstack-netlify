@@ -7,16 +7,16 @@ export const TOAST_CONFIG = {
    autoClose: 500,
 };
 export const STATUS_OPTIONS = [
-   { value: "job_apply_waiting", label: "Job Apply & Waiting" },
-   { value: "rtr_confirmation", label: "RTR Confirmation" },
-   { value: "recruiter_interview", label: "Recruiter Interview" },
-   { value: "home_assessment", label: "Home Assessment" },
-   { value: "hr_interview", label: "HR Interview" },
-   { value: "tech_interview", label: "Technial Interview" },
-   { value: "final_interview", label: "Final Interview" },
-   { value: "get_offer", label: "Offer" },
-   { value: "onboarding", label: "Onboarding" },
-   { value: "first_payment", label: "First Payment" },
+   { value: "Job Apply & Waiting", label: "Job Apply & Waiting" },
+   { value: "RTR Confirmation", label: "RTR Confirmation" },
+   { value: "Recruiter Interview", label: "Recruiter Interview" },
+   { value: "Home Assessment", label: "Home Assessment" },
+   { value: "HR Interview", label: "HR Interview" },
+   { value: "Technical Interview", label: "Technial Interview" },
+   { value: "Final Interview", label: "Final Interview" },
+   { value: "Offer", label: "Offer" },
+   { value: "Onboarding", label: "Onboarding" },
+   { value: "First Payment", label: "First Payment" },
 ];
 
 export const STRESS_STATUS_OPTIONS = [
@@ -128,13 +128,13 @@ export const ACCOUNT_DETAILS = {
    },
 };
 export const JOB_BOARD_OPTIONS = [
-   { value: "indeed", label: "Indeed" },
-   { value: "linkedin", label: "Linkedin" },
-   { value: "zip_recruiter", label: "ZipRecruiter" },
-   { value: "wellfound", label: "Wellfound" },
-   { value: "glassdoor", label: "Glassdoor" },
-   { value: "dice", label: "Dice" },
-   { value: "company_website", label: "Company website" },
+   { value: "Indeed", label: "Indeed" },
+   { value: "Linkedin", label: "Linkedin" },
+   { value: "ZipRecruiter", label: "ZipRecruiter" },
+   { value: "wellWellfoundfound", label: "Wellfound" },
+   { value: "Glassdoor", label: "Glassdoor" },
+   { value: "Dice", label: "Dice" },
+   { value: "Company website", label: "Company website" },
 ];
 
 export const WORK_COLUMNS = [

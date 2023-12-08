@@ -31,7 +31,6 @@ export default function Expense() {
 
    React.useEffect(() => {
       cashApi.cashDashboardSum("2022-09-27T05:00:00.000Z").then((res) => {
-         console.log("res from expense", res);
          setExpernse(res.data.data[0]);
       });
    }, []);
