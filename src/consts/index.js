@@ -29,13 +29,13 @@ export const PLAN_STATUS_OPTIONS = [
    { value: "holding", label: "Holding" },
 ];
 export const ACCOUNT_OPTIONS = [
-   { value: "jonathan_samayoa", label: "Jonathan Samayoa" },
-   { value: "james_larro", label: "James Larro" },
-   { value: "travis_dalton", label: "Travis Dalton" },
-   { value: "richard_correa", label: "Richard Correa" },
+   { value: "Jonathan Samayoa", label: "Jonathan Samayoa" },
+   { value: "James Larro", label: "James Larro" },
+   { value: "Travis Dalton", label: "Travis Dalton" },
+   { value: "Richard Correa", label: "Richard Correa" },
 ];
 export const ACCOUNT_DETAILS = {
-   jonathan_samayoa: {
+   "Jonathan Samayoa": {
       address: "Amarillo, TX",
       email: "jonathandreamdev@gmail.com",
       phone: "+1-806-576-1063",
@@ -64,7 +64,7 @@ export const ACCOUNT_DETAILS = {
          },
       ],
    },
-   james_larro: {
+   "James Larro": {
       address: "Orlando, FL",
       email: "jamescrmlarro@gmail.com",
       phone: "+1-407-815-2419",

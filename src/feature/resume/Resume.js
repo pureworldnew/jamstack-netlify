@@ -67,7 +67,7 @@ export default function Resume() {
       formState: { errors },
    } = useForm({
       resolver: yupResolver(validationSchema),
-      defaultValues: myConsts.ACCOUNT_DETAILS.jonathan_samayoa,
+      defaultValues: myConsts.ACCOUNT_DETAILS["Jonathan Samayoa"],
    });
 
    React.useEffect(() => {
@@ -75,7 +75,7 @@ export default function Resume() {
       setValue("parsedCoverLetter", resumeData.coverLetter);
    }, [resumeData]);
    const [companyInfo, setCompanyInfo] = React.useState(
-      myConsts.ACCOUNT_DETAILS.jonathan_samayoa.companyInfo
+      myConsts.ACCOUNT_DETAILS["Jonathan Samayoa"].companyInfo
    );
 
    // 👇🏻 updates the state with user's input
@@ -103,9 +103,11 @@ export default function Resume() {
       console.log(e.target.value);
       setValue("account", e.target.value);
       setCompanyInfo(myConsts.ACCOUNT_DETAILS[e.target.value].companyInfo);
-      Object.keys(myConsts.ACCOUNT_DETAILS.jonathan_samayoa).forEach((each) => {
-         setValue(each, myConsts.ACCOUNT_DETAILS[e.target.value][each]);
-      });
+      Object.keys(myConsts.ACCOUNT_DETAILS["Jonathan Samayoa"]).forEach(
+         (each) => {
+            setValue(each, myConsts.ACCOUNT_DETAILS[e.target.value][each]);
+         }
+      );
    };
 
    const parseResumeFromApi = (resumeEntries) => {
@@ -154,7 +156,7 @@ export default function Resume() {
                     (each) => each.value === data.account
                  ).label
                : myConsts.ACCOUNT_OPTIONS.find(
-                    (each) => each.value === "jonathan_samayoa"
+                    (each) => each.value === "Jonathan Samayoa"
                  ).label,
          workHistory: JSON.stringify(companyInfo),
       };
