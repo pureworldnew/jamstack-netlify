@@ -1,8 +1,8 @@
 /* eslint-disable consistent-return */
 import React, { useEffect, useState } from "react";
 import trackApi from "services/track";
+import workApi from "services/work";
 import { BackDrop } from "components/backdrop";
-import useClockify from "hooks/useClockify";
 import * as dayjs from "dayjs";
 
 import {
@@ -23,30 +23,10 @@ function WeeklyChart({ chartType }) {
    const [loading, setLoading] = useState(false);
    const [graphData, setGraphData] = useState([]);
    const [projectName, setProjectName] = useState([]);
-   const getProjectName = async () => {
-      try {
-         const clockifyMeta = await trackApi.readClockifyApiMeta();
-         console.log("clockifyMeta ", clockifyMeta);
 
-         if (clockifyMeta.data.length === 1) {
-            const { workspaceId } = clockifyMeta.data[0].data;
-            return useClockify(
-               `https://api.clockify.me/api/v1/workspaces/${workspaceId}/projects`,
-               "GET"
-            )
-               .then((response) => response.map((each) => each.name))
-               .catch((err) => {
-                  console.log(err);
-               });
-         }
-      } catch (err) {
-         console.log(err);
-      }
-   };
    const parseChartData = async (entryArray) => {
       const chartDataArr = new Array(7);
-      const projectNameArr = await getProjectName();
-      console.log("projectNameArr is ", projectNameArr);
+      const projectNameArr = await trackApi.getProjectName();
       setProjectName(projectNameArr);
       for (let i = 0; i < 7; i += 1) {
          const dateOfWeek = dayjs(dayjs().day(i)).format("YYYY-MM-DD");
@@ -90,9 +70,11 @@ function WeeklyChart({ chartType }) {
                entryArray.push(each.data.chartStatusData);
             });
             parseChartData(entryArray);
+            console.log("graphData is", graphData);
          });
       } else {
          console.log("chartType", chartType);
+         workApi.readAll().then((res) => console.log("res from workApi", res));
          setLoading(false);
       }
    }, [chartType]);
