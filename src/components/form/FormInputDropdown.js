@@ -32,6 +32,7 @@ export function FormInputDropdown({
                <Select
                   labelId={labelId}
                   id={id}
+                  name={name}
                   value={field.value || ""}
                   onChange={(event) => {
                      field.onChange(event);

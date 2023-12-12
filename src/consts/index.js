@@ -131,7 +131,7 @@ export const JOB_BOARD_OPTIONS = [
    { value: "Indeed", label: "Indeed" },
    { value: "Linkedin", label: "Linkedin" },
    { value: "ZipRecruiter", label: "ZipRecruiter" },
-   { value: "wellWellfoundfound", label: "Wellfound" },
+   { value: "wellFound", label: "Wellfound" },
    { value: "Glassdoor", label: "Glassdoor" },
    { value: "Dice", label: "Dice" },
    { value: "Company website", label: "Company website" },

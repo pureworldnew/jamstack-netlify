@@ -78,11 +78,31 @@ export default function AddNewWork({
          setValue("position", editData.position);
          setJobDescription(editData.jobDescription);
       } else {
-         setValue("directCompany", "");
-         setValue("status", myConsts.STATUS_OPTIONS[0].value);
-         setValue("account", myConsts.ACCOUNT_OPTIONS[0].value);
-         setValue("jobBoard", myConsts.JOB_BOARD_OPTIONS[0].value);
+         const savedAccountOption = localStorage.getItem(
+            "selectedAccountOption"
+         );
+         if (savedAccountOption) {
+            setValue("account", savedAccountOption);
+         } else {
+            setValue("account", myConsts.ACCOUNT_OPTIONS[0].value);
+         }
+         const savedJobBoardOption = localStorage.getItem(
+            "selectedJobBoardOption"
+         );
+         if (savedJobBoardOption) {
+            setValue("jobBoard", savedJobBoardOption);
+         } else {
+            setValue("jobBoard", myConsts.JOB_BOARD_OPTIONS[0].value);
+         }
+
+         const savedStatusOption = localStorage.getItem("selectedStatusOption");
+         if (savedStatusOption) {
+            setValue("status", savedStatusOption);
+         } else {
+            setValue("status", myConsts.STATUS_OPTIONS[0].value);
+         }
          setValue("createDate", new Date());
+         setValue("directCompany", "");
          setValue("position", "");
          setJobDescription("");
       }
@@ -91,9 +111,9 @@ export default function AddNewWork({
    const handleCloseDialog = () => {
       reset({
          directCompany: "",
-         status: myConsts.STATUS_OPTIONS[0].value,
-         account: myConsts.ACCOUNT_OPTIONS[0].value,
-         jobBoard: myConsts.JOB_BOARD_OPTIONS[0].value,
+         // status: myConsts.STATUS_OPTIONS[0].value,
+         // account: myConsts.ACCOUNT_OPTIONS[0].value,
+         // jobBoard: myConsts.JOB_BOARD_OPTIONS[0].value,
          position: "",
       });
       handleClose();
@@ -141,6 +161,22 @@ export default function AddNewWork({
       () => debounce(checkCompanyDuplicates, 300),
       []
    );
+   const handleCustomChange = (e) => {
+      switch (e.target.name) {
+         case "account":
+            localStorage.setItem("selectedAccountOption", e.target.value);
+            break;
+
+         case "jobBoard":
+            localStorage.setItem("selectedJobBoardOption", e.target.value);
+            break;
+         case "status":
+            localStorage.setItem("selectedStatusOption", e.target.value);
+            break;
+         default:
+            break;
+      }
+   };
 
    useEffect(
       () => () => {
@@ -196,30 +232,16 @@ export default function AddNewWork({
                   autoComplete="off"
                >
                   <Grid container spacing={2} alignItems="center">
-                     <Grid item md={3} xs={6}>
-                        <FormInputText
-                           name="position"
+                     <Grid item md={2} xs={6}>
+                        <FormInputDropdown
+                           id="account"
+                           labelId="account-label"
+                           labelText="Account"
+                           options={myConsts.ACCOUNT_OPTIONS}
+                           name="account"
                            control={control}
-                           label="Position"
-                           required
-                           error={!!errors.position}
+                           onChangeCustom={handleCustomChange}
                         />
-                        <Typography variant="inherit" color="textSecondary">
-                           {errors.position?.message}
-                        </Typography>
-                     </Grid>
-                     <Grid item md={3} xs={6}>
-                        <FormInputText
-                           changeHandler={debouncedResults}
-                           name="directCompany"
-                           control={control}
-                           label="Direct Company"
-                           required
-                           error={!!errors.directCompany}
-                        />
-                        <Typography variant="inherit" color="textSecondary">
-                           {errors.directCompany?.message}
-                        </Typography>
                      </Grid>
                      <Grid item xs={6} md={2}>
                         <FormInputDropdown
@@ -229,16 +251,7 @@ export default function AddNewWork({
                            options={myConsts.JOB_BOARD_OPTIONS}
                            name="jobBoard"
                            control={control}
-                        />
-                     </Grid>
-                     <Grid item md={2} xs={6}>
-                        <FormInputDropdown
-                           id="account"
-                           labelId="account-label"
-                           labelText="Account"
-                           options={myConsts.ACCOUNT_OPTIONS}
-                           name="account"
-                           control={control}
+                           onChangeCustom={handleCustomChange}
                         />
                      </Grid>
                      <Grid item xs={6} md={2}>
@@ -248,6 +261,21 @@ export default function AddNewWork({
                            labelText="Status"
                            options={myConsts.STATUS_OPTIONS}
                            name="status"
+                           control={control}
+                           onChangeCustom={handleCustomChange}
+                        />
+                     </Grid>
+
+                     <Grid item xs={6} md={4}>
+                        <FormInputTextarea
+                           name="interviewFeedback"
+                           control={control}
+                           label="Interview Feedback"
+                        />
+                     </Grid>
+                     <Grid item>
+                        <FormInputDatePicker
+                           name="createDate"
                            control={control}
                         />
                      </Grid>
@@ -279,6 +307,33 @@ export default function AddNewWork({
                           ))
                         : ""}
                   </Grid>
+                  <Grid container spacing={2} alignItems="center">
+                     <Grid item md={3} xs={6}>
+                        <FormInputText
+                           name="position"
+                           control={control}
+                           label="Position"
+                           required
+                           error={!!errors.position}
+                        />
+                        <Typography variant="inherit" color="textSecondary">
+                           {errors.position?.message}
+                        </Typography>
+                     </Grid>
+                     <Grid item md={3} xs={6}>
+                        <FormInputText
+                           changeHandler={debouncedResults}
+                           name="directCompany"
+                           control={control}
+                           label="Direct Company"
+                           required
+                           error={!!errors.directCompany}
+                        />
+                        <Typography variant="inherit" color="textSecondary">
+                           {errors.directCompany?.message}
+                        </Typography>
+                     </Grid>
+                  </Grid>
                   <AccordionComponent
                      summary="Job Description"
                      expand={expand}
@@ -293,23 +348,6 @@ export default function AddNewWork({
                         </Grid>
                      </Grid>
                   </AccordionComponent>
-
-                  <Grid container spacing={2} alignItems="center">
-                     <Grid item xs={6} md={2}>
-                        <FormInputDatePicker
-                           name="createDate"
-                           control={control}
-                        />
-                     </Grid>
-                     <Grid item xs={12} md={10}>
-                        <FormInputTextarea
-                           name="interviewFeedback"
-                           control={control}
-                           label="Interview Feedback"
-                        />
-                     </Grid>
-                  </Grid>
-
                   <Divider />
                </Box>
             </form>
