@@ -19,11 +19,10 @@ import {
    Legend,
 } from "recharts";
 
-function Chart() {
+function WeeklyChart({ chartType }) {
    const [loading, setLoading] = useState(false);
    const [graphData, setGraphData] = useState([]);
    const [projectName, setProjectName] = useState([]);
-
    const getProjectName = async () => {
       try {
          const clockifyMeta = await trackApi.readClockifyApiMeta();
@@ -44,7 +43,6 @@ function Chart() {
          console.log(err);
       }
    };
-
    const parseChartData = async (entryArray) => {
       const chartDataArr = new Array(7);
       const projectNameArr = await getProjectName();
@@ -81,22 +79,24 @@ function Chart() {
       setGraphData(chartDataArr);
       setLoading(false);
    };
-
-   const getData = () => {
+   useEffect(() => {
       if (!loading) {
          setLoading(true);
       }
-      trackApi.readAll().then((res) => {
-         const entryArray = [];
-         res.data.forEach((each) => {
-            entryArray.push(each.data.chartStatusData);
+      if (chartType === "time_track") {
+         trackApi.readAll().then((res) => {
+            const entryArray = [];
+            res.data.forEach((each) => {
+               entryArray.push(each.data.chartStatusData);
+            });
+            parseChartData(entryArray);
          });
-         parseChartData(entryArray);
-      });
-   };
-   useEffect(() => {
-      getData();
-   }, []);
+      } else {
+         console.log("chartType", chartType);
+         setLoading(false);
+      }
+   }, [chartType]);
+
    return loading ? (
       <BackDrop open={loading} />
    ) : (
@@ -130,4 +130,4 @@ function Chart() {
       </ResponsiveContainer>
    );
 }
-export default Chart;
+export default WeeklyChart;

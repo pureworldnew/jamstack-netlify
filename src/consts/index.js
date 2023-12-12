@@ -6,13 +6,17 @@ export const TOAST_CONFIG = {
    position: "top-center",
    autoClose: 500,
 };
+export const CHART_OPTIONS = [
+   { value: "time_track", label: "Time Track" },
+   { value: "job_track", label: "Job Track" },
+];
 export const STATUS_OPTIONS = [
    { value: "Job Apply & Waiting", label: "Job Apply & Waiting" },
    { value: "RTR Confirmation", label: "RTR Confirmation" },
    { value: "Recruiter Interview", label: "Recruiter Interview" },
    { value: "Home Assessment", label: "Home Assessment" },
    { value: "HR Interview", label: "HR Interview" },
-   { value: "Technical Interview", label: "Technial Interview" },
+   { value: "Technical Interview", label: "Technical Interview" },
    { value: "Final Interview", label: "Final Interview" },
    { value: "Offer", label: "Offer" },
    { value: "Onboarding", label: "Onboarding" },
