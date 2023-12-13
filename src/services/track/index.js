@@ -42,7 +42,6 @@ const batchDeleteTrack = (trackIds) =>
 const getProjectName = async () => {
    try {
       const clockifyMeta = await readClockifyApiMeta();
-      console.log("clockifyMeta ", clockifyMeta);
 
       if (clockifyMeta.data.length === 1) {
          const { workspaceId } = clockifyMeta.data[0].data;

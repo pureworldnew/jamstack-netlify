@@ -4,6 +4,7 @@ import trackApi from "services/track";
 import workApi from "services/work";
 import { BackDrop } from "components/backdrop";
 import * as dayjs from "dayjs";
+import * as myConsts from "consts";
 
 import {
    ResponsiveContainer,
@@ -24,7 +25,7 @@ function WeeklyChart({ chartType }) {
    const [graphData, setGraphData] = useState([]);
    const [projectName, setProjectName] = useState([]);
 
-   const parseChartData = async (entryArray) => {
+   const parseChartTrackData = async (entryArray) => {
       const chartDataArr = new Array(7);
       const projectNameArr = await trackApi.getProjectName();
       setProjectName(projectNameArr);
@@ -59,6 +60,35 @@ function WeeklyChart({ chartType }) {
       setGraphData(chartDataArr);
       setLoading(false);
    };
+
+   const parseChartJobData = async (entryJob) => {
+      const chartDataArr = new Array(7);
+      const projectNameArr = myConsts.ACCOUNT_OPTIONS.map((each) => each.value);
+      setProjectName(projectNameArr);
+      for (let i = 0; i < 7; i += 1) {
+         const dateOfWeek = dayjs(dayjs().day(i)).format("YYYY-MM-DD");
+
+         chartDataArr[i] = {
+            name: `${dateOfWeek} / ${dayjs(dateOfWeek).format("ddd")}`,
+         };
+
+         projectNameArr?.forEach((projName) => {
+            chartDataArr[i][projName] = 0;
+         });
+
+         entryJob?.forEach((each) => {
+            if (dayjs(each.createDate).format("YYYY-MM-DD") === dateOfWeek) {
+               projectNameArr.forEach((proName) => {
+                  if (each.account === proName) {
+                     chartDataArr[i][proName] += 1;
+                  }
+               });
+            }
+         });
+      }
+      setGraphData(chartDataArr);
+      setLoading(false);
+   };
    useEffect(() => {
       if (!loading) {
          setLoading(true);
@@ -69,13 +99,16 @@ function WeeklyChart({ chartType }) {
             res.data.forEach((each) => {
                entryArray.push(each.data.chartStatusData);
             });
-            parseChartData(entryArray);
-            console.log("graphData is", graphData);
+            parseChartTrackData(entryArray);
          });
       } else {
-         console.log("chartType", chartType);
-         workApi.readAll().then((res) => console.log("res from workApi", res));
-         setLoading(false);
+         workApi.readAll().then((res) => {
+            const jobArray = [];
+            res.forEach((each) => {
+               jobArray.push(each.data);
+            });
+            parseChartJobData(jobArray);
+         });
       }
    }, [chartType]);
 
