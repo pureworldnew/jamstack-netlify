@@ -52,7 +52,7 @@ export default function Dashboard() {
                </Select>
             </Grid>
             <Grid item>
-               {chart !== "time_track" ? (
+               {chart === "total_track" ? (
                   <Title>{`Weekly total: ${totalJob}`}</Title>
                ) : (
                   ""

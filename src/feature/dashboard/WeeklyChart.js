@@ -74,7 +74,7 @@ function WeeklyChart({ chartType, setTotalJob }) {
          projectNameArr = ["total_track"];
          setProjectName(projectNameArr);
       }
-
+      let weeklyTotal = 0;
       for (let i = 0; i < 7; i += 1) {
          const dateOfWeek = dayjs(dayjs().day(i)).format("YYYY-MM-DD");
 
@@ -104,7 +104,11 @@ function WeeklyChart({ chartType, setTotalJob }) {
                }
             }
          });
+         if (chartType === "total_track") {
+            weeklyTotal += chartDataArr[i].total_track;
+         }
       }
+      setTotalJob(weeklyTotal);
       setGraphData(chartDataArr);
       setLoading(false);
    };
@@ -130,7 +134,6 @@ function WeeklyChart({ chartType, setTotalJob }) {
             res.forEach((each) => {
                jobArray.push(each.data);
             });
-            setTotalJob(jobArray.length);
             parseChartJobData(jobArray);
          });
       }
