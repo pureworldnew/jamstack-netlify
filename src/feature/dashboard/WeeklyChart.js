@@ -161,7 +161,7 @@ function WeeklyChart({ chartType }) {
                <Line
                   type="monotone"
                   dataKey={projectName[4]}
-                  stroke="#ff7300"
+                  stroke="#4e2402"
                />
             ) : (
                ""
