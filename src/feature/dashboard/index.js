@@ -4,12 +4,14 @@ import Paper from "@mui/material/Paper";
 import * as myConstants from "consts";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import { Title } from "components/title";
 import WeeklyChart from "./WeeklyChart";
 import Expense from "./Expense";
 import CurrentPlan from "./CurrentPlan";
 
 export default function Dashboard() {
    const [chart, setChart] = React.useState(myConstants.CHART_OPTIONS[0].value);
+   const [totalJob, setTotalJob] = React.useState("");
    const handleChartOption = (e) => {
       console.log(e.target.value);
       setChart(e.target.value);
@@ -29,7 +31,14 @@ export default function Dashboard() {
             </Paper>
          </Grid>
          {/* Recent Track */}
-         <Grid container item xs={12} sx={{ flexDirection: "row-reverse" }}>
+         <Grid
+            container
+            item
+            xs={12}
+            alignItems="center"
+            flexDirection="row-reverse"
+            spacing={3}
+         >
             <Grid item>
                <Select
                   id="chartSelect"
@@ -42,6 +51,13 @@ export default function Dashboard() {
                   {generateSelectOptions()}
                </Select>
             </Grid>
+            <Grid item>
+               {chart !== "time_track" ? (
+                  <Title>{`Weekly total: ${totalJob}`}</Title>
+               ) : (
+                  ""
+               )}
+            </Grid>
          </Grid>
          <Grid item xs={12}>
             <Paper
@@ -52,7 +68,7 @@ export default function Dashboard() {
                   height: 440,
                }}
             >
-               <WeeklyChart chartType={chart} />
+               <WeeklyChart chartType={chart} setTotalJob={setTotalJob} />
             </Paper>
          </Grid>
          {/* Recent Job */}

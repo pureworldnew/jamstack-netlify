@@ -20,7 +20,7 @@ import {
    Legend,
 } from "recharts";
 
-function WeeklyChart({ chartType }) {
+function WeeklyChart({ chartType, setTotalJob }) {
    const [loading, setLoading] = useState(false);
    const [graphData, setGraphData] = useState([]);
    const [projectName, setProjectName] = useState([]);
@@ -130,6 +130,7 @@ function WeeklyChart({ chartType }) {
             res.forEach((each) => {
                jobArray.push(each.data);
             });
+            setTotalJob(jobArray.length);
             parseChartJobData(jobArray);
          });
       }
