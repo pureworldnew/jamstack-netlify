@@ -70,6 +70,9 @@ function WeeklyChart({ chartType }) {
       } else if (chartType === "social_track") {
          projectNameArr = myConsts.JOB_BOARD_OPTIONS.map((each) => each.value);
          setProjectName(projectNameArr);
+      } else if (chartType === "total_track") {
+         projectNameArr = ["total_track"];
+         setProjectName(projectNameArr);
       }
 
       for (let i = 0; i < 7; i += 1) {
@@ -78,24 +81,27 @@ function WeeklyChart({ chartType }) {
          chartDataArr[i] = {
             name: `${dateOfWeek} / ${dayjs(dateOfWeek).format("ddd")}`,
          };
-
          projectNameArr?.forEach((projName) => {
             chartDataArr[i][projName] = 0;
          });
-         console.log("entryJob, ", entryJob);
+
          entryJob?.forEach((each) => {
             if (dayjs(each.createDate).format("YYYY-MM-DD") === dateOfWeek) {
-               projectNameArr.forEach((proName) => {
-                  if (chartType === "account_track") {
-                     if (each.account === proName) {
-                        chartDataArr[i][proName] += 1;
+               if (chartType === "total_track") {
+                  chartDataArr[i].total_track += 1;
+               } else {
+                  projectNameArr.forEach((proName) => {
+                     if (chartType === "account_track") {
+                        if (each.account === proName) {
+                           chartDataArr[i][proName] += 1;
+                        }
+                     } else if (chartType === "social_track") {
+                        if (each.jobBoard === proName) {
+                           chartDataArr[i][proName] += 1;
+                        }
                      }
-                  } else if (chartType === "social_track") {
-                     if (each.jobBoard === proName) {
-                        chartDataArr[i][proName] += 1;
-                     }
-                  }
-               });
+                  });
+               }
             }
          });
       }
@@ -116,7 +122,8 @@ function WeeklyChart({ chartType }) {
          });
       } else if (
          chartType === "account_track" ||
-         chartType === "social_track"
+         chartType === "social_track" ||
+         chartType === "total_track"
       ) {
          workApi.readAll().then((res) => {
             const jobArray = [];
@@ -148,15 +155,37 @@ function WeeklyChart({ chartType }) {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Area
-               type="monotone"
-               dataKey={projectName[3]}
-               fill="#8884d8"
-               stroke="#8884d8"
-            />
-            <Bar dataKey={projectName[2]} barSize={20} fill="#413ea0" />
-            <Line type="monotone" dataKey={projectName[1]} stroke="#ff7300" />
-            <Scatter dataKey={projectName[0]} fill="red" />
+            {projectName[3] ? (
+               <Area
+                  type="monotone"
+                  dataKey={projectName[3]}
+                  fill="#8884d8"
+                  stroke="#8884d8"
+               />
+            ) : (
+               ""
+            )}
+
+            {projectName[0] ? (
+               <Bar dataKey={projectName[0]} barSize={20} fill="#413ea0" />
+            ) : (
+               ""
+            )}
+
+            {projectName[1] ? (
+               <Line
+                  type="monotone"
+                  dataKey={projectName[1]}
+                  stroke="#ff7300"
+               />
+            ) : (
+               ""
+            )}
+            {projectName[2] ? (
+               <Scatter dataKey={projectName[2]} fill="red" />
+            ) : (
+               ""
+            )}
             {projectName[4] ? (
                <Line
                   type="monotone"

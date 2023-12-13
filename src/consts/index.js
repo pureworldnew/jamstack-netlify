@@ -10,6 +10,7 @@ export const CHART_OPTIONS = [
    { value: "time_track", label: "Time Track" },
    { value: "account_track", label: "Account Track" },
    { value: "social_track", label: "Social Track" },
+   { value: "total_track", label: "Total Track" },
 ];
 export const STATUS_OPTIONS = [
    { value: "Job Apply & Waiting", label: "Job Apply & Waiting" },
