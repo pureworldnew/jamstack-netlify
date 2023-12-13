@@ -63,8 +63,15 @@ function WeeklyChart({ chartType }) {
 
    const parseChartJobData = async (entryJob) => {
       const chartDataArr = new Array(7);
-      const projectNameArr = myConsts.ACCOUNT_OPTIONS.map((each) => each.value);
-      setProjectName(projectNameArr);
+      let projectNameArr = [];
+      if (chartType === "account_track") {
+         projectNameArr = myConsts.ACCOUNT_OPTIONS.map((each) => each.value);
+         setProjectName(projectNameArr);
+      } else if (chartType === "social_track") {
+         projectNameArr = myConsts.JOB_BOARD_OPTIONS.map((each) => each.value);
+         setProjectName(projectNameArr);
+      }
+
       for (let i = 0; i < 7; i += 1) {
          const dateOfWeek = dayjs(dayjs().day(i)).format("YYYY-MM-DD");
 
@@ -75,12 +82,18 @@ function WeeklyChart({ chartType }) {
          projectNameArr?.forEach((projName) => {
             chartDataArr[i][projName] = 0;
          });
-
+         console.log("entryJob, ", entryJob);
          entryJob?.forEach((each) => {
             if (dayjs(each.createDate).format("YYYY-MM-DD") === dateOfWeek) {
                projectNameArr.forEach((proName) => {
-                  if (each.account === proName) {
-                     chartDataArr[i][proName] += 1;
+                  if (chartType === "account_track") {
+                     if (each.account === proName) {
+                        chartDataArr[i][proName] += 1;
+                     }
+                  } else if (chartType === "social_track") {
+                     if (each.jobBoard === proName) {
+                        chartDataArr[i][proName] += 1;
+                     }
                   }
                });
             }
@@ -101,7 +114,10 @@ function WeeklyChart({ chartType }) {
             });
             parseChartTrackData(entryArray);
          });
-      } else {
+      } else if (
+         chartType === "account_track" ||
+         chartType === "social_track"
+      ) {
          workApi.readAll().then((res) => {
             const jobArray = [];
             res.forEach((each) => {
@@ -141,6 +157,15 @@ function WeeklyChart({ chartType }) {
             <Bar dataKey={projectName[2]} barSize={20} fill="#413ea0" />
             <Line type="monotone" dataKey={projectName[1]} stroke="#ff7300" />
             <Scatter dataKey={projectName[0]} fill="red" />
+            {projectName[4] ? (
+               <Line
+                  type="monotone"
+                  dataKey={projectName[4]}
+                  stroke="#ff7300"
+               />
+            ) : (
+               ""
+            )}
          </ComposedChart>
       </ResponsiveContainer>
    );

@@ -8,7 +8,8 @@ export const TOAST_CONFIG = {
 };
 export const CHART_OPTIONS = [
    { value: "time_track", label: "Time Track" },
-   { value: "job_track", label: "Job Track" },
+   { value: "account_track", label: "Account Track" },
+   { value: "social_track", label: "Social Track" },
 ];
 export const STATUS_OPTIONS = [
    { value: "Job Apply & Waiting", label: "Job Apply & Waiting" },
@@ -132,13 +133,11 @@ export const ACCOUNT_DETAILS = {
    },
 };
 export const JOB_BOARD_OPTIONS = [
-   { value: "Indeed", label: "Indeed" },
    { value: "Linkedin", label: "Linkedin" },
-   { value: "ZipRecruiter", label: "ZipRecruiter" },
-   { value: "wellFound", label: "Wellfound" },
-   { value: "Glassdoor", label: "Glassdoor" },
+   { value: "Indeed", label: "Indeed" },
    { value: "Dice", label: "Dice" },
-   { value: "Company website", label: "Company website" },
+   { value: "ZipRecruiter", label: "ZipRecruiter" },
+   { value: "Glassdoor", label: "Glassdoor" },
 ];
 
 export const WORK_COLUMNS = [
