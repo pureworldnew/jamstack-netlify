@@ -8,6 +8,7 @@ import * as myConsts from "consts";
 
 import {
    ResponsiveContainer,
+   BarChart,
    ComposedChart,
    Line,
    Area,
@@ -24,6 +25,7 @@ function WeeklyChart({ chartType, setTotalJob }) {
    const [loading, setLoading] = useState(false);
    const [graphData, setGraphData] = useState([]);
    const [projectName, setProjectName] = useState([]);
+   const [stackBar, setStackBar] = useState(false);
 
    const parseChartTrackData = async (entryArray) => {
       const chartDataArr = new Array(7);
@@ -67,12 +69,17 @@ function WeeklyChart({ chartType, setTotalJob }) {
       if (chartType === "account_track") {
          projectNameArr = myConsts.ACCOUNT_OPTIONS.map((each) => each.value);
          setProjectName(projectNameArr);
+         setStackBar(true);
       } else if (chartType === "social_track") {
          projectNameArr = myConsts.JOB_BOARD_OPTIONS.map((each) => each.value);
          setProjectName(projectNameArr);
+         setStackBar(true);
       } else if (chartType === "total_track") {
          projectNameArr = ["total_track"];
          setProjectName(projectNameArr);
+         setStackBar(false);
+      } else {
+         setStackBar(false);
       }
       let weeklyTotal = 0;
       for (let i = 0; i < 7; i += 1) {
@@ -117,6 +124,7 @@ function WeeklyChart({ chartType, setTotalJob }) {
          setLoading(true);
       }
       if (chartType === "time_track") {
+         setStackBar(false);
          trackApi.readAll().then((res) => {
             const entryArray = [];
             res.data.forEach((each) => {
@@ -143,63 +151,91 @@ function WeeklyChart({ chartType, setTotalJob }) {
       <BackDrop open={loading} />
    ) : (
       <ResponsiveContainer width="100%" height="100%">
-         <ComposedChart
-            width={500}
-            height={400}
-            data={graphData}
-            margin={{
-               top: 20,
-               right: 20,
-               bottom: 20,
-               left: 20,
-            }}
-         >
-            <CartesianGrid stroke="#f5f5f5" />
-            <XAxis dataKey="name" scale="band" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            {projectName[3] ? (
-               <Area
-                  type="monotone"
-                  dataKey={projectName[3]}
-                  fill="#8884d8"
-                  stroke="#8884d8"
-               />
-            ) : (
-               ""
-            )}
+         {stackBar ? (
+            <BarChart
+               width={500}
+               height={300}
+               data={graphData}
+               margin={{
+                  top: 20,
+                  right: 30,
+                  left: 20,
+                  bottom: 5,
+               }}
+            >
+               <CartesianGrid strokeDasharray="3 3" stroke="#f5f5f5" />
+               <XAxis dataKey="name" />
+               <YAxis />
+               <Tooltip />
+               <Legend />
+               {projectName.map((v, index) => (
+                  <Bar
+                     dataKey={v}
+                     stackId="a"
+                     fill={myConsts.STACKBAR_COLORS[index]}
+                     key={v}
+                  />
+               ))}
+            </BarChart>
+         ) : (
+            <ComposedChart
+               width={500}
+               height={400}
+               data={graphData}
+               margin={{
+                  top: 20,
+                  right: 20,
+                  bottom: 20,
+                  left: 20,
+               }}
+            >
+               <CartesianGrid stroke="#f5f5f5" />
+               <XAxis dataKey="name" scale="band" />
+               <YAxis />
+               <Tooltip />
+               <Legend />
+               {projectName[3] ? (
+                  <Area
+                     type="monotone"
+                     dataKey={projectName[3]}
+                     fill="#8884d8"
+                     stroke="#8884d8"
+                  />
+               ) : (
+                  ""
+               )}
 
-            {projectName[0] ? (
-               <Bar dataKey={projectName[0]} barSize={20} fill="#413ea0" />
-            ) : (
-               ""
-            )}
+               {projectName[0] ? (
+                  <Line
+                     type="monotone"
+                     dataKey={projectName[0]}
+                     stroke="#ff7300"
+                  />
+               ) : (
+                  ""
+               )}
 
-            {projectName[1] ? (
-               <Line
-                  type="monotone"
-                  dataKey={projectName[1]}
-                  stroke="#ff7300"
-               />
-            ) : (
-               ""
-            )}
-            {projectName[2] ? (
-               <Scatter dataKey={projectName[2]} fill="red" />
-            ) : (
-               ""
-            )}
-            {projectName[4] ? (
-               <Line
-                  type="monotone"
-                  dataKey={projectName[4]}
-                  stroke="#4e2402"
-               />
-            ) : (
-               ""
-            )}
-         </ComposedChart>
+               {projectName[1] ? (
+                  <Bar dataKey={projectName[1]} barSize={20} fill="#413ea0" />
+               ) : (
+                  ""
+               )}
+               {projectName[2] ? (
+                  <Scatter dataKey={projectName[2]} fill="red" />
+               ) : (
+                  ""
+               )}
+               {projectName[4] ? (
+                  <Line
+                     type="monotone"
+                     dataKey={projectName[4]}
+                     stroke="#4e2402"
+                  />
+               ) : (
+                  ""
+               )}
+            </ComposedChart>
+         )}
       </ResponsiveContainer>
    );
 }

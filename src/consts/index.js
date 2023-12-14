@@ -6,6 +6,13 @@ export const TOAST_CONFIG = {
    position: "top-center",
    autoClose: 500,
 };
+export const STACKBAR_COLORS = [
+   "#54bebe",
+   "#76c68f",
+   "#00bfff",
+   "#54504c",
+   "#dedad2",
+];
 export const CHART_OPTIONS = [
    { value: "time_track", label: "Time Track" },
    { value: "account_track", label: "Account Track" },
