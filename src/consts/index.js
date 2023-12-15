@@ -54,7 +54,7 @@ export const ACCOUNT_OPTIONS = [
 export const ACCOUNT_DETAILS = {
    "Jonathan Samayoa": {
       address: "Amarillo, TX",
-      email: "jonathandreamdev@gmail.com",
+      email: "temp@temp.com",
       phone: "+1-806-576-1063",
       linkedin: "linkedin.com/in/jonathan-samayoa/",
       currentPosition: "With-meetwithanyone.com",
@@ -83,7 +83,7 @@ export const ACCOUNT_DETAILS = {
    },
    "James Larro": {
       address: "Orlando, FL",
-      email: "jamescrmlarro@gmail.com",
+      email: "temp@temp.com",
       phone: "+1-407-815-2419",
       linkedin: "linkedin.com/in/james-larro/",
       currentPosition: "Mend",
@@ -112,7 +112,7 @@ export const ACCOUNT_DETAILS = {
    },
    cleve_ambrose: {
       address: "Baltimore, MD",
-      email: "amcleverose@gmail.com",
+      email: "temp@temp.com",
       phone: "+1-781-609-7575",
       linkedin: "linkedin.com/in/amcleverose/",
       currentPosition: "UCLA, Los Angeles, California.",
