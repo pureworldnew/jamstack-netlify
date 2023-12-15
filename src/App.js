@@ -130,7 +130,7 @@ const DashboardComponentWithErrorBoundary = withErrorBoundary(
 );
 
 const CalendarComponentWithErrorBoundary = withErrorBoundary(
-   loadable(() => import("./feature/calendar/Calendar"), {
+   loadable(() => import("./feature/calendar/MyCalendar"), {
       fallback: <Fallback />,
    }),
    {

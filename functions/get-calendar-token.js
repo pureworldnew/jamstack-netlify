@@ -1,11 +1,18 @@
 /* eslint-disable no-unused-vars */
 // functions/authenticate.js
 const { google } = require("googleapis");
+const moment = require("moment-timezone");
 
 const SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
 const { GOOGLE_PRIVATE_KEY, GOOGLE_CLIENT_EMAIL, GOOGLE_PROJECT_NUMBER } =
    process.env;
 const calendarIds = ["jamescrmlarro@gmail.com", "jonathandreamdev@gmail.com"]; // Replace with your actual calendar IDs
+
+const getFormatDateTime = (dateTime, timeZone) => {
+   // Create a Moment object with the given dateTime and timeZone
+   const momentObj = moment(dateTime).tz(timeZone);
+   return momentObj.toDate();
+};
 
 exports.handler = async (event, context) => {
    const data = JSON.parse(event.body);
@@ -40,9 +47,19 @@ exports.handler = async (event, context) => {
       const allEvents = (await Promise.all(promises)).flat();
 
       if (allEvents.length) {
+         const formattedEvents = [];
+         allEvents.forEach((each) => {
+            const { summary, id, start, end } = each;
+            formattedEvents.push({
+               summary,
+               id,
+               start: getFormatDateTime(start.dateTime, start.timeZone),
+               end: getFormatDateTime(end.dateTime, end.timeZone),
+            });
+         });
          return {
             statusCode: 200,
-            body: JSON.stringify({ events: allEvents }),
+            body: JSON.stringify({ events: formattedEvents }),
             headers: {
                "Content-Type": "application/json",
             },
