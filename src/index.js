@@ -1,7 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React from "react";
 import ReactDOM from "react-dom/client";
-
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 

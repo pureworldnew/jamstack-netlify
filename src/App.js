@@ -129,6 +129,19 @@ const DashboardComponentWithErrorBoundary = withErrorBoundary(
    }
 );
 
+const CalendarComponentWithErrorBoundary = withErrorBoundary(
+   loadable(() => import("./feature/calendar/Calendar"), {
+      fallback: <Fallback />,
+   }),
+   {
+      FallbackComponent: ErrorFallback,
+      onError(error, info) {
+         // Do something with the error
+         // E.g. log to an error logging client here
+      },
+   }
+);
+
 const StressComponentWithErrorBoundary = withErrorBoundary(
    loadable(() => import("./feature/stress/Stress"), {
       fallback: <Fallback />,
@@ -174,6 +187,10 @@ export default function App() {
                <Route
                   path="/dashboard"
                   element={<DashboardComponentWithErrorBoundary />}
+               />
+               <Route
+                  path="/calendar"
+                  element={<CalendarComponentWithErrorBoundary />}
                />
                <Route
                   path="/plan"

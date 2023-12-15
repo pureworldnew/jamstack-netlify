@@ -5,6 +5,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import TimelineIcon from "@mui/icons-material/Timeline";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ErrorIcon from "@mui/icons-material/Error";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
@@ -25,6 +26,12 @@ const MainListItems = (
             <TimelineIcon />
          </ListItemIcon>
          <ListItemText primary="Track" />
+      </ListItemButton>
+      <ListItemButton component={Link} to="/calendar">
+         <ListItemIcon>
+            <CalendarMonthIcon />
+         </ListItemIcon>
+         <ListItemText primary="Calendar" />
       </ListItemButton>
       <ListItemButton component={Link} to="/work">
          <ListItemIcon>
