@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 
 const q = faunadb.query;
 const getDBSecret = require("./utils/getDBSecret");
+const { createRefreshCookie } = require("./utils/createRefreshCookie");
 
 exports.handler = async (event, context) => {
    /* configure faunaDB Client with our secret */
@@ -47,14 +48,30 @@ exports.handler = async (event, context) => {
                user_id: ref.id,
                user_type_id: event.body.user_type_id || 0,
             };
-            const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET);
+            const accessToken = jwt.sign(
+               payload,
+               process.env.ACCESS_TOKEN_SECRET,
+               {
+                  expiresIn: process.env.ACCESS_TOKEN_EXPIRED,
+               }
+            );
+            const refreshToken = jwt.sign(
+               payload,
+               process.env.REFRESH_TOKEN_SECRET,
+               { expiresIn: process.env.REFRESH_TOKEN_EXPIRED }
+            );
+
             delete user[0].data.password;
             // save user token
-            user[0].token = token;
+            user[0].accessToken = accessToken;
 
-            // user
             return {
                statusCode: 200,
+               headers: {
+                  "Set-Cookie": createRefreshCookie(refreshToken),
+                  "Cache-Control": "no-cache",
+                  "Content-Type": "text/html",
+               },
                body: JSON.stringify(user[0]),
             };
          }

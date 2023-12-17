@@ -8,12 +8,9 @@ const constants = require("./utils/constants");
 const getDBSecret = require("./utils/getDBSecret");
 const verifyToken = require("./utils/verifyToken");
 
-const handler = async (event, context, callback) => {
+exports.handler = async (event, context, callback) => {
    // Authorization with user role: user
-   const verifyStatus = verifyToken(
-      event.headers.authorization,
-      constants.USER_ROLE
-   );
+   const verifyStatus = verifyToken(event, constants.USER_ROLE);
    if (!verifyStatus.status) {
       return verifyStatus.resData;
    }
@@ -45,5 +42,3 @@ const handler = async (event, context, callback) => {
       };
    }
 };
-
-module.exports.handler = handler;

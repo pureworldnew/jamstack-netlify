@@ -11,7 +11,7 @@ export function AuthProvider({ children, userData }) {
    const navigate = useNavigate();
 
    const setAuthToken = (token) => {
-      localStorage.setItem("token", token);
+      localStorage.setItem("accessToken", token);
    };
 
    const login = (data) => authService.signIn(data);

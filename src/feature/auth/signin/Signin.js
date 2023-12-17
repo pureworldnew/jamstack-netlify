@@ -51,11 +51,11 @@ function SignInSide() {
          });
          // get token from response
          console.log("res.data from login api", typeof res.data, res.data);
-         const { token, data } = res.data;
+         const { accessToken, data } = res.data;
          // set JWT token to local
          setUser(data);
          // set token to axios common header
-         setAuthToken(token);
+         setAuthToken(accessToken);
          navigate("/dashboard", { replace: true });
       } catch (err) {
          toast.success("Invalid credentials!", myConsts.TOAST_CONFIG);
