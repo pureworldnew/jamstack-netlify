@@ -74,10 +74,11 @@ function Plan() {
 
    const handleClickConfirm = () => {
       if (popup.show && popup.rowData) {
-         planApi.delete(popup.rowData.id);
-         toast.success("Deleted Successfully!", myConsts.TOAST_CONFIG);
-         setRefreshData(true);
-         setPopup({ show: false, rowData: null });
+         planApi.delete(popup.rowData.id).then((res) => {
+            toast.success("Deleted Successfully!", myConsts.TOAST_CONFIG);
+            setRefreshData(true);
+            setPopup({ show: false, rowData: null });
+         });
       }
    };
 

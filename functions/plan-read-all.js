@@ -4,8 +4,14 @@ const faunadb = require("faunadb");
 
 const q = faunadb.query;
 const getDBSecret = require("./utils/getDBSecret");
+const constants = require("./utils/constants");
+const verifyToken = require("./utils/verifyToken");
 
-exports.handler = (event, context) => {
+exports.handler = async (event, context) => {
+   const verifyStatus = verifyToken(event, constants.USER_ROLE);
+   if (!verifyStatus.status) {
+      return verifyStatus.resData;
+   }
    console.log("Function `plan-read-all` invoked");
    /* configure faunaDB Client with our secret */
    const client = new faunadb.Client({

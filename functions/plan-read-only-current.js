@@ -3,9 +3,9 @@
 const faunadb = require("faunadb");
 
 const q = faunadb.query;
-const constants = require("./utils/constants");
-
 const getDBSecret = require("./utils/getDBSecret");
+
+const constants = require("./utils/constants");
 const verifyToken = require("./utils/verifyToken");
 
 exports.handler = async (event, context, callback) => {
