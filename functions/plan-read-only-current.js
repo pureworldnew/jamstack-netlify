@@ -3,16 +3,27 @@
 const faunadb = require("faunadb");
 
 const q = faunadb.query;
+const constants = require("./utils/constants");
+
 const getDBSecret = require("./utils/getDBSecret");
+const verifyToken = require("./utils/verifyToken");
 
 const handler = async (event, context, callback) => {
-   /* configure faunaDB Client with our secret */
+   // Authorization with user role: user
+   const verifyStatus = verifyToken(
+      event.headers.authorization,
+      constants.USER_ROLE
+   );
+   if (!verifyStatus.status) {
+      return verifyStatus.resData;
+   }
    const client = new faunadb.Client({
       secret: getDBSecret(),
       domain: "db.us.fauna.com",
       scheme: "https",
    });
    try {
+      /* configure faunaDB Client with our secret */
       console.log("FaunaDB fetching with fresh Data");
       const { data } = await client.query(
          q.Map(

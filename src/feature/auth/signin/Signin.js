@@ -43,16 +43,17 @@ function SignInSide() {
 
    const handleSubmit = async (event) => {
       event.preventDefault();
-      const data = new FormData(event.currentTarget);
+      const formData = new FormData(event.currentTarget);
       try {
          const res = await login({
-            email: data.get("email"),
-            password: data.get("password"),
+            email: formData.get("email"),
+            password: formData.get("password"),
          });
          // get token from response
-         const { token } = res.data;
+         console.log("res.data from login api", typeof res.data, res.data);
+         const { token, data } = res.data;
          // set JWT token to local
-         setUser(token);
+         setUser(data);
          // set token to axios common header
          setAuthToken(token);
          navigate("/dashboard", { replace: true });

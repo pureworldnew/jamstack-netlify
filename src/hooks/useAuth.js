@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import authService from "services/auth";
-import axios from "axios";
+// import axios from "axios";
 import { useLocalStorage } from "./useLocalStorage";
 
 const AuthContext = createContext();
@@ -11,17 +11,13 @@ export function AuthProvider({ children, userData }) {
    const navigate = useNavigate();
 
    const setAuthToken = (token) => {
-      if (token) {
-         axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-      } else {
-         delete axios.defaults.headers.common.Authorization;
-      }
+      localStorage.setItem("token", token);
    };
 
    const login = (data) => authService.signIn(data);
 
    const logout = () => {
-      setUser(null);
+      localStorage.clear();
       navigate("/", { replace: true });
    };
 

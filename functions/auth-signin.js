@@ -43,14 +43,12 @@ exports.handler = async (event, context) => {
             (await bcrypt.compareSync(password, data.password))
          ) {
             // Create token
-            const token = jwt.sign(
-               { user_id: ref.id, email },
-               process.env.ACCESS_TOKEN_SECRET,
-               {
-                  expiresIn: "2h",
-               }
-            );
-
+            const payload = {
+               user_id: ref.id,
+               user_type_id: event.body.user_type_id || 0,
+            };
+            const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET);
+            delete user[0].data.password;
             // save user token
             user[0].token = token;
 
