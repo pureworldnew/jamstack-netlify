@@ -1,42 +1,31 @@
 /* eslint-disable no-unused-vars */
-/* Import faunaDB sdk */
-const faunadb = require("faunadb");
+const { getDBClient, q } = require("./utils/getDBClient");
+const authenticate = require("./utils/authenticate");
+const { sendResponse } = require("./utils/responseUtils");
 
-const q = faunadb.query;
-const getDBSecret = require("./utils/getDBSecret");
-
-exports.handler = (event, context) => {
+exports.handler = async (event, context) => {
+   const auth = authenticate(event);
+   if (!auth.status) {
+      return auth.resData;
+   }
    console.log("Function `cash-read-all` invoked");
-   /* configure faunaDB Client with our secret */
-   const client = new faunadb.Client({
-      secret: getDBSecret(),
-      domain: "db.us.fauna.com",
-      scheme: "https",
-   });
-   return client
-      .query(
+   try {
+      const response = await getDBClient().query(
          q.Map(
             q.Paginate(q.Documents(q.Collection("cash_entries"))),
             q.Lambda((x) => q.Get(x))
          )
-      )
-      .then((response) => {
-         const cashRefs = response.data;
-         const newCashRefs = cashRefs.map((each) => {
-            const modifiedEach = { ...each };
-            modifiedEach.data.createDate = JSON.parse(
-               JSON.stringify(each.data.createDate)
-            )["@date"];
-            return modifiedEach;
-         });
-
-         return {
-            statusCode: 200,
-            body: JSON.stringify(newCashRefs),
-         };
-      })
-      .catch((error) => ({
-         statusCode: 400,
-         body: JSON.stringify(error),
-      }));
+      );
+      const cashRefs = response.data;
+      const newCashRefs = cashRefs.map((each) => {
+         const modifiedEach = { ...each };
+         modifiedEach.data.createDate = JSON.parse(
+            JSON.stringify(each.data.createDate)
+         )["@date"];
+         return modifiedEach;
+      });
+      return sendResponse(200, newCashRefs);
+   } catch (err) {
+      return sendResponse(400, err);
+   }
 };

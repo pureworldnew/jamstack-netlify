@@ -13,7 +13,7 @@ exports.handler = async (event, context) => {
       const deleteAllCompletedPlanQuery = data.ids.map((id) =>
          q.Delete(q.Ref(`classes/plan_entries/${id}`))
       );
-      const response = getDBClient().query(deleteAllCompletedPlanQuery);
+      const response = await getDBClient().query(deleteAllCompletedPlanQuery);
       return sendResponse(200, response);
    } catch (err) {
       return sendResponse(400, err);
