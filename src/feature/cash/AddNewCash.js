@@ -1,11 +1,6 @@
 import * as React from "react";
-import Toolbar from "@mui/material/Toolbar";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Dialog from "@mui/material/Dialog";
-import AppBar from "@mui/material/AppBar";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -13,6 +8,7 @@ import Divider from "@mui/material/Divider";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import { NewModalAppBar } from "components/new-modal-appbar";
 
 import { FormInputText, FormInputDatePicker } from "components/form";
 
@@ -80,32 +76,10 @@ function AddNewCash({
             TransitionComponent={Transition}
          >
             <form>
-               <AppBar sx={{ position: "relative" }}>
-                  <Toolbar>
-                     <IconButton
-                        edge="start"
-                        color="inherit"
-                        onClick={handleCloseDialog}
-                        aria-label="close"
-                     >
-                        <CloseIcon />
-                     </IconButton>
-                     <Typography
-                        sx={{ ml: 2, flex: 1 }}
-                        variant="h6"
-                        component="div"
-                     >
-                        Delete
-                     </Typography>
-                     <Button
-                        autoFocus
-                        color="inherit"
-                        onClick={handleSubmit(onSubmit)}
-                     >
-                        Save
-                     </Button>
-                  </Toolbar>
-               </AppBar>
+               <NewModalAppBar
+                  handleCloseDialog={handleCloseDialog}
+                  handleClickSave={handleSubmit(onSubmit)}
+               />
                <Box
                   sx={{
                      "& .MuiTextField-root": { m: 1 },
