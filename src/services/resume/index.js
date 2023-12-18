@@ -1,13 +1,13 @@
 /* Api methods to call /functions */
-import axios from "axios";
+import api from "services/api";
 
 const create = (data) =>
-   axios.post("/.netlify/functions/resume-create", {
+   api.post("/.netlify/functions/resume-create", {
       ...data,
    });
 
 const readAll = async () => {
-   const response = await axios.get("/.netlify/functions/resume-read-all");
+   const response = await api.get("/.netlify/functions/resume-read-all");
    return response.data;
 };
 

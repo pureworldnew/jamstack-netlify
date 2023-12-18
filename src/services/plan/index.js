@@ -1,6 +1,4 @@
 /* eslint-disable no-param-reassign */
-/* Api methods to call /functions */
-
 import api from "services/api";
 
 const create = (data) =>

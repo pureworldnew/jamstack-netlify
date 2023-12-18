@@ -195,27 +195,27 @@ export function ReactTable({ columns, data, mode, initialState }) {
       });
    };
 
-   const handleClickRows = () => {
+   const handleClickRows = async () => {
       if (popup.show && popup.rowData && popup.rowData.length) {
          const ids = selectedFlatRows.map((each) => each.original.id);
          switch (mode) {
             case "workEntry":
-               workApi.batchDelete(ids).then((res) => console.log(res));
+               await workApi.batchDelete(ids);
                break;
             case "trackEntry":
-               trackApi.batchDelete(ids).then((res) => console.log(res));
+               await trackApi.batchDelete(ids);
                break;
             case "planEntry":
-               planApi.batchDelete(ids).then((res) => console.log(res));
+               await planApi.batchDelete(ids);
                break;
             case "cashEntry":
-               cashApi.batchDelete(ids).then((res) => console.log(res));
+               await cashApi.batchDelete(ids);
                break;
             case "stressEntry":
-               stressApi.batchDelete(ids).then((res) => console.log(res));
+               await stressApi.batchDelete(ids);
                break;
             case "profileEntry":
-               adminApi.batchDelete(ids).then((res) => console.log(res));
+               await adminApi.batchDelete(ids);
                break;
             default:
                break;

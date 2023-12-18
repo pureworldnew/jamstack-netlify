@@ -1,11 +1,13 @@
 /* eslint-disable no-unused-vars */
-/* Import faunaDB sdk */
 const { v4: uuidv4 } = require("uuid");
+const authenticate = require("./utils/authenticate");
+const { sendResponse } = require("./utils/responseUtils");
 
-/* export our lambda function as named "handler" export */
 exports.handler = async (event, context) => {
-   /* configure faunaDB Client with our secret */
-   /* parse the string body into a useable JS object */
+   const auth = authenticate(event);
+   if (!auth.status) {
+      return auth.resData;
+   }
    const data = JSON.parse(event.body);
    console.log("Function `Resume-create` invoked", data);
    const {
@@ -82,11 +84,5 @@ exports.handler = async (event, context) => {
    const saveData = { ...newEntry, ...chatgptData };
    // ToDo:  Saving generated data into Database
 
-   // 👇🏻log the result
-   console.log(saveData);
-
-   return {
-      statusCode: 200,
-      body: JSON.stringify(saveData),
-   };
+   return sendResponse(200, saveData);
 };

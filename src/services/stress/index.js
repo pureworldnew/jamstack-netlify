@@ -1,24 +1,26 @@
 /* Api methods to call /functions */
-
-import axios from "axios";
+import api from "services/api";
 
 const create = (data) =>
-   axios.post("/.netlify/functions/stress-create", {
+   api.post("/.netlify/functions/stress-create", {
       ...data,
    });
 
-const readAll = () => axios.get("/.netlify/functions/stress-read-all");
+const readAll = async () => {
+   const response = await api.get("/.netlify/functions/stress-read-all");
+   return response.data;
+};
 
 const update = (stressId, data) =>
-   axios.post(`/.netlify/functions/stress-update/${stressId}`, {
+   api.post(`/.netlify/functions/stress-update/${stressId}`, {
       ...data,
    });
 
 const deleteStress = (stressId) =>
-   axios.post(`/.netlify/functions/stress-delete/${stressId}`);
+   api.post(`/.netlify/functions/stress-delete/${stressId}`);
 
 const batchDeleteStress = (stressIds) =>
-   axios.post(`/.netlify/functions/stress-delete-batch`, {
+   api.post(`/.netlify/functions/stress-delete-batch`, {
       ids: stressIds,
    });
 
