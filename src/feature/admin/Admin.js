@@ -29,7 +29,12 @@ function Admin() {
       ["get_profile_entries"],
       () => adminApi.readAll(),
       {
-         select: (res) => res,
+         select: (res) =>
+            res?.map((each) => {
+               const { data, ref } = each;
+               data.id = ref["@ref"].id;
+               return data;
+            }),
          onError: (error) => {
             if (Array.isArray(error.data.error)) {
                error.data.error.forEach((el) =>
@@ -111,6 +116,7 @@ function Admin() {
    const columns = useMemo(() => myConsts.ADMIN_COLUMNS, []);
 
    const handleClickDelete = (rowData) => {
+      console.log("rowData for deleting", rowData);
       setPopup({
          show: true,
          rowData,
@@ -131,7 +137,6 @@ function Admin() {
                loadingUpdate={loadingUpdate}
                open={open}
                setOpen={setOpen}
-               handleClickOpen={() => setOpen(true)}
                handleClose={handleClose}
                handleSubmitEdit={({ id, data }) => {
                   updateProfileEntry({ id, data });
@@ -142,7 +147,7 @@ function Admin() {
          <DeleteModal
             delOpen={popup.show}
             setDelOpen={setPopup}
-            handleClickConfirm={() => deleteProfileEntry(popup.rowData?._id)}
+            handleClickConfirm={() => deleteProfileEntry(popup.rowData?.id)}
          />
 
          {isLoading ? (
@@ -181,6 +186,7 @@ function Admin() {
                ]}
                data={queryResults}
                mode="profileEntry"
+               handleNewClick={() => setOpen(true)}
             />
          )}
       </>

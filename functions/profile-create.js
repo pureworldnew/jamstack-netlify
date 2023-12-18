@@ -1,21 +1,24 @@
 /* eslint-disable no-unused-vars */
 /* Import faunaDB sdk */
-const { MongoClient } = require("mongodb");
-const getMongoDBSecret = require("./utils/getMongoDBSecret");
+const { getDBClient, q } = require("./utils/getDBClient");
+const { sendResponse } = require("./utils/responseUtils");
+const authenticate = require("./utils/authenticate");
 
 exports.handler = async (event, context) => {
+   const auth = authenticate(event);
+   if (!auth.status) {
+      return auth.resData;
+   }
    const data = JSON.parse(event.body);
-   console.log("Function `profile-create-all` invoked", data);
-   const client = new MongoClient(getMongoDBSecret());
+   const profileItem = {
+      data,
+   };
    try {
-      const database = client.db("selftrain");
-      const profilesCollection = database.collection("profiles");
-      const insertedOne = await profilesCollection.insertOne(data);
-      return {
-         statusCode: 200,
-         body: JSON.stringify(insertedOne.profileName),
-      };
-   } finally {
-      await client.close();
+      const response = await getDBClient().query(
+         q.Create(q.Collection("user_entries"), profileItem)
+      );
+      return sendResponse(200, response);
+   } catch (err) {
+      return sendResponse(400, err);
    }
 };

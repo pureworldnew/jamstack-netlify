@@ -1,7 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import * as React from "react";
 import Toolbar from "@mui/material/Toolbar";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Dialog from "@mui/material/Dialog";
 import AppBar from "@mui/material/AppBar";
@@ -28,13 +27,14 @@ const Transition = React.forwardRef((props, ref) => (
 ));
 
 const validationSchema = Yup.object().shape({
-   profileName: Yup.string().required("Profile Name is required"),
+   firstName: Yup.string().required("First Name is required"),
+   lastName: Yup.string().required("Last Name is required"),
+   email: Yup.string().required("Email is required"),
 });
 
 export default function AddNewAdmin({
    loadingUpdate,
    open,
-   handleClickOpen,
    handleSubmitEdit,
    handleClose,
    editData,
@@ -52,16 +52,17 @@ export default function AddNewAdmin({
 
    React.useEffect(() => {
       if (Object.keys(editData).length !== 0) {
-         setValue("profileName", editData.profileName);
-         setValue("profileEmail", editData.profileEmail);
-         setValue("profileLinkedIn", editData.profileLinkedIn);
+         setValue("firstName", editData.firstName);
+         setValue("lastName", editData.lastName);
+         setValue("email", editData.email);
+         setValue("userRole", editData?.userRole);
       }
    }, [editData]);
    const handleCloseDialog = () => {
       reset({
-         profileName: "",
-         profileEmail: "",
-         profileLinkedIn: "",
+         firstName: "",
+         lastName: "",
+         email: "",
       });
       handleClose();
    };
@@ -95,8 +96,9 @@ export default function AddNewAdmin({
    );
 
    const onSubmit = (data) => {
+      console.log("data on Submit", data);
       if (Object.keys(editData).length !== 0) {
-         handleSubmitEdit({ id: editData._id, data });
+         handleSubmitEdit({ id: editData.id, data });
       } else {
          createNewProfileEntry(data);
       }
@@ -104,9 +106,6 @@ export default function AddNewAdmin({
 
    return (
       <div>
-         <Button variant="outlined" onClick={handleClickOpen}>
-            Create New
-         </Button>
          <ToastContainer />
          <Dialog
             fullScreen
@@ -153,28 +152,46 @@ export default function AddNewAdmin({
                   <Grid container spacing={2} alignItems="center">
                      <Grid item md={3} xs={6}>
                         <FormInputText
-                           name="profileName"
+                           name="firstName"
                            control={control}
-                           label="Profile Name"
+                           label="First Name"
                            required
-                           error={!!errors.profileName}
+                           error={!!errors.firstName}
                         />
                         <Typography variant="inherit" color="textSecondary">
-                           {errors.profileName?.message}
+                           {errors.firstName?.message}
                         </Typography>
                      </Grid>
                      <Grid item md={3} xs={6}>
                         <FormInputText
-                           name="profileEmail"
+                           name="lastName"
                            control={control}
-                           label="Profile Email"
+                           label="Last Name"
+                           required
+                           error={!!errors.lastName}
                         />
+                        <Typography variant="inherit" color="textSecondary">
+                           {errors.lastName?.message}
+                        </Typography>
                      </Grid>
-                     <Grid item md={6} xs={6}>
+                     <Grid item md={3} xs={6}>
                         <FormInputText
-                           name="profileLinkedIn"
+                           name="email"
                            control={control}
-                           label="Profile LinkedIn"
+                           label="Email"
+                           required
+                           error={!!errors.email}
+                           autoComplete="email"
+                        />
+                        <Typography variant="inherit" color="textSecondary">
+                           {errors.email?.message}
+                        </Typography>
+                     </Grid>
+                     <Grid item md={3} xs={6}>
+                        <FormInputText
+                           name="userRole"
+                           control={control}
+                           label="User Role"
                         />
                      </Grid>
                   </Grid>

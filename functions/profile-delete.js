@@ -1,33 +1,23 @@
 /* eslint-disable no-unused-vars */
-const { MongoClient, ObjectId } = require("mongodb");
+const { getDBClient, q } = require("./utils/getDBClient");
 const getId = require("./utils/getId");
-const getMongoDBSecret = require("./utils/getMongoDBSecret");
+const authenticate = require("./utils/authenticate");
+const { sendResponse } = require("./utils/responseUtils");
 
 exports.handler = async (event, context) => {
+   const auth = authenticate(event);
+   if (!auth.status) {
+      return auth.resData;
+   }
    const id = getId(event.path);
    console.log("Function `profile-delete` invoked", id);
 
-   const client = new MongoClient(getMongoDBSecret());
    try {
-      const database = client.db("selftrain");
-      const profilesCollection = database.collection("profiles");
-      const query = { _id: new ObjectId(id) };
-      const result = await profilesCollection.deleteOne(query);
-      if (result.deletedCount === 1) {
-         console.log("Successfully deleted one document.");
-         return {
-            statusCode: 200,
-            body: JSON.stringify("Successfully deleted one document."),
-         };
-      }
-      console.log("No documents matched the query. Deleted 0 documents.");
-      return {
-         statusCode: 400,
-         body: JSON.stringify(
-            "No documents matched the query. Deleted 0 documents."
-         ),
-      };
-   } finally {
-      await client.close();
+      const response = await getDBClient().query(
+         q.Delete(q.Ref(`classes/user_entries/${id}`))
+      );
+      return sendResponse(200, response);
+   } catch (err) {
+      return sendResponse(400, err);
    }
 };

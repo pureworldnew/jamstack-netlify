@@ -195,16 +195,20 @@ export const ADMIN_COLUMNS = [
       Header: "Profile Meta Information",
       columns: [
          {
-            Header: "Profile Name",
-            accessor: "profileName",
+            Header: "First Name",
+            accessor: "firstName",
+         },
+         {
+            Header: "Last Name",
+            accessor: "lastName",
          },
          {
             Header: "Profile Email",
-            accessor: "profileEmail",
+            accessor: "email",
          },
          {
-            Header: "Profile Linkedin",
-            accessor: "profileLinkedIn",
+            Header: "User Role",
+            accessor: "userRole",
          },
       ],
    },
