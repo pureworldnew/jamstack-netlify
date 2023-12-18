@@ -118,7 +118,6 @@ function Plan() {
             <AddNewPlan
                open={open}
                setOpen={setOpen}
-               handleClickOpen={handleClickOpen}
                handleClose={handleClose}
                handleSubmitNew={handleSubmitNew}
                handleSubmitEdit={handleSubmitEdit}
@@ -167,6 +166,7 @@ function Plan() {
                ]}
                data={entry}
                mode="planEntry"
+               handleNewClick={handleClickOpen}
             />
          )}
       </>
