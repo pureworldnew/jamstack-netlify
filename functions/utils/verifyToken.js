@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { cookie, createRefreshCookie } = require("./createRefreshCookie");
+const { sendResponse } = require("./responseUtils");
 
 module.exports = function verifyToken(event, userTypeId) {
    const accessToken = event.headers.authorization;
@@ -7,35 +8,24 @@ module.exports = function verifyToken(event, userTypeId) {
    if (!accessToken && !refreshToken) {
       return {
          status: false,
-         resData: {
-            statusCode: 401,
-            body: JSON.stringify("Access Denied. No token provided."),
-         },
+         resData: sendResponse(401, "Access Denied. No token provided."),
       };
    }
 
    try {
       const token = accessToken.split(" ")[1]; // Remove Bearer from string
-
       const verifiedUser = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-
       if (!verifiedUser) {
          return {
             status: false,
-            resData: {
-               statusCode: 401,
-               body: JSON.stringify("Unauthorized request"),
-            },
+            resData: sendResponse(401, "Unauthorized request"),
          };
       }
 
       if (verifiedUser.user_type_id < userTypeId) {
          return {
             status: false,
-            resData: {
-               statusCode: 401,
-               body: JSON.stringify("Permission denied: Unauthorized!"),
-            },
+            resData: sendResponse(401, "Permission denied: Unauthorized!"),
          };
       }
       return {
@@ -46,12 +36,10 @@ module.exports = function verifyToken(event, userTypeId) {
       if (!refreshToken) {
          return {
             status: false,
-            resData: {
-               statusCode: 401,
-               body: JSON.stringify(
-                  "Access Denied. No refresh token provided."
-               ),
-            },
+            resData: sendResponse(
+               401,
+               "Access Denied. No refresh token provided."
+            ),
          };
       }
       try {
@@ -85,10 +73,7 @@ module.exports = function verifyToken(event, userTypeId) {
       } catch (err) {
          return {
             status: false,
-            resData: {
-               statusCode: 401,
-               body: JSON.stringify("Invalid Token!"),
-            },
+            resData: sendResponse(401, "Invalid Token!"),
          };
       }
    }
