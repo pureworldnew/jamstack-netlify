@@ -3,6 +3,8 @@
 // functions/authenticate.js
 const { google } = require("googleapis");
 const moment = require("moment-timezone");
+const authenticate = require("./utils/authenticate");
+const { sendResponse } = require("./utils/responseUtils");
 
 const SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
 const {
@@ -93,6 +95,10 @@ function calculateAvailableTimeBlocksFromNow(excludedTimeBlocks) {
 }
 
 exports.handler = async (event, context) => {
+   const auth = authenticate(event);
+   if (!auth.status) {
+      return auth.resData;
+   }
    const data = JSON.parse(event.body);
    console.log("get-calendar-toke invoked", data);
    const formattedPrivateKey = GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n");
@@ -109,10 +115,6 @@ exports.handler = async (event, context) => {
       project: GOOGLE_PROJECT_NUMBER,
       auth: jwtClient,
    });
-   const excludedTimeBlocks = [
-      { start: "2023-12-15T12:00:00", end: "2023-12-15T13:00:00" },
-      // Add more excluded time blocks as needed
-   ];
 
    try {
       const promises = calendarIds.map(async (calendarId) => {
@@ -147,29 +149,13 @@ exports.handler = async (event, context) => {
          availableTimeBlocks.forEach((block) => {
             console.log(`${block.start} to ${block.end}`);
          });
-         return {
-            statusCode: 200,
-            body: JSON.stringify({
-               events: formattedEvents,
-               availableTimeBlocks,
-            }),
-            headers: {
-               "Content-Type": "application/json",
-            },
-         };
+         return sendResponse(200, {
+            events: formattedEvents,
+            availableTimeBlocks,
+         });
       }
-      return {
-         statusCode: 200,
-         body: JSON.stringify({ message: "No upcoming events found." }),
-         headers: {
-            "Content-Type": "application/json",
-         },
-      };
+      return sendResponse(200, { message: "No upcoming events found." });
    } catch (error) {
-      console.error("Error fetching calendar events", error);
-      return {
-         statusCode: 500,
-         body: JSON.stringify({ error: "Internal Server Error" }),
-      };
+      return sendResponse(500, { error: "Internal Server Error" });
    }
 };

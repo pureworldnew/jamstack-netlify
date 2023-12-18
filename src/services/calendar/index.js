@@ -1,7 +1,7 @@
-import axios from "axios";
+import api from "services/api";
 
 const getCalendarToken = (data) =>
-   axios({
+   api({
       method: "post",
       url: "/.netlify/functions/get-calendar-token",
       data,
