@@ -15,6 +15,8 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import * as myConsts from "consts";
 import { useAuth } from "hooks/useAuth";
+import { useLocalStorage } from "hooks/useLocalStorage";
+import { useNavigate } from "react-router-dom";
 import { RouterBreadcrumbs } from "./Breadcrumbs";
 
 const CustomAppBar = styled(MuiAppBar, {
@@ -65,7 +67,10 @@ function stringAvatar(name) {
 }
 
 function AppBar({ position, open, toggleDrawer }) {
+   const navigate = useNavigate();
+
    const [anchorElUser, setAnchorElUser] = useState(null);
+   const [loggedUser] = useLocalStorage("user", null);
 
    const { user, logout } = useAuth();
    const handleOpenUserMenu = (event) => {
@@ -75,6 +80,10 @@ function AppBar({ position, open, toggleDrawer }) {
    const handleCloseUserMenu = () => {
       setAnchorElUser(null);
    };
+   const goProfile = () => {
+      navigate("/profile", { replace: true });
+   };
+
    return (
       <CustomAppBar position={position} open={open}>
          <Toolbar
@@ -112,7 +121,11 @@ function AppBar({ position, open, toggleDrawer }) {
                <Box sx={{ flexGrow: 0, marginLeft: 4 }}>
                   <Tooltip title="Open settings">
                      <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                        <Avatar {...stringAvatar("Kent Dodds")} />
+                        <Avatar
+                           {...stringAvatar(
+                              `${loggedUser.firstName} ${loggedUser.lastName}`
+                           )}
+                        />
                      </IconButton>
                   </Tooltip>
                   <Menu
@@ -131,19 +144,16 @@ function AppBar({ position, open, toggleDrawer }) {
                      open={Boolean(anchorElUser)}
                      onClose={handleCloseUserMenu}
                   >
-                     {myConsts.SETTINGS.map((setting) => (
-                        <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                           {setting === "Logout" ? (
-                              <Typography textAlign="center" onClick={logout}>
-                                 {setting}
-                              </Typography>
-                           ) : (
-                              <Typography textAlign="center">
-                                 {setting}
-                              </Typography>
-                           )}
-                        </MenuItem>
-                     ))}
+                     <MenuItem onClick={handleCloseUserMenu}>
+                        <Typography textAlign="center" onClick={goProfile}>
+                           Profile
+                        </Typography>
+                     </MenuItem>
+                     <MenuItem onClick={handleCloseUserMenu}>
+                        <Typography textAlign="center" onClick={logout}>
+                           Logout
+                        </Typography>
+                     </MenuItem>
                   </Menu>
                </Box>
             )}

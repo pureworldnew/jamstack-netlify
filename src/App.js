@@ -171,6 +171,19 @@ const TrackComponentWithErrorBoundary = withErrorBoundary(
    }
 );
 
+const ProfileComponentWithErrorBoundary = withErrorBoundary(
+   loadable(() => import("./feature/profile/Profile"), {
+      fallback: <Fallback />,
+   }),
+   {
+      FallbackComponent: ErrorFallback,
+      onError(error, info) {
+         // Do something with the error
+         // E.g. log to an error logging client here
+      },
+   }
+);
+
 export default function App() {
    return (
       <Suspense>
@@ -226,6 +239,10 @@ export default function App() {
                <Route
                   path="/work"
                   element={<WorkComponentWithErrorBoundary />}
+               />
+               <Route
+                  path="/profile"
+                  element={<ProfileComponentWithErrorBoundary />}
                />
             </Route>
          </Routes>

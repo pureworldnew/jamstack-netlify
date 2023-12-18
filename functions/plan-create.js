@@ -14,6 +14,8 @@ exports.handler = async (event, context) => {
    if (!verifyStatus.status) {
       return verifyStatus.resData;
    }
+
+   console.log("verifyStatus of plan-create", verifyStatus);
    /* configure faunaDB Client with our secret */
    const client = new faunadb.Client({
       secret: getDBSecret(),

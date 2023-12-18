@@ -10,6 +10,7 @@ export function FormInputText({
    required,
    error,
    changeHandler,
+   readOnly = false,
 }) {
    return (
       <Controller
@@ -31,6 +32,9 @@ export function FormInputText({
                required={required || false}
                fullWidth
                error={error || false}
+               InputProps={{
+                  readOnly,
+               }}
             />
          )}
       />

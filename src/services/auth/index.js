@@ -1,14 +1,14 @@
-import axios from "axios";
+import api from "services/api";
 
 const signUp = (data) =>
-   axios({
+   api({
       method: "post",
       url: "/.netlify/functions/auth-signup",
       data,
    });
 
 const signIn = (data) =>
-   axios({ method: "post", url: "/.netlify/functions/auth-signin", data });
+   api({ method: "post", url: "/.netlify/functions/auth-signin", data });
 
 const logOut = async () => {
    const response = await fetch(`/.netlify/functions/auth-logout`, {
@@ -18,8 +18,24 @@ const logOut = async () => {
    return response.json();
 };
 
+const updateProfile = async (data) => {
+   console.log("data updateProfile", data);
+   const response = await api({
+      method: "post",
+      url: "/.netlify/functions/profile-info-update",
+      data,
+   });
+   return response.data;
+};
+const getProfile = async () => {
+   const response = await api.get("/.netlify/functions/profile-get");
+   return response.data;
+};
+
 export default {
    signUp,
    signIn,
    logOut,
+   updateProfile,
+   getProfile,
 };
