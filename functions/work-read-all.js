@@ -1,33 +1,25 @@
 /* eslint-disable no-unused-vars */
-/* Import faunaDB sdk */
-const faunadb = require("faunadb");
+const { getDBClient, q } = require("./utils/getDBClient");
+const authenticate = require("./utils/authenticate");
+const { sendResponse } = require("./utils/responseUtils");
 
-const q = faunadb.query;
-const getDBSecret = require("./utils/getDBSecret");
-
-exports.handler = (event, context) => {
+exports.handler = async (event, context) => {
+   const auth = authenticate(event);
+   if (!auth.status) {
+      return auth.resData;
+   }
    console.log("Function `work-read-all` invoked");
-   /* configure faunaDB Client with our secret */
-   const client = new faunadb.Client({
-      secret: getDBSecret(),
-      domain: "db.us.fauna.com",
-      scheme: "https",
-   });
-   return client
-      .query(
+   try {
+      const response = await getDBClient().query(
          q.Map(
             q.Paginate(q.Match(q.Index("work_entries_sort_by_create_desc")), {
                size: 100000,
             }),
             q.Lambda(["createDate", "ref"], q.Get(q.Var("ref")))
          )
-      )
-      .then((response) => ({
-         statusCode: 200,
-         body: JSON.stringify(response.data),
-      }))
-      .catch((error) => ({
-         statusCode: 400,
-         body: JSON.stringify(error),
-      }));
+      );
+      return sendResponse(200, response.data);
+   } catch (err) {
+      return sendResponse(400, err);
+   }
 };
