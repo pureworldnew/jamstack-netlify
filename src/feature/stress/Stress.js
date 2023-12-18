@@ -108,7 +108,6 @@ function Stress() {
             <AddNewStress
                open={open}
                setOpen={setOpen}
-               handleClickOpen={handleClickOpen}
                handleClose={handleClose}
                handleSubmitNew={handleSubmitNew}
                handleSubmitEdit={handleSubmitEdit}
@@ -158,6 +157,7 @@ function Stress() {
                ]}
                data={entry}
                mode="stressEntry"
+               handleNewClick={handleClickOpen}
             />
          )}
       </>

@@ -33,7 +33,6 @@ const validationSchema = Yup.object().shape({
 
 export default function AddNewStress({
    open,
-   handleClickOpen,
    handleSubmitNew,
    handleSubmitEdit,
    handleClose,
@@ -83,9 +82,6 @@ export default function AddNewStress({
 
    return (
       <div>
-         <Button variant="outlined" onClick={handleClickOpen}>
-            Create New
-         </Button>
          <Dialog
             fullScreen
             open={open}
