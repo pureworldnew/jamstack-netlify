@@ -26,7 +26,6 @@ const validationSchema = Yup.object().shape({
 
 function AddNewCash({
    open,
-   handleClickOpen,
    handleSubmitNew,
    handleSubmitEdit,
    handleClose,
@@ -74,9 +73,6 @@ function AddNewCash({
 
    return (
       <div>
-         <Button variant="outlined" onClick={handleClickOpen}>
-            Create New
-         </Button>
          <Dialog
             fullScreen
             open={open}

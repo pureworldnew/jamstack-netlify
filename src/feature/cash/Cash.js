@@ -102,7 +102,6 @@ function Cash() {
             <AddNewCash
                open={open}
                setOpen={setOpen}
-               handleClickOpen={handleClickOpen}
                handleClose={handleClose}
                handleSubmitNew={handleSubmitNew}
                handleSubmitEdit={handleSubmitEdit}
@@ -152,6 +151,7 @@ function Cash() {
                ]}
                data={entry}
                mode="cashEntry"
+               handleNewClick={handleClickOpen}
             />
          )}
       </>
