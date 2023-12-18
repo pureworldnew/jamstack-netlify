@@ -1,31 +1,23 @@
 /* eslint-disable no-unused-vars */
-/* Import faunaDB sdk */
-const faunadb = require("faunadb");
+const { getDBClient, q } = require("./utils/getDBClient");
+const authenticate = require("./utils/authenticate");
+const { sendResponse } = require("./utils/responseUtils");
 
-const q = faunadb.query;
-const getDBSecret = require("./utils/getDBSecret");
-
-exports.handler = (event, context) => {
+exports.handler = async (event, context) => {
    console.log("Function `track-read-all` invoked");
-   /* configure faunaDB Client with our secret */
-   const client = new faunadb.Client({
-      secret: getDBSecret(),
-      domain: "db.us.fauna.com",
-      scheme: "https",
-   });
-   return client
-      .query(
+   const auth = authenticate(event);
+   if (!auth.status) {
+      return auth.resData;
+   }
+   try {
+      const response = await getDBClient().query(
          q.Map(
             q.Paginate(q.Match(q.Index("track_sort_by_end")), { size: 100000 }),
             q.Lambda(["endDateTime", "timeEntryId", "ref"], q.Get(q.Var("ref")))
          )
-      )
-      .then((response) => ({
-         statusCode: 200,
-         body: JSON.stringify(response.data),
-      }))
-      .catch((error) => ({
-         statusCode: 400,
-         body: JSON.stringify(error),
-      }));
+      );
+      return sendResponse(200, response.data);
+   } catch (err) {
+      return sendResponse(500, err);
+   }
 };

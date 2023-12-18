@@ -1,34 +1,24 @@
 /* eslint-disable no-unused-vars */
-/* Import faunaDB sdk */
-const faunadb = require("faunadb");
-
-const q = faunadb.query;
-const getDBSecret = require("./utils/getDBSecret");
+const { getDBClient, q } = require("./utils/getDBClient");
+const authenticate = require("./utils/authenticate");
+const { sendResponse } = require("./utils/responseUtils");
 
 const handler = async (event, context) => {
    console.log("Function `track-clockify-meta-read` invoked", event.path);
-   /* configure faunaDB Client with our secret */
-   const client = new faunadb.Client({
-      secret: getDBSecret(),
-      domain: "db.us.fauna.com",
-      scheme: "https",
-   });
+   const auth = authenticate(event);
+   if (!auth.status) {
+      return auth.resData;
+   }
    try {
-      const { data } = await client.query(
+      const { data } = await getDBClient().query(
          q.Map(
             q.Paginate(q.Documents(q.Collection("clockify_meta_entries"))),
             q.Lambda((x) => q.Get(x))
          )
       );
-      return {
-         statusCode: 200,
-         body: JSON.stringify(data),
-      };
+      return sendResponse(200, data);
    } catch (err) {
-      return {
-         statusCode: 500,
-         body: JSON.stringify("Something went wrong. Try again later.", err),
-      };
+      return sendResponse(500, err);
    }
 };
 

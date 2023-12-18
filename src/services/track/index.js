@@ -1,26 +1,27 @@
 /* eslint-disable consistent-return */
 /* Api methods to call /functions */
 
-import axios from "axios";
+import api from "services/api";
+
 import useClockify from "hooks/useClockify";
 
 const create = (data) =>
-   axios.post("/.netlify/functions/track-create", {
+   api.post("/.netlify/functions/track-create", {
       data,
    });
 
 const createClockifyApiMeta = (data) =>
-   axios.post("/.netlify/functions/track-clockify-meta-create", {
+   api.post("/.netlify/functions/track-clockify-meta-create", {
       ...data,
    });
 
-const readAll = () => axios.get("/.netlify/functions/track-read-all");
+const readAll = () => api.get("/.netlify/functions/track-read-all");
 
 const readClockifyApiMeta = async () =>
-   axios.get("/.netlify/functions/track-clockify-meta-read");
+   api.get("/.netlify/functions/track-clockify-meta-read");
 
 const updateClockifyApiMeta = (clockifyMetaId, data) =>
-   axios.post(
+   api.post(
       `/.netlify/functions/track-clockify-meta-update/${clockifyMetaId}`,
       {
          ...data,
@@ -28,15 +29,15 @@ const updateClockifyApiMeta = (clockifyMetaId, data) =>
    );
 
 const update = (trackId, data) =>
-   axios.post(`/.netlify/functions/track-update/${trackId}`, {
+   api.post(`/.netlify/functions/track-update/${trackId}`, {
       ...data,
    });
 
 const deleteTrack = (trackId) =>
-   axios.post(`/.netlify/functions/track-delete/${trackId}`);
+   api.post(`/.netlify/functions/track-delete/${trackId}`);
 
 const batchDeleteTrack = (trackIds) =>
-   axios.post(`/.netlify/functions/track-delete-batch`, {
+   api.post(`/.netlify/functions/track-delete-batch`, {
       ids: trackIds,
    });
 const getProjectName = async () => {

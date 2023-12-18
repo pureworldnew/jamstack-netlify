@@ -1,11 +1,9 @@
 /* eslint-disable no-unused-vars */
-/* Import faunaDB sdk */
-const faunadb = require("faunadb");
-
-const q = faunadb.query;
 const dayjs = require("dayjs");
 const utc = require("dayjs/plugin/utc");
-const getDBSecret = require("./utils/getDBSecret");
+const { getDBClient, q } = require("./utils/getDBClient");
+const authenticate = require("./utils/authenticate");
+const { sendResponse } = require("./utils/responseUtils");
 
 dayjs.extend(utc);
 
@@ -70,37 +68,23 @@ dayjs.extend(utc);
  */
 
 exports.handler = async (event, context) => {
-   /* configure faunaDB Client with our secret */
-   const client = new faunadb.Client({
-      secret: getDBSecret(),
-      domain: "db.us.fauna.com",
-      scheme: "https",
-   });
+   const auth = authenticate(event);
+   if (!auth.status) {
+      return auth.resData;
+   }
    console.log("Function `track-delete-hook` invoked");
    const inputEntry = JSON.parse(event.body);
-
-   return client
-      .query(
+   try {
+      const response = await getDBClient().query(
          q.Map(
             q.Paginate(
                q.Match(q.Index("track_search_by_timeEntryId"), inputEntry.id)
             ),
             q.Lambda("X", q.Delete(q.Var("X")))
          )
-      )
-      .then((response) =>
-         //
-         /* Success! return the response with statusCode 200 */
-         ({
-            statusCode: 200,
-            body: JSON.stringify(response),
-         })
-      )
-      .catch((error) =>
-         /* Error! return the error with statusCode 400 */
-         ({
-            statusCode: 400,
-            body: JSON.stringify(error),
-         })
       );
+      return sendResponse(200, response);
+   } catch (err) {
+      return sendResponse(500, err);
+   }
 };

@@ -1,30 +1,25 @@
 /* eslint-disable no-unused-vars */
-const faunadb = require("faunadb");
+const { getDBClient, q } = require("./utils/getDBClient");
 const getId = require("./utils/getId");
-const getDBSecret = require("./utils/getDBSecret");
+const authenticate = require("./utils/authenticate");
+const { sendResponse } = require("./utils/responseUtils");
 
-const q = faunadb.query;
-
-exports.handler = (event, context) => {
-   /* configure faunaDB Client with our secret */
-   const client = new faunadb.Client({
-      secret: getDBSecret(),
-      domain: "db.us.fauna.com",
-      scheme: "https",
-   });
+exports.handler = async (event, context) => {
+   const auth = authenticate(event);
+   if (!auth.status) {
+      return auth.resData;
+   }
    const data = JSON.parse(event.body);
    const id = getId(event.path);
    console.log(
       `Function 'track-clockify-meta-update' invoked. update id: ${id}`
    );
-   return client
-      .query(q.Update(q.Ref(`classes/clockify_meta_entries/${id}`), { data }))
-      .then((response) => ({
-         statusCode: 200,
-         body: JSON.stringify(response),
-      }))
-      .catch((error) => ({
-         statusCode: 400,
-         body: JSON.stringify(error),
-      }));
+   try {
+      const response = await getDBClient().query(
+         q.Update(q.Ref(`classes/clockify_meta_entries/${id}`), { data })
+      );
+      return sendResponse(200, response);
+   } catch (err) {
+      return sendResponse(500, err);
+   }
 };
