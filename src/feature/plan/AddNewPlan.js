@@ -35,7 +35,6 @@ const validationSchema = Yup.object().shape({
 
 export default function AddNewPlan({
    open,
-   handleClickOpen,
    handleSubmitNew,
    handleSubmitEdit,
    handleClose,
@@ -103,9 +102,6 @@ export default function AddNewPlan({
 
    return (
       <div>
-         <Button variant="outlined" onClick={handleClickOpen}>
-            Create New
-         </Button>
          <Dialog
             fullScreen
             open={open}

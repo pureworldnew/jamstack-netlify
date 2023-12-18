@@ -6,7 +6,9 @@
 import React from "react";
 import MaUTable from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
+import Grid from "@mui/material/Grid";
 import TableCell from "@mui/material/TableCell";
+import Box from "@mui/material/Box";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -102,7 +104,13 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 // Let the table remove the filter if the string is empty
 fuzzyTextFilterFn.autoRemove = (val) => !val;
 
-export function ReactTable({ columns, data, mode, initialState }) {
+export function ReactTable({
+   columns,
+   data,
+   mode,
+   initialState,
+   handleNewClick,
+}) {
    const [popup, setPopup] = React.useState({
       show: false, // initial values set to false and null
       rowData: null,
@@ -236,13 +244,36 @@ export function ReactTable({ columns, data, mode, initialState }) {
    // Render the UI for your table
    return (
       <>
-         <Button
-            variant="outlined"
-            onClick={handleClickDelete}
-            disabled={!selectedFlatRows.length}
+         <Box
+            sx={{
+               "& .MuiTextField-root": { m: 1 },
+               p: 3,
+            }}
+            noValidate
+            autoComplete="off"
          >
-            Delete Rows
-         </Button>
+            <Grid
+               container
+               spacing={2}
+               alignItems="center"
+               justifyContent="space-between"
+            >
+               <Grid item>
+                  <Button
+                     variant="outlined"
+                     onClick={handleClickDelete}
+                     disabled={!selectedFlatRows.length}
+                  >
+                     Delete Rows
+                  </Button>
+               </Grid>
+               <Grid item>
+                  <Button variant="outlined" onClick={handleNewClick}>
+                     Create New
+                  </Button>
+               </Grid>
+            </Grid>
+         </Box>
          <DeleteModal
             delOpen={popup.show}
             setDelOpen={setPopup}

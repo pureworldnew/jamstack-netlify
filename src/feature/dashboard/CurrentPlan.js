@@ -6,6 +6,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
+import Button from "@mui/material/Button";
 
 import { ReactTable } from "components/table";
 import { BackDrop } from "components/backdrop";
@@ -54,7 +55,7 @@ function CurrentPlan() {
    useEffect(() => {
       getData();
       setRefreshData(false);
-   }, [refreshData]);
+   }, [refreshData, open]);
 
    const handleClickOpen = () => {
       setOpen(true);
@@ -119,7 +120,6 @@ function CurrentPlan() {
             <AddNewPlan
                open={open}
                setOpen={setOpen}
-               handleClickOpen={handleClickOpen}
                handleClose={handleClose}
                handleSubmitNew={handleSubmitNew}
                handleSubmitEdit={handleSubmitEdit}
@@ -169,6 +169,7 @@ function CurrentPlan() {
                ]}
                data={entry}
                mode="planEntry"
+               handleNewClick={handleClickOpen}
             />
          )}
       </>
