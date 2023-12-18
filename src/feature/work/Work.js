@@ -141,7 +141,6 @@ function Work() {
                loadingUpdate={loadingUpdate}
                open={open}
                setOpen={setOpen}
-               handleClickOpen={() => setOpen(true)}
                checkCompanyDup={checkCompanyDup}
                handleClose={handleClose}
                handleSubmitEdit={({ id, data }) => {
@@ -201,6 +200,7 @@ function Work() {
                   ]}
                   data={queryResults}
                   mode="workEntry"
+                  handleNewClick={() => setOpen(true)}
                />
             </>
          )}

@@ -4,7 +4,6 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import {
    Toolbar,
-   Button,
    Typography,
    Dialog,
    AppBar as MuiAppBar,
@@ -46,7 +45,6 @@ const validationSchema = Yup.object().shape({
 export default function AddNewWork({
    loadingUpdate,
    open,
-   handleClickOpen,
    handleSubmitEdit,
    checkCompanyDup,
    handleClose,
@@ -186,10 +184,6 @@ export default function AddNewWork({
    );
    return (
       <div>
-         <Button variant="outlined" onClick={handleClickOpen}>
-            Create New
-         </Button>
-
          <Dialog
             fullScreen
             open={open}
