@@ -1,21 +1,15 @@
 /* eslint-disable no-unused-vars */
-/* Import faunaDB sdk */
-const faunadb = require("faunadb");
+const { getDBClient, q } = require("./utils/getDBClient");
+const authenticate = require("./utils/authenticate");
+const { sendResponse } = require("./utils/responseUtils");
 
-const q = faunadb.query;
-const getDBSecret = require("./utils/getDBSecret");
-/* export our lambda function as named "handler" export */
 exports.handler = async (event, context) => {
-   /* configure faunaDB Client with our secret */
-   const client = new faunadb.Client({
-      secret: getDBSecret(),
-      domain: "db.us.fauna.com",
-      scheme: "https",
-   });
+   const auth = authenticate(event);
+   if (!auth.status) {
+      return auth.resData;
+   }
    /* parse the string body into a useable JS object */
    const data = JSON.parse(event.body);
-
-   console.log("Function `cash-dashbaord-sum` invoked", data.dateMonth);
    const date = new Date();
    const firstDay = new Date(date.getFullYear(), date.getMonth(), 1)
       .toISOString()
@@ -24,9 +18,8 @@ exports.handler = async (event, context) => {
       .toISOString()
       .split("T")[0];
 
-   /* construct the fauna query */
-   return client
-      .query(
+   try {
+      const response = await getDBClient().query(
          q.Sum(
             q.Map(
                q.Paginate(
@@ -42,20 +35,9 @@ exports.handler = async (event, context) => {
                )
             )
          )
-      )
-      .then((response) =>
-         /* Success! return the response with statusCode 200 */
-         ({
-            statusCode: 200,
-            body: JSON.stringify(response),
-         })
-      )
-      .catch((error) => {
-         console.log("error", error);
-         /* Error! return the error with statusCode 400 */
-         return {
-            statusCode: 400,
-            body: JSON.stringify(error),
-         };
-      });
+      );
+      return sendResponse(200, response);
+   } catch (err) {
+      return sendResponse(500, err);
+   }
 };

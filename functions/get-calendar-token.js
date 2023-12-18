@@ -121,7 +121,7 @@ exports.handler = async (event, context) => {
          const result = await calendar.events.list({
             calendarId,
             timeMin: new Date().toISOString(),
-            maxResults: 10,
+            maxResults: 50,
             singleEvents: true,
             orderBy: "startTime",
          });

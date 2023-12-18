@@ -66,7 +66,7 @@ function stringAvatar(name) {
    };
 }
 
-function AppBar({ position, open, toggleDrawer }) {
+function UtilAppBar({ position, open, toggleDrawer }) {
    const navigate = useNavigate();
 
    const [anchorElUser, setAnchorElUser] = useState(null);
@@ -162,4 +162,4 @@ function AppBar({ position, open, toggleDrawer }) {
    );
 }
 
-export default AppBar;
+export default UtilAppBar;

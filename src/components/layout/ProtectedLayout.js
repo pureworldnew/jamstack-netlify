@@ -7,7 +7,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 
-import { AppBar, Drawer, Copyright } from "components/nav";
+import { UtilAppBar, Drawer, Copyright } from "components/nav";
 
 function ProtectedLayout() {
    const { user } = useAuth();
@@ -23,7 +23,11 @@ function ProtectedLayout() {
       <Box sx={{ display: "flex" }}>
          <CssBaseline />
 
-         <AppBar position="absolute" open={open} toggleDrawer={toggleDrawer} />
+         <UtilAppBar
+            position="absolute"
+            open={open}
+            toggleDrawer={toggleDrawer}
+         />
          <Drawer variant="permanent" open={open} toggleDrawer={toggleDrawer} />
          <Box
             component="main"
