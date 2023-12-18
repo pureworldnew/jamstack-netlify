@@ -6,7 +6,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { Title } from "components/title";
 import WeeklyChart from "./WeeklyChart";
-import Expense from "./Expense";
+// import Expense from "./Expense";
 import CurrentPlan from "./CurrentPlan";
 
 export default function Dashboard() {
@@ -83,7 +83,7 @@ export default function Dashboard() {
                   height: 440,
                }}
             >
-               <Expense />
+               {/* <Expense /> */}
             </Paper>
          </Grid>
 

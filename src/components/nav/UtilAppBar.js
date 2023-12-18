@@ -1,12 +1,14 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
 import MenuIcon from "@mui/icons-material/Menu";
 import Badge from "@mui/material/Badge";
 import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
-import NotificationsIcon from "@mui/icons-material/Notifications";
+import WorkHistoryIcon from "@mui/icons-material/WorkHistory";
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
+import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import Toolbar from "@mui/material/Toolbar";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
@@ -17,6 +19,10 @@ import * as myConsts from "consts";
 import { useAuth } from "hooks/useAuth";
 import { useLocalStorage } from "hooks/useLocalStorage";
 import { useNavigate } from "react-router-dom";
+import planApi from "services/plan";
+import calendarAPI from "services/calendar";
+import workApi from "services/work";
+import moment from "moment";
 import { RouterBreadcrumbs } from "./Breadcrumbs";
 
 const CustomAppBar = styled(MuiAppBar, {
@@ -67,6 +73,75 @@ function stringAvatar(name) {
 }
 
 function UtilAppBar({ position, open, toggleDrawer }) {
+   const [currentPlan, setCurrentPlan] = useState(0);
+   const [todayEvents, setTodayEvents] = useState(0);
+   const [weeklyJobs, setWeeklyJobs] = useState(0);
+   const [loading, setLoading] = useState(false);
+   const getCurrentPlan = async () => {
+      try {
+         const res = await planApi.readOnlyCurrent();
+         if (res.data) {
+            setCurrentPlan(res.data.length);
+         }
+      } catch (err) {
+         console.log(err);
+      }
+   };
+   const calendarEventsToday = async () => {
+      try {
+         const response = await calendarAPI.getCalendarToken({ dateRange: 0 });
+         const calEvns = response.data?.events.filter((eventItem) => {
+            const now = moment();
+            const endOfToday = now.endOf("day").toString();
+            const diffBetweenEnd = moment(endOfToday).diff(
+               moment(eventItem.end),
+               "minutes"
+            );
+            return diffBetweenEnd > 0;
+         });
+         setTodayEvents(calEvns.length);
+      } catch (error) {
+         console.error("Error fetching calendar events", error);
+      }
+   };
+   const getWeeklyJobApply = async () => {
+      try {
+         const totalJobs = await workApi.readAll();
+         console.log("totalJobs", totalJobs);
+         const now = moment();
+         const monday = now.clone().weekday(1).format("YYYY-MM-DD");
+         console.log("monday is", monday);
+         const saturday = now.clone().weekday(6).format("YYYY-MM-DD");
+         console.log("saturday is", saturday);
+         const weekJobs = totalJobs.filter((each) => {
+            console.log("each of jobs", each);
+            const createDateString = moment(each.data.createDate).format(
+               "YYYY-MM-DD"
+            );
+            console.log("createDateString", moment(each.data.createDate));
+            const isNowWeekday = moment(createDateString).isBetween(
+               monday,
+               saturday,
+               null,
+               "[]"
+            );
+            console.log("isNowWeekday", isNowWeekday);
+            return isNowWeekday === true;
+         });
+         console.log("weeklyjobs", weekJobs);
+         setWeeklyJobs(weekJobs.length);
+      } catch (err) {
+         console.log(err);
+      }
+   };
+   useEffect(() => {
+      setLoading(true);
+      getCurrentPlan();
+      calendarEventsToday();
+      getWeeklyJobApply();
+      setLoading(false);
+   }, []);
+
    const navigate = useNavigate();
 
    const [anchorElUser, setAnchorElUser] = useState(null);
@@ -112,11 +187,26 @@ function UtilAppBar({ position, open, toggleDrawer }) {
             >
                <RouterBreadcrumbs />
             </Typography>
-            <IconButton color="inherit">
-               <Badge badgeContent={4} color="secondary">
-                  <NotificationsIcon />
-               </Badge>
-            </IconButton>
+            {!loading && (
+               <>
+                  <IconButton color="inherit">
+                     <Badge badgeContent={currentPlan} color="info">
+                        <WorkHistoryIcon />
+                     </Badge>
+                  </IconButton>
+                  <IconButton color="inherit">
+                     <Badge badgeContent={todayEvents} color="success">
+                        <MeetingRoomIcon />
+                     </Badge>
+                  </IconButton>
+                  <IconButton color="inherit">
+                     <Badge badgeContent={weeklyJobs} color="secondary">
+                        <PriorityHighIcon />
+                     </Badge>
+                  </IconButton>
+               </>
+            )}
+
             {!!user && (
                <Box sx={{ flexGrow: 0, marginLeft: 4 }}>
                   <Tooltip title="Open settings">
