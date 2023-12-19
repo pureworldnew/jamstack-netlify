@@ -64,8 +64,8 @@ function Plan({ current = false }) {
    const { isLoading: isNewLoading, mutate: createNewPlanEntry } = useMutation(
       (workEntries) => planApi.create(workEntries),
       {
-         onSuccess: () => {
-            queryClient.invalidateQueries(["get_plan_entries"]);
+         onSuccess: async () => {
+            await queryClient.invalidateQueries(["get_plan_entries"]);
             toast.success("Inserted Successfully!", myConsts.TOAST_CONFIG);
          },
          onError: (error) => {
@@ -87,8 +87,8 @@ function Plan({ current = false }) {
    const { isLoading: isUpdateLoading, mutate: updatePlanEntry } = useMutation(
       ({ id, data }) => planApi.update(id, data),
       {
-         onSuccess: () => {
-            queryClient.invalidateQueries(["get_plan_entries"]);
+         onSuccess: async () => {
+            await queryClient.invalidateQueries(["get_plan_entries"]);
             toast.success(
                "Plan Entry updated successfully",
                myConsts.TOAST_CONFIG
@@ -111,15 +111,15 @@ function Plan({ current = false }) {
    );
 
    const { mutate: deletePlanEntry } = useMutation((id) => planApi.delete(id), {
-      onSuccess(data) {
-         queryClient.invalidateQueries("get_plan_entries");
+      onSuccess: async () => {
+         await queryClient.invalidateQueries("get_plan_entries");
          toast.success(
             "Plan Entries deleted successfully!",
             myConsts.TOAST_CONFIG
          );
          setPopup({ show: false, rowData: null });
       },
-      onError(error) {
+      onError: (error) => {
          if (Array.isArray(error.data.error)) {
             error.data.error.forEach((el) =>
                toast.error(el.message, {

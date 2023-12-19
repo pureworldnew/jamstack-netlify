@@ -59,15 +59,15 @@ function Work() {
    );
 
    const { mutate: deleteWorkEntry } = useMutation((id) => workApi.delete(id), {
-      onSuccess(data) {
-         queryClient.invalidateQueries("get_work_entries");
+      onSuccess: async () => {
+         await queryClient.invalidateQueries("get_work_entries");
          toast.success(
             "Work Entries deleted successfully!",
             myConsts.TOAST_CONFIG
          );
          setPopup({ show: false, rowData: null });
       },
-      onError(error) {
+      onError: (error) => {
          if (Array.isArray(error.data.error)) {
             error.data.error.forEach((el) =>
                toast.error(el.message, {
@@ -85,8 +85,8 @@ function Work() {
    const { isLoading: isNewLoading, mutate: createNewWorkEntry } = useMutation(
       (workEntries) => workApi.create(workEntries),
       {
-         onSuccess: () => {
-            queryClient.invalidateQueries(["get_work_entries"]);
+         onSuccess: async () => {
+            await queryClient.invalidateQueries(["get_work_entries"]);
             toast.success("Work created successfully", myConsts.TOAST_CONFIG);
          },
          onError: (error) => {
@@ -113,8 +113,8 @@ function Work() {
    const { isLoading: isUpdateLoading, mutate: updateWorkEntry } = useMutation(
       ({ id, data }) => workApi.update(id, data),
       {
-         onSuccess: () => {
-            queryClient.invalidateQueries(["get_work_entries"]);
+         onSuccess: async () => {
+            await queryClient.invalidateQueries(["get_work_entries"]);
             toast.success(
                "Work Entry updated successfully",
                myConsts.TOAST_CONFIG
