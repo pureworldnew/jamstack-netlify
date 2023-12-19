@@ -2,7 +2,7 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState, useMemo } from "react";
-
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
@@ -16,11 +16,9 @@ import * as myConsts from "consts";
 import { toast, ToastContainer } from "react-toastify";
 import AddNewPlan from "./AddNewPlan";
 
-function Plan() {
-   const [entry, setEntry] = useState([]);
-   const [loading, setLoading] = useState(false);
+function Plan({ current = false }) {
+   const queryClient = useQueryClient();
    const [open, setOpen] = useState(false);
-   const [refreshData, setRefreshData] = useState(false);
    const [popup, setPopup] = useState({
       show: false, // initial values set to false and null
       rowData: null,
@@ -29,32 +27,112 @@ function Plan() {
 
    const columns = useMemo(() => myConsts.PLAN_COLUMNS, []);
 
-   const getData = async () => {
-      const res = await planApi.readAll();
-      const entryArray = [];
-      res.data.forEach((each) => {
-         const { data, ref } = each;
-         data.id = ref["@ref"].id;
-         if (data.createDate !== undefined) {
-            data.createDate = new Date(data.createDate).toLocaleString();
-         }
-         if (data.finishedDate !== undefined) {
-            data.finishedDate = new Date(data.finishedDate).toLocaleString();
-         }
-         entryArray.push(data);
-      });
-      setEntry(entryArray);
-      setLoading(false);
-   };
-   useEffect(() => {
-      setLoading(true);
-      getData();
-   }, []);
+   const { isLoading, data: queryResults } = useQuery(
+      ["get_plan_entries"],
+      () => (current ? planApi.readOnlyCurrent() : planApi.readAll()),
+      {
+         select: (res) =>
+            res?.map((each) => {
+               const { data, ref } = each;
+               data.id = ref["@ref"].id;
+               if (data.createDate !== undefined) {
+                  data.createDate = new Date(data.createDate).toLocaleString();
+               }
+               if (data.finishedDate !== undefined) {
+                  data.finishedDate = new Date(
+                     data.finishedDate
+                  ).toLocaleString();
+               }
+               return data;
+            }),
+         onError: (error) => {
+            if (Array.isArray(error.data.error)) {
+               error.data.error.forEach((el) =>
+                  toast.error(el.message, {
+                     position: "top-right",
+                  })
+               );
+            } else {
+               toast.error(error.data.message, {
+                  position: "top-right",
+               });
+            }
+         },
+      }
+   );
 
-   useEffect(() => {
-      getData();
-      setRefreshData(false);
-   }, [refreshData]);
+   const { isLoading: isNewLoading, mutate: createNewPlanEntry } = useMutation(
+      (workEntries) => planApi.create(workEntries),
+      {
+         onSuccess: () => {
+            queryClient.invalidateQueries(["get_plan_entries"]);
+            toast.success("Inserted Successfully!", myConsts.TOAST_CONFIG);
+         },
+         onError: (error) => {
+            if (Array.isArray(error.data.error)) {
+               error.data.error.forEach((el) => {
+                  toast.error(el.message, {
+                     position: "top-right",
+                  });
+               });
+            } else {
+               toast.error(error.data.message, {
+                  position: "top-right",
+               });
+            }
+         },
+      }
+   );
+
+   const { isLoading: isUpdateLoading, mutate: updatePlanEntry } = useMutation(
+      ({ id, data }) => planApi.update(id, data),
+      {
+         onSuccess: () => {
+            queryClient.invalidateQueries(["get_plan_entries"]);
+            toast.success(
+               "Plan Entry updated successfully",
+               myConsts.TOAST_CONFIG
+            );
+         },
+         onError: (error) => {
+            if (Array.isArray(error.data.error)) {
+               error.data.error.forEach((el) =>
+                  toast.error(el.message, {
+                     position: "top-right",
+                  })
+               );
+            } else {
+               toast.error(error.data.message, {
+                  position: "top-right",
+               });
+            }
+         },
+      }
+   );
+
+   const { mutate: deletePlanEntry } = useMutation((id) => planApi.delete(id), {
+      onSuccess(data) {
+         queryClient.invalidateQueries("get_plan_entries");
+         toast.success(
+            "Plan Entries deleted successfully!",
+            myConsts.TOAST_CONFIG
+         );
+         setPopup({ show: false, rowData: null });
+      },
+      onError(error) {
+         if (Array.isArray(error.data.error)) {
+            error.data.error.forEach((el) =>
+               toast.error(el.message, {
+                  position: "top-right",
+               })
+            );
+         } else {
+            toast.error(error.data.message, {
+               position: "top-right",
+            });
+         }
+      },
+   });
 
    const handleClickOpen = () => {
       setOpen(true);
@@ -72,40 +150,17 @@ function Plan() {
       });
    };
 
-   const handleClickConfirm = () => {
-      if (popup.show && popup.rowData) {
-         planApi.delete(popup.rowData.id).then((res) => {
-            toast.success("Deleted Successfully!", myConsts.TOAST_CONFIG);
-            setRefreshData(true);
-            setPopup({ show: false, rowData: null });
-         });
-      }
-   };
-
    const handleSubmitNew = (data) => {
       const localData = JSON.parse(JSON.stringify(data));
 
       if (localData.planStatus === undefined || localData.planStatus === "") {
          localData.planStatus = "notFinished";
       }
-      planApi.create(localData).then((res) => {
-         toast.success("Inserted Successfully!", myConsts.TOAST_CONFIG);
-         setRefreshData(true);
-         setPopup({ show: false, rowData: null });
-         handleClose();
-      });
-   };
-
-   const handleSubmitEdit = (id, data) => {
-      planApi.update(id, data).then((res) => {
-         toast.success("Updated Successfully!", myConsts.TOAST_CONFIG);
-         setRefreshData(true);
-         setPopup({ show: false, rowData: null });
-         handleClose();
-      });
+      createNewPlanEntry(localData);
    };
 
    const handleClickEdit = (rowData) => {
+      console.log("handleClickEdit", rowData);
       setEditData(rowData);
       setOpen(true);
    };
@@ -118,9 +173,13 @@ function Plan() {
             <AddNewPlan
                open={open}
                setOpen={setOpen}
+               isNewLoading={isNewLoading}
+               isUpdateLoading={isUpdateLoading}
                handleClose={handleClose}
                handleSubmitNew={handleSubmitNew}
-               handleSubmitEdit={handleSubmitEdit}
+               handleSubmitEdit={({ id, data }) => {
+                  updatePlanEntry({ id, data });
+               }}
                editData={editData}
             />
          </Box>
@@ -128,10 +187,10 @@ function Plan() {
          <DeleteModal
             delOpen={popup.show}
             setDelOpen={setPopup}
-            handleClickConfirm={handleClickConfirm}
+            handleClickConfirm={() => deletePlanEntry(popup.rowData?.id)}
          />
-         {loading ? (
-            <BackDrop open={loading} />
+         {isLoading ? (
+            <BackDrop open={isLoading} />
          ) : (
             <ReactTable
                columns={[
@@ -164,7 +223,7 @@ function Plan() {
                      disableSortBy: true,
                   },
                ]}
-               data={entry}
+               data={queryResults}
                mode="planEntry"
                handleNewClick={handleClickOpen}
             />

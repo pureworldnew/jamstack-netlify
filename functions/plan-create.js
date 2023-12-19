@@ -19,11 +19,11 @@ exports.handler = async (event, context) => {
       data,
    };
    try {
-      const response = getDBClient().query(
+      const response = await getDBClient().query(
          q.Create(q.Collection("plan_entries"), planItem)
       );
       return sendResponse(200, response);
    } catch (err) {
-      return sendResponse(500, ("Something went wrong. Try again later.", err));
+      return sendResponse(500, err);
    }
 };

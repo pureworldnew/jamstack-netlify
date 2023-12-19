@@ -4,9 +4,14 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import React from "react";
-import Button from "@mui/material/Button";
+import { LoadingButton } from "@mui/lab";
 
-function NewModalAppBar({ handleCloseDialog, handleClickSave }) {
+function NewModalAppBar({
+   isNewLoading,
+   loadingUpdate,
+   handleCloseDialog,
+   handleClickSave,
+}) {
    return (
       <AppBar sx={{ position: "relative" }}>
          <Toolbar>
@@ -21,9 +26,14 @@ function NewModalAppBar({ handleCloseDialog, handleClickSave }) {
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
                Delete
             </Typography>
-            <Button autoFocus color="inherit" onClick={handleClickSave}>
+            <LoadingButton
+               loading={isNewLoading || loadingUpdate}
+               autoFocus
+               color="inherit"
+               onClick={handleClickSave}
+            >
                Save
-            </Button>
+            </LoadingButton>
          </Toolbar>
       </AppBar>
    );

@@ -6,10 +6,15 @@ const create = (data) =>
       ...data,
    });
 
-const readAll = () => api.get("/.netlify/functions/plan-read-all");
+const readAll = async () => {
+   const response = await api.get("/.netlify/functions/plan-read-all");
+   return response.data;
+};
 
-const readOnlyCurrent = () =>
-   api.get("/.netlify/functions/plan-read-only-current");
+const readOnlyCurrent = async () => {
+   const response = await api.get("/.netlify/functions/plan-read-only-current");
+   return response.data;
+};
 
 const update = (planId, data) =>
    api.post(`/.netlify/functions/plan-update/${planId}`, {

@@ -6,6 +6,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
+
 import { ReactTable } from "components/table";
 import { BackDrop } from "components/backdrop";
 import { toast, ToastContainer } from "react-toastify";
@@ -23,6 +24,8 @@ function Work() {
       show: false, // initial values set to false and null
       rowData: null,
    });
+   const columns = useMemo(() => myConsts.WORK_COLUMNS, []);
+
    const [editData, setEditData] = useState({});
    const [duplicated, setDuplicated] = useState([]);
    const [open, setOpen] = useState(false);
@@ -79,12 +82,35 @@ function Work() {
       },
    });
 
+   const { isLoading: isNewLoading, mutate: createNewWorkEntry } = useMutation(
+      (workEntries) => workApi.create(workEntries),
+      {
+         onSuccess: () => {
+            queryClient.invalidateQueries(["get_work_entries"]);
+            toast.success("Work created successfully", myConsts.TOAST_CONFIG);
+         },
+         onError: (error) => {
+            if (Array.isArray(error.data.error)) {
+               error.data.error.forEach((el) => {
+                  toast.error(el.message, {
+                     position: "top-right",
+                  });
+               });
+            } else {
+               toast.error(error.data.message, {
+                  position: "top-right",
+               });
+            }
+         },
+      }
+   );
+
    const handleClose = () => {
       setEditData({});
       setOpen(false);
    };
 
-   const { isLoading: loadingUpdate, mutate: updateWorkEntry } = useMutation(
+   const { isLoading: isUpdateLoading, mutate: updateWorkEntry } = useMutation(
       ({ id, data }) => workApi.update(id, data),
       {
          onSuccess: () => {
@@ -93,10 +119,8 @@ function Work() {
                "Work Entry updated successfully",
                myConsts.TOAST_CONFIG
             );
-            handleClose();
          },
          onError: (error) => {
-            handleClose();
             if (Array.isArray(error.data.error)) {
                error.data.error.forEach((el) =>
                   toast.error(el.message, {
@@ -111,8 +135,6 @@ function Work() {
          },
       }
    );
-
-   const columns = useMemo(() => myConsts.WORK_COLUMNS, []);
 
    const handleClickDelete = (rowData) => {
       setPopup({
@@ -138,11 +160,13 @@ function Work() {
          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             <AddNewWork
                duplicated={duplicated}
-               loadingUpdate={loadingUpdate}
+               isUpdateLoading={isUpdateLoading}
+               isNewLoading={isNewLoading}
                open={open}
                setOpen={setOpen}
                checkCompanyDup={checkCompanyDup}
                handleClose={handleClose}
+               createNewWorkEntry={createNewWorkEntry}
                handleSubmitEdit={({ id, data }) => {
                   updateWorkEntry({ id, data });
                }}

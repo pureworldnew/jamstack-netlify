@@ -32,12 +32,13 @@ const validationSchema = Yup.object().shape({
 
 export default function AddNewPlan({
    open,
+   isUpdateLoading,
+   isNewLoading,
    handleSubmitNew,
    handleSubmitEdit,
    handleClose,
    editData,
 }) {
-   const planEditData = { ...editData };
    const {
       control,
       handleSubmit,
@@ -87,12 +88,12 @@ export default function AddNewPlan({
       []
    );
    const onSubmit = (data) => {
-      if (Object.keys(planEditData).length !== 0) {
-         handleSubmitEdit(planEditData.id, data);
-         handleCloseDialog();
+      if (Object.keys(editData).length !== 0) {
+         handleSubmitEdit({ id: editData.id, data });
       } else {
          debouncedClick(data);
       }
+      handleCloseDialog();
    };
 
    return (
@@ -107,6 +108,8 @@ export default function AddNewPlan({
                <NewModalAppBar
                   handleCloseDialog={handleCloseDialog}
                   handleClickSave={handleSubmit(onSubmit)}
+                  isNewLoading={isNewLoading}
+                  isUpdateLoading={isUpdateLoading}
                />
                <Box
                   sx={{

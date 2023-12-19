@@ -1,28 +1,13 @@
 import * as React from "react";
 
-import CloseIcon from "@mui/icons-material/Close";
-
-import {
-   Toolbar,
-   Typography,
-   Dialog,
-   AppBar as MuiAppBar,
-   IconButton,
-   Slide,
-   Box,
-   Grid,
-   Divider,
-} from "@mui/material";
-import { toast } from "react-toastify";
-import { LoadingButton } from "@mui/lab";
+import { Typography, Dialog, Slide, Box, Grid, Divider } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import workApi from "services/work";
 import debounce from "lodash.debounce";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { AccordionComponent } from "components/accordion";
 import { RichEditor } from "components/rich-editor";
+import { NewModalAppBar } from "components/new-modal-appbar";
 
 import * as myConsts from "consts";
 import {
@@ -43,15 +28,16 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function AddNewWork({
-   loadingUpdate,
+   isUpdateLoading,
+   isNewLoading,
    open,
+   createNewWorkEntry,
    handleSubmitEdit,
    checkCompanyDup,
    handleClose,
    editData,
    duplicated,
 }) {
-   const queryClient = useQueryClient();
    const {
       control,
       handleSubmit,
@@ -116,30 +102,6 @@ export default function AddNewWork({
       });
       handleClose();
    };
-   const { isLoading, mutate: createNewWorkEntry } = useMutation(
-      (workEntries) => workApi.create(workEntries),
-      {
-         onSuccess: () => {
-            queryClient.invalidateQueries(["get_work_entries"]);
-            toast.success("Work created successfully", myConsts.TOAST_CONFIG);
-            handleCloseDialog();
-         },
-         onError: (error) => {
-            handleCloseDialog();
-            if (Array.isArray(error.data.error)) {
-               error.data.error.forEach((el) => {
-                  toast.error(el.message, {
-                     position: "top-right",
-                  });
-               });
-            } else {
-               toast.error(error.data.message, {
-                  position: "top-right",
-               });
-            }
-         },
-      }
-   );
 
    const onSubmit = (param) => {
       const data = { ...param, jobDescription };
@@ -149,6 +111,7 @@ export default function AddNewWork({
       } else {
          createNewWorkEntry(data);
       }
+      handleCloseDialog();
    };
 
    const checkCompanyDuplicates = (name) => {
@@ -191,32 +154,12 @@ export default function AddNewWork({
             TransitionComponent={Transition}
          >
             <form>
-               <MuiAppBar sx={{ position: "relative" }}>
-                  <Toolbar>
-                     <IconButton
-                        edge="start"
-                        color="inherit"
-                        onClick={handleCloseDialog}
-                        aria-label="close"
-                     >
-                        <CloseIcon />
-                     </IconButton>
-                     <Typography
-                        sx={{ ml: 2, flex: 1 }}
-                        variant="h6"
-                        component="div"
-                     >
-                        Delete
-                     </Typography>
-                     <LoadingButton
-                        color="inherit"
-                        loading={isLoading || loadingUpdate}
-                        onClick={handleSubmit(onSubmit)}
-                     >
-                        Save
-                     </LoadingButton>
-                  </Toolbar>
-               </MuiAppBar>
+               <NewModalAppBar
+                  handleCloseDialog={handleCloseDialog}
+                  handleClickSave={handleSubmit(onSubmit)}
+                  isNewLoading={isNewLoading}
+                  isUpdateLoading={isUpdateLoading}
+               />
                <Box
                   sx={{
                      "& .MuiTextField-root": { m: 1 },

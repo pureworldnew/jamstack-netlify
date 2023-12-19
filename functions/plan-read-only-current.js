@@ -9,7 +9,7 @@ exports.handler = async (event, context, callback) => {
       return auth.resData;
    }
    try {
-      const { data } = await getDBClient().query(
+      const response = await getDBClient().query(
          q.Map(
             q.Paginate(
                q.Match(q.Index("all_plan_entries_by_planStatus"), "notFinished")
@@ -17,7 +17,7 @@ exports.handler = async (event, context, callback) => {
             q.Lambda(["createDate", "ref"], q.Get(q.Var("ref")))
          )
       );
-      return sendResponse(200, data);
+      return sendResponse(200, response.data);
    } catch (err) {
       return sendResponse(500, ("Something went wrong. Try again later.", err));
    }

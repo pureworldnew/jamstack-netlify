@@ -22,6 +22,6 @@ exports.handler = async (event, context) => {
       );
       return sendResponse(200, response);
    } catch (err) {
-      return sendResponse(400, err);
+      return sendResponse(500, err);
    }
 };

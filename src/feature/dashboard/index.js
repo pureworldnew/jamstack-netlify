@@ -5,9 +5,9 @@ import * as myConstants from "consts";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { Title } from "components/title";
+import Plan from "feature/plan/Plan";
 import WeeklyChart from "./WeeklyChart";
 // import Expense from "./Expense";
-import CurrentPlan from "./CurrentPlan";
 
 export default function Dashboard() {
    const [chart, setChart] = React.useState(myConstants.CHART_OPTIONS[0].value);
@@ -27,7 +27,7 @@ export default function Dashboard() {
          {/* Recent Plan */}
          <Grid item xs={12}>
             <Paper sx={{ p: 2 }}>
-               <CurrentPlan />
+               <Plan current />
             </Paper>
          </Grid>
          {/* Recent Track */}

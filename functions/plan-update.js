@@ -12,11 +12,11 @@ exports.handler = async (event, context, callback) => {
    const data = JSON.parse(event.body);
    const id = getId(event.path);
    try {
-      const { response } = await getDBClient().query(
+      const response = await getDBClient().query(
          q.Update(q.Ref(`classes/plan_entries/${id}`), { data })
       );
       return sendResponse(200, response);
    } catch (err) {
-      return sendResponse(400, ("Something went wrong. Try again later.", err));
+      return sendResponse(500, err);
    }
 };
