@@ -10,7 +10,7 @@ import WeeklyChart from "./WeeklyChart";
 // import Expense from "./Expense";
 
 export default function Dashboard() {
-   const [chart, setChart] = React.useState(myConstants.CHART_OPTIONS[0].value);
+   const [chart, setChart] = React.useState(myConstants.CHART_OPTIONS[1].value);
    const [totalJob, setTotalJob] = React.useState("");
    const handleChartOption = (e) => {
       console.log(e.target.value);
